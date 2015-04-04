@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Question page</title>
+    </h:head>
+    <h:body>
+        <h1>Question page</h1>
+
+        <h3>Regular HTML Form</h3>
+        <h:form id="survey">
+            Over: <h:outputText value="#{generalController.over}" id="testover"/><br/>
+            <h:outputText id="question" value="#{generalController.getQuestion()}"/>
+            <p:inputText id="answer" value="#{generalController.answer}"/><br/>
+            <h:commandButton id="submit" value="Next" rendered="#{!generalController.last}">
+                <f:ajax execute="answer" render="survey"/>
+            </h:commandButton>
+            <h:commandButton id="done" value="Finish" rendered="#{generalController.last}" action="end"/>
+        </h:form>
+        <br/>
+        <h3>PrimeFace Form</h3>
+        <h:form id="pfsurvey">
+            Over: <h:outputText value="#{generalController.over}" id="testover"/><br/>
+            <h:outputText id="question" value="#{generalController.getQuestion()}"/>
+            <p:inputText id="answer" value="#{generalController.answer}" rendered="#{!generalController.over}"/><br/>
+            <p:commandButton id="submit" value="Next" rendered="#{!generalController.last}" update="pfsurvey" actionListener="#{generalController.next}" />
+            <p:commandButton id="done" value="Finish" rendered="#{generalController.last}" action="end" ajax="false" />
+        </h:form>
+
+    </h:body>
+</html>

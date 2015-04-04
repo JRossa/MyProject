@@ -1,0 +1,133 @@
+  
+/* style="position:absolute; top: 20px; left: 220px; color: white;" */
+#imageLogo {
+	position: absolute;
+	top: 0px;
+	left: 2%;
+	color: white;
+}
+
+/* height="100px" width="60px" */
+.imageLogoSize {
+	height: 100px;
+	width: 55px;
+}
+
+/* style="position:absolute; top: 0px; left: 760px;" */
+#imagePalace {
+	position: absolute;
+	top: 0px;
+	left: 37%;
+
+}
+
+/* height="80px" width="350px" */
+.imagePalaceSize {
+	height: 80px;
+	width: 250px;	
+}
+
+/* style="position:absolute; top: 20px; left: 350px;" */
+#headerTitle {
+	font-family: Verdana,sans-serif;
+	color: black;
+	font-size: 50px;
+	font-weight: bolder;
+	position: absolute;
+	top: 20px;
+	left: 10%;
+}
+
+#headerOrganization {
+	font-family: Verdana,sans-serif;
+	color: white;
+	font-size: 20px;
+	font-weight: 200;
+	position: absolute;
+	top: 82px;
+	left: 10%;
+}
+
+#headerLogMessage {
+	font-family: Verdana,sans-serif;
+	color: black;
+	font-size: 12px;
+	font-weight: Bold;
+	position: absolute;
+	top: 36px;
+	left: 65%;
+}
+
+#headerLogNameMessage {
+	font-family: Verdana,sans-serif;
+	color: black;
+	font-size: 11px;
+	font-weight: 500;
+	position: absolute;
+	top: 52px;
+	left: 64%;
+}
+
+#headerLastLogMessage {
+	font-family: Verdana,sans-serif;
+	color: black;
+	font-size: 10px;
+	font-weight: 600; /* 400 mormal; 700 - bold [100-900] */
+	position: absolute;
+	top: 68px;
+	left: 64%;
+}
+
+/* style="position:absolute; top: 20px; left: 1240px;" */
+#headerLanguagePanel {
+	position: absolute;
+	top: 0px;
+	left: 85%;
+}
+
+/* Para retirar a borda do panelGrid */
+.languagePanelNoBorder tr, .languagePanelNoBorder td  {  
+/*	background: url(../images/Desert-Camo.jpg) repeat; */
+    border: none !important; 
+    background-color: #c0c0c0!important;
+} 
+
+/* align="right" style="position:absolute; top: 85px; left: 750px;" */
+#headerSelectButtons {
+	position: absolute;
+	align: right;
+	top: 82px;
+	left: 25%;
+}
+
+/* align="right" style="position:absolute; top: 50px; left: 1150px;" */
+.headerLocaleButton {
+	position: absolute;
+	left: 90%;
+	top: 10px; 
+	
+}
+
+.headerMapButton {
+	position: absolute;
+	left: 75%;
+	top: 20px; 
+	
+}
+
+.headerLoginButton {
+	position: absolute;
+	left: 91%;
+	top: 86px; 
+	
+}
+
+
+#headerSeparator {
+	position: absolute;
+	top: 78px;
+	height: 20px;
+	width: 950px;
+	background-color: #880000! important;
+	background: #408080;
+ }

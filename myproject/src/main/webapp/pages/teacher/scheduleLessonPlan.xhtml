@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:body>
+	<ui:composition>
+
+	<h:head>
+		<style  type="text/css" >
+			.amil .fc-event,
+			.amil a,
+			.amil .fc-event-inner {
+			background-color: #0080ff;
+			border-color: #0080ff;
+			color: white;
+			}
+			.armas.fc-event,
+			.armas a,
+			.armas .fc-event-inner {
+			background-color: #00ff00;
+			border-color: #00ff00;
+			color: white;
+			}
+			.art .fc-event-inner {
+			background-color:  #ff0080;
+			border-color: #ff0080;
+			color: white;
+			}
+			.ui-icon-myReset{
+   			background-image: url("#{resource['images/icons/New document.png']}") !important;
+			}
+			.ui-icon-mySave{
+   			background-image: url("#{resource['images/icons/Save.png']}") !important;
+			}
+			.ui-icon-myDelete{
+   			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+			}
+			.ui-icon-myUpdate{
+   			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+			}
+			.ui-icon-myClose{
+   			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+			}
+		</style>
+	</h:head>
+	
+	
+	<h:form id="formLessonPlan">
+	
+	<p:growl id="messages" showDetail="true" globalyOnly="true" />
+  
+	<p:schedule id="scheduleLessonPlanId" widgetVar="myschedule"
+	            value="#{lessonPlanMBean.eventModel}" 
+	            locale="#{languageMBean.locale}"
+	            axisFormat="H:mm" 
+	            timeFormat="H:mm"
+	            style="position:relative; 
+	                   left: 120px;
+	                   top: 5px; 
+	                   width: 650px; 
+	                   height: 530px;
+	                   overflow: auto; "
+	            slotMinutes="15"  
+	            minTime="08:00" maxTime="17:15"    
+                editable="#{!lessonPlanMBean.lessonPlan.locked} or true" 
+                view="agendaWeek" 
+                onEventMoveUpdate="messages" 
+                onEventResizeUpdate="messages"
+                onDateSelectUpdate="eventDetails" 
+                onDateSelectComplete="eventDialog.show()"
+                onEventSelectUpdate="eventDetails" 
+                onEventSelectComplete="eventDialog.show()">
+
+            <p:ajax event="eventSelect" 
+                    listener="#{lessonPlanMBean.onEventSelect}" 
+                    update="eventDetails"
+                    oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="dateSelect" 
+                    listener="#{lessonPlanMBean.onDateSelect}" 
+                    update="eventDetails" 
+                    oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="eventMove" 
+                    listener="#{lessonPlanMBean.onEventMove}" 
+                    update="messages" />
+            <p:ajax event="eventResize" 
+                    listener="#{lessonPlanMBean.onEventResize}" 
+                    update="messages" />
+
+    </p:schedule>
+	
+	
+    <p:dialog id="lessonPlanDlg" widgetVar="eventDialog" 
+              header="#{labels.lessonplan_header_title}" 
+              visible="#{formLessonPlan.submitted and facesContext.validationFailed}"  
+    		  resizable="false" 
+    		  closable="false"
+              showEffect="clip" hideEffect="clip" >
+
+  		<p:messages id="messagesGrid" showDetail="false" autoUpdate="true" closable="true" />
+
+   		<h:outputText id="lessonhidden" value="#{lessonPlanMBean.lessonPlan.id}   " />
+        
+        <h:panelGrid id="eventDetails" columns="2"  >
+        
+            <h:outputLabel for="title" value="#{labels.lessonplan_title} :" />
+ 			<h:panelGroup>
+            <h:form id="formTitle" >  
+            <p:inputText id="title" 
+                         value="#{lessonPlanMBean.lessonPlan.title}" 
+                         required="true"
+                         requiredMessage="#{labels.lessonplan_value_null}"
+                         style="width: 150px" >
+             	<p:ajax process="@this"   />
+             </p:inputText>
+             </h:form>
+			 </h:panelGroup>
+ 
+            <h:outputLabel for="place" value="#{labels.lessonplan_place} :" />
+ 			<h:panelGroup>
+            <h:form>  
+            <p:inputText id="place" 
+                         value="#{lessonPlanMBean.lessonPlan.place}" 
+                         required="true"
+                         requiredMessage="#{labels.lessonplan_value_null}"
+                         style="width: 150px" >
+             	<p:ajax process="@this"   />
+             </p:inputText>
+             </h:form>
+			 </h:panelGroup>
+ 
+         	<h:outputText for="schooltimes" value="#{labels.lessonplan_schooltimes} :" />
+ 			<h:panelGroup>
+            <h:form>  
+ 	       		<p:selectManyCheckbox id="schooltimes" 
+ 	       							  value="#{schoolTimeMBean.selectedSchoolTimes}"
+ 	       							  layout="grid" columns="4">
+            		<f:selectItems value="#{schoolTimeMBean.schoolTimes}"
+            		               var="schoolTimes" 
+            		               itemLabel="#{schoolTimes}" itemValue="#{schoolTimes}" />
+            		<p:ajax event="change"  
+            		        listener="#{lessonPlanMBean.valueChangedSchoolTimes}" 
+            		        update=":formLessonPlan:formFrom:from :formLessonPlan:formTo:to" />
+        		</p:selectManyCheckbox>
+            </h:form>
+			</h:panelGroup>
+ 
+            <h:outputLabel for="from" value="#{labels.lessonplan_from} :" />
+			<h:panelGroup>
+            <h:form id="formFrom">  
+           		<p:calendar id="from" 
+           		            disabled="#{lessonPlanMBean.summaryLock}" 
+           		            required="true"
+           		            requiredMessage="#{labels.lessonplan_value_null}"
+                        	pattern="yyyy-MM-dd HH:mm:00" 
+                        	locale="#{languageMBean.locale}"
+                        	value="#{lessonPlanMBean.lessonPlan.startDate}" 
+                        	readonlyInput="true" >
+                        
+                	<p:ajax event="dateSelect" listener="#{lessonPlanMBean.valueChangedDate}" />
+            		<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+            	</p:calendar>
+			</h:form> 
+            <h:message for="from" />
+			</h:panelGroup>
+			
+            <h:outputLabel for="to" value="#{labels.lessonplan_to} :" />
+			<h:panelGroup>
+            <h:form id="formTo" >  
+           		<p:calendar id="to" 
+           		            disabled="#{lessonPlanMBean.summaryLock}" 
+           		            required="true"
+           		            requiredMessage="#{labels.lessonplan_value_null}"
+                        	pattern="yyyy-MM-dd HH:mm:00" 
+                        	locale="#{languageMBean.locale}"
+                        	value="#{lessonPlanMBean.lessonPlan.endDate}" 
+                        	readonlyInput="true" >
+                        
+                	<p:ajax event="dateSelect" listener="#{lessonPlanMBean.valueChangedDate}" />
+            		<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+            	</p:calendar>
+			</h:form> 
+            <h:message for="to" />
+			</h:panelGroup>
+
+            <h:outputLabel for="teacher" value="#{labels.lessonplan_teacher} :" />
+            <h:panelGroup>
+            	<h:form>
+ 					<p:selectOneMenu id="teacher" value="#{lessonPlanMBean.teacherId}"
+		 			                 disabled="#{lessonPlanMBean.summaryLock}" 
+		 			                 required="true"
+		 			                 requiredMessage="#{labels.lessonplan_value_null}"
+		 			                 valueChangeListener="#{lessonPlanMBean.valueChangedTeacher}"
+		 							 filter="true" filterMatchMode="contains"
+						             effect="fade"
+									 maxlength="450" size="30" >
+							<f:ajax process="@this"  />		 
+							<f:selectItems value="#{teacherMBean.selectOneItemsTeacher}"
+							               var="teacher"
+		                                   itemValue="#{teacher.id}" itemLabel="#{teacher.fullName}"  
+							               style="width: 450px;"/>
+		            </p:selectOneMenu>
+            	</h:form>
+			</h:panelGroup>
+
+            <h:outputLabel for="course" value="#{labels.lessonplan_course} :" />
+            <h:panelGroup>
+            	<h:form>
+		 			<p:selectOneMenu id="course" value="#{lessonPlanMBean.courseId}"
+		 						     disabled="#{lessonPlanMBean.summaryLock}" 
+		 						     required="true"
+		 						     requiredMessage="#{labels.lessonplan_value_null}"
+		 							 valueChangeListener="#{lessonPlanMBean.valueChangedCourse}"
+		 							 filter="true" filterMatchMode="contains"
+						             effect="fade"
+									 maxlength="450" size="30" >
+							<p:ajax event="change" update=":formLessonPlan:formTitle:title"  />
+							<f:selectItems value="#{courseMBean.selectOneItemsPresentCourse}" 
+							               var="course"
+		                                   itemValue="#{course.id}" itemLabel="#{course.name}"  
+							               style="width: 450px;"/>
+		            </p:selectOneMenu>
+            	</h:form>
+			</h:panelGroup>
+            
+            <h:outputLabel for="degree" value="#{labels.lessonplan_degree} :" />
+            <h:panelGroup>
+            	<h:form>
+		 			<p:selectOneMenu id="degree" value="#{lessonPlanMBean.degreeId}"
+		 						     disabled="#{lessonPlanMBean.summaryLock}" 
+		 						     required="true"
+		 						     requiredMessage="#{labels.lessonplan_value_null}"
+		 							 valueChangeListener="#{lessonPlanMBean.valueChangedDegree}"
+		 							 filter="true" filterMatchMode="contains"
+						             effect="fade"
+									 maxlength="450" size="30" >
+							<p:ajax event="change"  />
+							<f:selectItems value="#{degreeMBean.selectOneItemsMasterDegree}" 
+							               var="degree"
+		                                   itemValue="#{degree.id}" itemLabel="#{degree.name}"  
+							               style="width: 450px;"/>
+		            </p:selectOneMenu>
+            	</h:form>
+			</h:panelGroup>
+ 
+            
+            <h:outputLabel for="newevent" value="#{labels.lessonplan_new_event}"  />
+            <h:panelGroup>
+            	<h:form>
+		            <h:selectBooleanCheckbox id="newevent"
+                                    		 value="#{lessonPlanMBean.newEvent}" 
+                                    		 valueChangeListener="#{lessonPlanMBean.valueChangedNewEvent}"
+                                    		 immediate="true" >
+                    <p:ajax process="@this"   />
+                    </h:selectBooleanCheckbox>
+            	</h:form>
+			</h:panelGroup>
+
+
+            <h:outputLabel for="description" value="#{labels.lessonplan_summary}"  />
+			<h:panelGroup>
+            <h:form>  
+            <p:inputTextarea id="description" 
+                         value="#{lessonPlanMBean.lessonPlan.description}"
+                         style="width: 450px; height: 100px;"
+                         rows="10" cols="50"
+                         queryDelay="750" minQueryLength="4" >
+             	<p:ajax process="@this"  />
+             </p:inputTextarea>
+             </h:form>
+			 </h:panelGroup>
+
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+
+           		<p:commandButton icon="ui-icon-myReset" style="width: 100px;"
+           		                 value="#{labels.lessonplan_reset}" 
+           		                 rendered="#{!lessonPlanMBean.summaryLock}" 
+           		                 actionListener="#{lessonPlanMBean.cleanEvent}"
+           		                 update="lessonPlanDlg"
+           		                 process="@this"
+ 								 oncomplete="PF('eventDialog').show()" >
+           			<p:resetInput target="lessonPlanDlg"  />
+           		</p:commandButton>             
+           		                 
+            	<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+            	                 value="#{labels.lessonplan_save}"
+            	                 rendered="#{!lessonPlanMBean.summaryLock}" 
+            					 actionListener="#{lessonPlanMBean.addEvent}"
+            					 update="scheduleLessonPlanId"  />
+                				  
+             	<p:commandButton icon="ui-icon-myDelete" style="width: 100px;"
+             	                 value="#{labels.lessonplan_delete}"
+             	                 rendered="#{!lessonPlanMBean.summaryLock}" 
+            					 actionListener="#{lessonPlanMBean.deleteEvent}"
+            					 update="scheduleLessonPlanId" />
+
+            	<p:commandButton icon="ui-icon-myUpdate" style="width: 150px;"
+            	                 value="#{labels.lessonplan_update}"
+            	                 rendered="#{!lessonPlanMBean.summaryLock}" 
+            					 update="scheduleLessonPlanId" />
+ 
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.lessonplan_close}"
+ 				                 rendered="#{!lessonPlanMBean.summaryLock}"  
+    							 oncomplete="PF('eventDialog').hide()" 
+    							 process="@this"
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 75px" >
+  				</p:commandButton>
+
+				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.lessonplan_close}"
+ 				                 rendered="#{lessonPlanMBean.summaryLock}"  
+    							 oncomplete="PF('eventDialog').hide()" 
+    							 process="@this"
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 525px" >
+  				</p:commandButton>
+                				  
+                </h:panelGroup>
+            </f:facet>    
+        </h:panelGrid>
+       
+    </p:dialog>
+ 	</h:form>    
+ 
+
+
+ 	<script type="text/javascript">
+	    PrimeFaces.locales['pt'] = {
+	        closeText: 'fechar',
+	        prevText: 'voltar',
+	        nextText: 'próximo',
+	        currentText: 'hoje',
+	        monthNames: ['janeiro','fevereiro','março','abril','maio','junho',
+	            'julho','agosto','setembro','outubro','novembro','dezembro'],
+	        monthNamesShort: ['jan','fev','mar','abr','mai','jun',
+	            'jul','ago','set','out','nov','dec'],
+	        dayNames: ['domingo','segunda','terça','suarta','quinta','sexta','sábado'],
+	        dayNamesShort: ['dom','seg','ter','qua','qui','sex','sáb'],
+	        dayNamesMin: ['dom','seg','ter','qua','qui','sex','sáb'],
+	        weekHeader: 'semana',
+	        firstDay: 0,
+	        isRTL: false,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        month: 'mensal',
+	        week: 'semanal',
+	        day: 'diário',
+	        allDayText : 'dia'
+	    };
+	</script>
+	
+<style type="text/css">
+    .value {
+        width: 1000px;
+    }
+</style>
+
+
+	</ui:composition>
+</h:body>
+</html>
+
+
+<!-- To se the nmesages in growl -->
+<!-- 				<p:commandButton icon="ui-icon-myClose"  -->
+<!--  				                 value="#{labels.lessonplan_close}"  -->
+<!--     							 oncomplete="PF('eventDialog').hide()"  -->
+<!--     			______ >			 update="formLessonPlan" -->
+<!--     							 style=" width: 100px; -->
+<!--    							         color: #ffffff;  -->
+<!--    									 background: #0080c0; -->
+<!--   										 position: relative;  -->
+<!--  										 top: 0px;  -->
+<!--   										 left: 75px" > -->
+  
+
+<!--             					 update="scheduleLessonPlanId" -->
+
+
+<!--                 view="agendaWeek" -->
+<!--                 rightHeaderTemplate="agendaWeek" -->
+
+<!--             	                 update="eventDetails"PF('myschedule').update(); -->
+
+<!--             <p:inputText id="teacher" value="#{lessonPlanMBean.teacherId}" style="width:450px" /> -->
+
+<!--  			<p:selectOneMenu id="teacher" value="#{lessonPlanMBean.lessonPlan.teacher.id}" -->
+<!--  							 filter="true" filterMatchMode="contains" -->
+<!-- 				             effect="fade" -->
+<!-- 							 maxlength="255" size="30" > -->
+<!-- 					<f:selectItems value="#{lessonPlanMBean.selectOneItemsTeacher}"  -->
+<!-- 					               style="width: 450px;"/> -->
+<!-- 			</p:selectOneMenu> -->
+
+
+<!--             <p:inputText id="course" value="#{lessonPlanMBean.courseId}" style="width:50px" /> -->
+
+<!--  			<p:selectOneMenu id="course" value="#{lessonPlanMBean.lessonPlan.course.id}" -->
+<!--  							 filter="true" filterMatchMode="contains" -->
+<!-- 				             effect="fade" -->
+<!-- 							 maxlength="255" size="30" > -->
+<!-- 					<f:selectItems value="#{lessonPlanMBean.selectOneItemsCourse}"  -->
+<!-- 					               style="width: 50px;"/> -->
+<!--             </p:selectOneMenu> -->
+
+
+

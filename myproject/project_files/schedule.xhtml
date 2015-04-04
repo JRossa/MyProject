@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:body>
+	<ui:composition>
+
+	<h:form>
+	
+	<p:growl id="messages" showDetail="true" />
+
+	<p:schedule value="#{scheduleController.eventModel}" locale="#{languageMBean.locale}"
+	            style="position:relative; left: 120px; top: 20px; width: 700px; height: 500px;"
+                editable="true" widgetVar="myschedule"
+                eventSelectListener="#{scheduleController.onEventSelect}"
+                dateSelectListener="#{scheduleController.onDateSelect}"
+                eventMoveListener="#{scheduleController.onEventMove}"
+                eventResizeListener="#{scheduleController.onEventResize}"
+                onEventMoveUpdate="messages" onEventResizeUpdate="messages"
+                onDateSelectUpdate="eventDetails" onDateSelectComplete="eventDialog.show()"
+                onEventSelectUpdate="eventDetails" onEventSelectComplete="eventDialog.show()">
+
+            <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />
+            <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />
+
+    </p:schedule>
+
+    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+        <h:panelGrid id="eventDetails" columns="2">
+            <h:outputLabel for="title" value="Title:" />
+            <p:inputText id="title" value="#{scheduleController.event.title}" />
+
+            <h:outputLabel for="from" value="From:" />
+            <p:inputMask id="from" mask="99/99/9999"
+                value="#{scheduleController.event.startDate}" >
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+            </p:inputMask>
+
+            <h:outputLabel for="to" value="To:" />
+            <p:inputMask id="to" mask="99/99/9999"
+                value="#{scheduleController.event.endDate}" >
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+            </p:inputMask>
+
+            <h:outputLabel for="allDay" value="All Day:" />
+            <h:selectBooleanCheckbox id="allDay"
+                value="#{scheduleController.event.allDay}" />
+
+            <p:commandButton type="reset" value="Reset" />
+            <p:commandButton value="Save"
+                oncomplete="myschedule.update();eventDialog.hide();"
+                actionListener="#{scheduleController.addEvent}" />
+        </h:panelGrid>
+    </p:dialog>
+	</h:form>
+
+ 	<script type="text/javascript">
+	    PrimeFaces.locales['pt'] = {
+	        closeText: 'fechar',
+	        prevText: 'voltar',
+	        nextText: 'próximo',
+	        currentText: 'hoje',
+	        monthNames: ['janeiro','fevereiro','março','abril','maio','junho',
+	            'julho','agosto','setembro','outubro','novembro','dezembro'],
+	        monthNamesShort: ['jan','fev','mar','abr','mai','jun',
+	            'jul','ago','set','out','nov','dec'],
+	        dayNames: ['domingo','segunda','terça','suarta','quinta','sexta','sábado'],
+	        dayNamesShort: ['dom','seg','ter','qua','qui','sex','sáb'],
+	        dayNamesMin: ['dom','seg','ter','qua','qui','sex','sáb'],
+	        weekHeader: 'semana',
+	        firstDay: 1,
+	        isRTL: false,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        month: 'mensal',
+	        week: 'semanal',
+	        day: 'diário',
+	        allDayText : 'dia'
+	    };
+	</script>
+	
+<style type="text/css">
+    .value {
+        width: 1000px;
+    }
+</style>
+
+
+	</ui:composition>
+</h:body>
+</html>
+

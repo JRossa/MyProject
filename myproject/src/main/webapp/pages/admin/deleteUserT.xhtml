@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+		
+			<h:form id="formUserDelete" >
+				<p:confirmDialog id="confirmDld" widgetVar="userDeleteDialog"
+								 header="#{labels.user_delete_hdr}"  
+				                 message="#{labels.user_delete_msg} - '#{userCRUDMBean.user.userName}' ?"
+								 severity="alert" >
+								 
+					<p:commandButton id="confirm"
+									 value="#{labels.user_delete_yes}" 
+									 action="#{userCRUDMBean.delete(true)}"
+									 update=":userListForm" 
+									 oncomplete="PF('userDeleteDialog').hide();" />
+
+					<p:commandButton id="decline"
+									 value="#{labels.user_delete_no}" 
+									 action="#{userCRUDMBean.disableButtons}"
+									 onclick="PF('userDeleteDialog').hide();"
+									 type="button" />
+								 
+				</p:confirmDialog>
+			</h:form>
+</html>

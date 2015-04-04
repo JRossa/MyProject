@@ -1,0 +1,87 @@
+body, div, td, span, li, input { 
+	font-family: Arial, Helvetica; 
+	font-size: 12px;
+	}
+	
+th {
+	font-size: 14;px	
+	}
+	
+.center, .pageTitle, .form {
+		position: relative;
+		margin: 0 auto;
+		text-align: center;
+	}
+	
+.pageTitle {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
+.form {
+		border:2px solid black;
+	}
+	
+.tableHeader {
+		background-color: #E0E8E8;
+	}
+	
+.tableFooter {
+		background-color: #E0E8E8;
+	}
+	
+.tableRowOdd {
+		background-color: #FFFFFF;
+	}
+	
+.tableRowEven {
+		background-color: #EEF0F0;
+	}
+		
+a {
+	text-decoration: none;
+	color: #337799;
+	font-weight: bolder;
+}
+
+a:hover {
+	text-decoration:underline;
+	color: #FF5555;
+	font-weight: bolder;
+	}
+	
+td {
+	text-align: left;
+	}
+	
+.errorMessage {
+	color : #FF0000;
+	font-weight: bolder;
+	}
+	
+.errorStackTrace {
+	color : #000000;
+	}
+	
+.formUserError {
+	color : #FF0000;
+	font-weight: bolder;
+	}
+ 
+ .colStyle1 { 
+	width: 150px;
+	background: #c0c0c0; 
+	}
+	
+.colStyle2 { 
+	width: 300px;
+	background: #e2e2e2; 
+	}
+ 
+closeButton {
+	color: #ffffff; 
+    background: #0080c0;
+    position: relative; 
+    top: 0px; 
+    right: -300px"
+} 

@@ -1,0 +1,28 @@
+ 	<h:head>
+		<meta http-equiv="Refresh" content="120; #{request.contextPath}/pages/admin/mainAdminMenu.am" />
+	</h:head>
+  
+ 	<h:form>      	   
+   		 <p:poll update="mainPublic" autoStart="f" interval="140" render="true" />
+	</h:form>      
+	
+	
+	
+http://stackoverflow.com/questions/49547/making-sure-a-web-page-is-not-cached-across-all-browsers/2068407#2068407
+
+The correct minimum set of headers that works across all mentioned browsers:
+
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+
+Using HTML:
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />	
+
+
+		    <p:remoteCommand name="firstDatabaseServiceCall" actionListener="#{sessionMBean.pollListener}"
+							  autoRun="true" oncomplete="dataTableServicePoll.start()" />

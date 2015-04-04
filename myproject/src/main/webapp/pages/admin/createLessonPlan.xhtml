@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+
+	<style  type="text/css" >
+		.ui-icon-myReset{
+  			background-image: url("#{resource['images/icons/New document.png']}") !important;
+		}
+		.ui-icon-mySave{
+  			background-image: url("#{resource['images/icons/Save.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+	</style>
+	
+</h:head>
+
+	<p:dialog id="lessonplanUpdateDlg" widgetVar="lessonplanUpdateDialog"
+		      header="#{labels.lessonplan_update}" 
+		      visible="#{formLessonPlanUpdate.submitted and facesContext.validationFailed}"
+			  modal="true" 
+			  resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode" >
+						  
+	<h:form id="formLessonPlanUpdate" >
+
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+		<h:inputHidden value="#{lessonPlanCRUDMBean.lessonPlan.id}" />
+									
+		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
+						 styleClass="form" 
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="tableRowOdd, tableRowEven" >
+
+			<h:outputLabel for="title" value="#{labels.lessonplan_title}" />
+			<h:panelGroup>
+				<p:inputText id="title" value="#{lessonPlanCRUDMBean.lessonPlan.title}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_title} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="title" styleClass="formUserError"/>
+				<p:tooltip for="title" value="#{labels.lessonplan_insert} #{labels.lessonplan_title} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="place" value="#{labels.lessonplan_place}" />
+			<h:panelGroup>
+				<p:inputText id="place" value="#{lessonPlanCRUDMBean.lessonPlan.place}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_place} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="place" styleClass="formUserError"/>
+				<p:tooltip for="place" value="#{labels.lessonplan_insert} #{labels.lessonplan_place} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="course" value="#{labels.lessonplan_course}" />
+			<h:panelGroup>
+				<p:inputText id="course" value="#{lessonPlanCRUDMBean.lessonPlan.course.code}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_course} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="course" styleClass="formUserError"/>
+				<p:tooltip for="course" value="#{labels.lessonplan_insert} #{labels.lessonplan_course} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="degree" value="#{labels.lessonplan_degree}" />
+			<h:panelGroup>
+				<p:inputText id="degree" value="#{lessonPlanCRUDMBean.lessonPlan.degree.code}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_degree} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="degree" styleClass="formUserError"/>
+				<p:tooltip for="degree" value="#{labels.lessonplan_insert} #{labels.lessonplan_degree} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="teacher" value="#{labels.lessonplan_teacher}" />
+			<h:panelGroup>
+				<p:inputText id="teacher" value="#{lessonPlanCRUDMBean.lessonPlan.teacher.fullName}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_teacher} !!"
+							 maxlength="255" size="70"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="teacher" styleClass="formUserError"/>
+				<p:tooltip for="teacher" value="#{labels.lessonplan_insert} #{labels.lessonplan_teacher} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="startdate" value="#{labels.lessonplan_start_date}" />
+			<h:panelGroup>
+				<p:inputText id="startdate" value="#{lessonPlanCRUDMBean.lessonPlan.startDate}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_start_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="startdate" styleClass="formUserError"/>
+				<p:tooltip for="startdate" value="#{labels.teacher_insert} #{labels.lessonplan_start_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="enddate" value="#{labels.lessonplan_end_date}" />
+			<h:panelGroup>
+				<p:inputText id="enddate" value="#{lessonPlanCRUDMBean.lessonPlan.endDate}"
+							 title="#{labels.lessonplan_insert} #{labels.teacher_end_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="enddate" styleClass="formUserError"/>
+				<p:tooltip for="enddate" value="#{labels.lessonplan_insert} #{labels.lessonplan_start_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="locked" value="#{labels.lessonplan_locked}" />
+			<h:panelGroup>
+			<h:form>
+				<p:selectOneMenu id="locked" value="#{lessonPlanCRUDMBean.lessonPlan.locked}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_locked} !!"
+							 valueChangeListener="#{lessonPlanMBean.valueChangedLocked}"
+							 immediate="true"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.lessonplan_label_lock}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.lessonplan_label_not_lock}" itemValue="false" />
+					<p:ajax event="change"  />	
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="locked" styleClass="formUserError"/>
+				<p:tooltip for="locked" value="#{labels.lessonplan_insert} #{labels.lessonplan_locked} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:form>
+			</h:panelGroup>
+
+			<h:outputLabel for="description" value="#{labels.lessonplan_description}" />
+			<h:panelGroup>
+				<p:inputTextarea id="description" value="#{lessonPlanCRUDMBean.lessonPlan.description}"
+							     title="#{labels.lessonplan_insert} #{labels.lessonplan_description} !!"
+							     style="width: 415px; height: 100px;"
+                                 rows="10" cols="50"
+                                 queryDelay="750" minQueryLength="4" />
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="description" styleClass="formUserError"/>
+				<p:tooltip for="description" value="#{labels.lessonplan_insert} #{labels.lessonplan_description} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="creationuser" value="#{labels.lessonplan_creation_user}" />
+			<h:panelGroup>
+				<p:inputText id="creationuser" value="#{lessonPlanCRUDMBean.lessonPlan.creationUser}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_creation_user} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="creationuser" styleClass="formUserError"/>
+				<p:tooltip for="creationuser" value="#{labels.lessonplan_insert} #{labels.lessonplan_creation_user} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="creationdate" value="#{labels.lessonplan_creation_date}" />
+			<h:panelGroup>
+				<p:inputText id="creationdate" value="#{lessonPlanCRUDMBean.lessonPlan.creationDate}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_creation_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="creationdate" styleClass="formUserError"/>
+				<p:tooltip for="creationdate" value="#{labels.teacher_insert} #{labels.lessonplan_creation_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="modificationuser" value="#{labels.lessonplan_modification_user}" />
+			<h:panelGroup>
+				<p:inputText id="modificationuser" value="#{lessonPlanCRUDMBean.lessonPlan.modificationUser}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_modification_user} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="modificationuser" styleClass="formUserError"/>
+				<p:tooltip for="modificationuser" value="#{labels.lessonplan_insert} #{labels.lessonplan_modification_user} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="modificationdate" value="#{labels.lessonplan_modification_date}" />
+			<h:panelGroup>
+				<p:inputText id="modificationdate" value="#{lessonPlanCRUDMBean.lessonPlan.modificationDate}"
+							 title="#{labels.lessonplan_insert} #{labels.lessonplan_modification_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="modificationdate" styleClass="formUserError"/>
+				<p:tooltip for="modificationdate" value="#{labels.teacher_insert} #{labels.lessonplan_modification_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+				                 value="#{labels.lessonplan_save}"
+    							 action="#{lessonPlanCRUDMBean.save}" 
+    							 update=":lessonplanListForm" />
+ 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+ 				                 value="#{labels.lessonplan_send_email}"
+    							 action="#{lessonPlanCRUDMBean.sendEMail}" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.lessonplan_close}" 
+ 								 action="#{lessonPlanCRUDMBean.disableButtons}"
+    							 onclick="PF('lessonplanUpdateDialog').hide()" 
+    							 process="@this" 	 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 275px" />
+    			
+    			</h:panelGroup>
+			</f:facet>		 
+		</h:panelGrid>
+	</h:form>	
+	</p:dialog>  
+
+</html>
+
+<!--      							 oncomplete="if (#{not facesContext.validationFailed}) userUpdateDialog.hide()"	 /> 
+ -->

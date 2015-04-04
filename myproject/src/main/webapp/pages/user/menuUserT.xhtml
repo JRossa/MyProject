@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition>
+  
+    <ui:include name="change" src="changePassword.xhtml"  />
+    <ui:include name="update" src="createUser.xhtml"  />
+   
+	<h:form  >  
+     <p:menubar>
+        <p:submenu label="#{labels.menu_user}" icon="ui-icon-document" >
+            <p:menuitem value="#{labels.menu_change_password}"  oncomplete="PF('changePassDialog').show();" />
+            <p:menuitem value="#{labels.menu_list_users}" oncomplete="PF('userCreateDialog').show();" />
+           
+            
+        </p:submenu>
+ 
+        <p:submenu label="#{labels.menu_teacher}" icon="ui-icon-pencil">
+            <p:menuitem value="Listar Docentes" url="#" icon="ui-icon-arrowreturnthick-1-w" />
+            <p:menuitem value="Listar Docentes 2014/2015" url="#" icon="ui-icon-arrowreturnthick-1-e" />
+        </p:submenu>
+ 
+        <p:submenu label="#{labels.menu_session}" icon="ui-icon-help">
+            <p:menuitem value="Listar Sessões" url="#" />
+        </p:submenu>
+ 
+    </p:menubar>
+   
+    
+ 
+    
+	</h:form>
+	
+</ui:composition>
+</h:body>
+</html>

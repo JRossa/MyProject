@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Report</title>
+    </h:head>
+    <h:body>
+        <f:view>          
+            <h:form id="form" target="_blank">
+                <h:outputLabel>Export Report</h:outputLabel>
+                <h:selectOneRadio value="#{jasperReportsMBean.exportOption}">
+                    <f:selectItem itemValue="PDF" itemLabel="PDF"/>
+                    <f:selectItem itemValue="HTML" itemLabel="HTML"/>
+                    <f:selectItem itemValue="EXCEL" itemLabel="EXCEL"/>
+                    <f:selectItem itemValue="RTF" itemLabel="RTF"/>
+                </h:selectOneRadio>
+                <h:commandButton  action="#{jasperReportsMBean.execute}" value="Get Report" />
+            </h:form>
+        </f:view>
+    </h:body>
+</html>

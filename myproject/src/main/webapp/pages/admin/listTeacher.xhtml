@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="../../public/templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="../../public/header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_list_teachers}" url="/pages/admin/listTeacher.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:view>
+			<f:event listener="#{teacherMBean.onLoad}" type="preRenderView" />
+		</f:view>
+		
+		<p:panel id="teacherPanel" style="border: 0px;" >
+		
+			<h:form id="teacherListForm" >
+			
+				<p:commandButton widgetVar="addButton" value="#{labels.button_add}"
+				    action="#{teacherCRUDMBean.add}" 
+				    update=":formTeacherCreate"
+				    oncomplete="PF('teacherCreateDialog').show()" />
+					
+				<p:commandButton widgetVar="deleteButton"
+					value="#{labels.button_delete}" 
+					oncomplete="PF('teacherDeleteDialog').show();"
+					update="teacherDataTable" 
+					rendered="true" 
+					disabled="false"/>
+					
+				<p:commandButton widgetVar="updateButton"
+					value="#{labels.button_update}" 
+					update="teacherDataTable, :formTeacherUpdate"
+					actionListener="#{teacherCRUDMBean.update}"
+					oncomplete="PF('teacherUpdateDialog').show();"
+					disabled="false" />
+					
+				<p:commandButton widgetVar="addButton" value="Teste"
+				    update="teacherDataTable"
+					actionListener="#{teacherMBean.change}"
+					oncomplete="PF('changePassDialog').show();" />
+
+				<p:dataTable id="teacherDataTable" widgetVar="dataTable"
+				    loadingMessage="#{labels.teacher_load}"
+				    scrollable="true"
+				    scrollHeight="390"
+					var="teacher" 
+					value="#{teacherMBean.teachers}" 
+					paginator="true" 
+					paginatorPosition="top"
+					rows="10"
+					rowIndexVar="teacherIndex"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{teacher.id}"
+					selectionMode="single" >
+
+					<p:ajax event="rowSelect" listener="#{teacherMBean.selectTeacher}" update=":teacherListForm, teacherDataTable" oncomplete="enableButtons();" />
+					<p:ajax event="page" listener="#{teacherMBean.unselectTeacher}"  oncomplete="unselectRows();" />
+					<p:ajax event="rowUnselect" listener="#{teacherMBean.unselectTeacher}" oncomplete="disableButtons();" />
+
+					<f:facet name="header">
+					     <h:outputText value="#{labels.teacher_list}" />
+					</f:facet>
+					
+					<p:column headerText="#{labels.teacher_id}"  style="width: 4%;" >
+						<h:outputText value="#{teacher.id}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacher_category}" style="width: 12%;" >
+						<h:outputText value="#{teacher.category}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacher_name}" footerText="" style="width: 35%;"
+					          filterBy="#{teacher.fullName}" filterMatchMode="contains" >
+						<h:outputText value="#{teacher.fullName}" />
+					</p:column>
+
+					
+					<p:column style="width: 10%;">
+						<p:commandButton widgetVar="deleteTeacherButton"
+						                 icon="ui-icon-trash"
+						                 title="#{labels.teacher_delete}"
+										 update=":teacherListForm, teacherDataTable, :formTeacherDelete" 
+										 action="#{teacherCRUDMBean.delete(false)}"
+										 oncomplete="PF('teacherDeleteDialog').show();"  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>				 
+						<p:commandButton widgetVar="updateTeacherButton"
+										 icon="ui-icon-document"
+										 title="#{labels.teacher_update}"
+										 update=":teacherListForm, teacherDataTable, :formTeacherUpdate"
+										 action="#{teacherCRUDMBean.update}"
+										 oncomplete="PF('teacherUpdateDialog').show()"
+										  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+ 			<ui:include name="create" src="createTeacher.xhtml"  />		
+			<ui:include name="update" src="updateTeacher.xhtml"  />
+			<ui:include name="delete" src="deleteTeacher.xhtml"  />
+ 				
+		</p:panel>
+
+	</ui:define>
+	
+	</ui:composition>
+
+</html>
+
+
+
+
+
+<!--  p:dialog 					selection="#{teacherMBean.selectedTeacher}" -->

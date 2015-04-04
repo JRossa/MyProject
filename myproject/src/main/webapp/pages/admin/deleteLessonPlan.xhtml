@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+		
+			<h:form id="formLessonPlanDelete" >
+				<p:confirmDialog id="confirmDld" widgetVar="lessonplanDeleteDialog"
+								 header="#{labels.lessonplan_delete_hdr}"  
+				                 message="#{labels.lessonplan_delete_msg} - '#{lessonPlanCRUDMBean.lessonPlan.course.code}' ?"
+								 severity="alert" >
+								 
+					<p:commandButton id="confirm"
+									 value="#{labels.lessonplan_delete_yes}" 
+									 action="#{lessonPlanCRUDMBean.delete(true)}"
+									 update=":lessonplanListForm" 
+									 oncomplete="PF('lessonplanDeleteDialog').hide();" />
+
+					<p:commandButton id="decline"
+									 value="#{labels.lessonplan_delete_no}" 
+									 action="#{lessonPlanCRUDMBean.disableButtons}"
+									 onclick="PF('lessonplanDeleteDialog').hide();"
+									 type="button" />
+								 
+				</p:confirmDialog>
+			</h:form>
+</html>

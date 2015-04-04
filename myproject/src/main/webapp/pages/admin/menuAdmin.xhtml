@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition>
+  
+    <ui:include name="change" src="changePasswordT.xhtml"  />
+ 	<ui:include name="create" src="createUserT.xhtml"  />
+ 	
+	<h:form  >  
+     <p:menubar>
+        <p:submenu label="#{labels.menu_user}" icon="ui-icon-document" >
+            <p:menuitem value="#{labels.menu_user_create}" 
+            			actionListener="#{userCRUDMBean.add}"
+            			update=":userCreateDlg" 
+                        oncomplete="PF('userCreateDialog').show()" />
+
+            <p:menuitem value="#{labels.menu_user_change_password}"  
+                        oncomplete="PF('changePassDialog').show();" />
+  						 
+            <p:menuitem value="#{labels.menu_user_list}"
+                        url="/pages/admin/listUserT.am" />
+            <p:separator />
+            <p:menuitem value="#{labels.menu_user_list_sessions}" 
+                        url="/pages/admin/listLogSessionActiveT.am" />
+            
+            
+        </p:submenu>
+ 
+        <p:submenu label="#{labels.menu_teacher}" icon="ui-icon-pencil">
+            <p:menuitem value="#{labels.menu_teacher_list}" icon="ui-icon-arrowreturnthick-1-w"
+                        url="/pages/admin/listTeacher.am"  />
+            <p:menuitem value="#{labels.menu_teacher_list14}" icon="ui-icon-arrowreturnthick-1-e"
+                        url="#"  />
+        </p:submenu>
+ 
+        <p:submenu label="#{labels.menu_session}"  icon="ui-icon-help">
+            <p:menuitem value="#{labels.menu_session_list}" 
+                        url="/pages/admin/listLogSessionT.am" />
+        </p:submenu>
+ 
+         <p:submenu label="#{labels.menu_lessonplan}"  icon="ui-icon-help">
+            <p:menuitem value="#{labels.menu_lessonplan_list}" 
+                        url="/pages/admin/listLessonPlan.am" />
+            <p:menuitem value="#{labels.menu_lessonplan_report}" 
+                        url="/pages/admin/reportLessonPlan.am" />
+            <p:menuitem value="#{labels.menu_lessonplan_report}" 
+                        url="/public/report.am" />
+        </p:submenu>
+ 
+    </p:menubar>
+   
+    
+ 
+    
+	</h:form>
+	
+</ui:composition>
+</h:body>
+</html>

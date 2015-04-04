@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/brasao4_am.png" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+	
+	<title>#{messages.application_organization}</title>
+</h:head>
+
+
+<p:dialog header="#{messages.application_organization}"  height="570" widget="registerFormDialog"   
+		  width="570" modal="false" closable="true" position="center"
+		  draggable="true" resizable="false" visible="true">
+		  
+	<h:form id="registerForm" >
+		<div class="pageTitle">
+			<h:outputText value="#{msg.registration}"/>
+		</div>
+		<br/>
+
+		<div class="center">
+			<h:panelGrid columns="2"  
+						 styleClass="form" 
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="tableRowOdd, tableRowEven">
+						 
+			<f:facet name="header">
+				<h:outputFormat value="#{msg.registrationBoxTitle}">
+					<f:param value="*"/>
+				</h:outputFormat>
+			</f:facet>
+	
+	
+			<f:facet name="footer">
+				<h:panelGroup  >
+					<p:commandButton value="#{labels.registration_save}" 
+	  						         action="/" />
+					<p:commandButton value="#{labels.registration_cancel}" 
+		                             onclick="PF('registerFormDialog').hide();"/>
+				</h:panelGroup>
+			</f:facet>
+	
+			<h:outputLabel for="title" value="#{msg.registrationTitle}"/>
+			<h:panelGroup>
+				<h:inputText id="title" value="#"
+							 maxlength="45" size="10"/>
+							 <f:verbatim>
+							 	olá <br/>
+							 </f:verbatim>
+				<h:outputText value=" Texto "/>
+				<h:message for="title" styleClass="formUserError"/>
+			</h:panelGroup>
+	
+			
+			<h:outputLabel for="firstName" value="#{labels.registration_firstname}"/>
+			<h:panelGroup>
+				<p:inputText id="firstName" value="#{userMBean.firstName}"
+							 title="#{labels.registration_titlefirtname}"
+							 maxlength="255" size="30"/>
+					<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/><h:message for="firstName" styleClass="formUserError"/>
+				<p:tooltip for="firstName" value="Enter Username" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+	
+			<h:outputLabel for="lastName" value="#{labels.registration_lastname}"/>
+			<h:panelGroup>
+				<p:inputText id="lastName" value="#{userMBean.lastName}"
+				             title="#{labels.registration_titlelastname}"
+							 maxlength="255" size="30"/>
+					<f:verbatim><br/></f:verbatim>
+  				<h:outputText value=" "/>
+  				<p:message for="lastName" styleClass="formUserError"/>
+  				<p:tooltip for="lastName" value="Enter Username" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+
+				</p:tooltip>
+  			</h:panelGroup>
+  
+			<h:outputLabel for="username" value="#{labels.registration_username} *"/>
+			<h:panelGroup>
+				<p:inputText id="username" value="#{userMBean.userName}"
+							 title="#{labels.registration_titleusername}"
+						     maxlength="45" size="15" 
+						     required="true" redisplay="true" 
+						     requiredMessage="#{labels.registration_usernamenull}" >
+					<f:validator  binding="#{userValidator}" />
+					<p:ajax event="blur" update="registerForm" />
+				</p:inputText>
+					<f:verbatim><br/></f:verbatim>
+				<h:outputText value=""/>
+				<h:message for="username" styleClass="formUserError"/>
+				<p:tooltip for="username" />
+			</h:panelGroup>
+	
+			<h:outputLabel for="dateOfBirth" value="#{msg.registrationDateOfBirth}"/>
+			<h:panelGroup>
+				<p:inputText id="dateOfBirth" value="">
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</p:inputText>	
+					<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/><h:message for="dateOfBirth" styleClass="formUserError"/>
+			</h:panelGroup>
+	
+	
+			<h:outputLabel for="gender" value="#{msg.registrationGender}"/>
+			<h:selectOneRadio id="gender" value="">	
+				<f:selectItems value="#{registrationBean.genders}"/>	
+			</h:selectOneRadio>
+	
+			<h:outputLabel for="maritalStatus" value="#{msg.registrationMaritalStatus}"/>
+			<h:selectOneRadio id="maritalStatus" value="">	
+					<f:selectItems value="#{registrationBean.maritalStati}"/>	
+			</h:selectOneRadio>
+	
+	<h:outputLabel for="line1" value="#{msg.registrationAddress1}"/>
+	<h:panelGroup>
+	<h:inputText id="line1" value=""
+		maxlength="255" size="50"/>	<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="line1" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="line2" value="#{msg.registrationAddress2}"/>
+	<h:panelGroup>
+	<h:inputText id="line2" value=""
+		maxlength="255" size="50"/>	<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="line2" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="line3" value="#{msg.registrationAddress3}"/>
+	<h:panelGroup>
+	<h:inputText id="line3" value=""
+		maxlength="255" size="50"/>	<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="line3" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="line4" value="#{msg.registrationAddress4}"/>
+	<h:panelGroup>
+	<h:inputText id="line4" value=""
+		maxlength="255" size="50"/><f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="line4" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="postcode" value="#{msg.registrationPostcode}"/>
+	<h:panelGroup>
+	<h:inputText id="postcode" value=""
+		maxlength="50" size="20"/><f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="postcode" styleClass="formUserError"/>	
+	</h:panelGroup>
+	
+	<h:outputLabel for="country" value="#{msg.registrationCountry}"/>
+	<h:panelGroup>
+	<h:inputText id="country" value=""
+		maxlength="150" size="40"/><f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="country" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="daytimePhone" value="#{msg.registrationPhoneDay}"/>
+	<h:panelGroup>
+	<h:inputText id="daytimePhone" value=""
+		maxlength="45" size="12"/><f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="daytimePhone" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="eveningPhone" value="#{msg.registrationPhoneEvening}"/>
+	<h:panelGroup>
+	<h:inputText id="eveningPhone" value=""
+		maxlength="45" size="12"/>
+		<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/>
+	<h:message for="eveningPhone" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="email" value="*#{labels.registration_email}"/>
+	<h:panelGroup>
+	<h:outputLink id="track" value="#">
+	<p:inputText id="email" value="#{userMBean.email}" 
+		maxlength="255" size="50" 
+		required="true">
+			<f:validator validatorId="emailValidator"/>
+<!-- 			<p:ajax event="blur" listener="#{bean.someMethodToUpdateDaysLeft}" update="theDate,theToolTip" execute="theDate"/> -->
+	</p:inputText>
+	</h:outputLink>
+	<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="email" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="emailConfirm" value="*#{msg.registrationEmailConfirm}"/>
+	<h:panelGroup>
+		<p:inputText id="emailConfirm" value="" 
+		             title="Fade effect is used by default"
+					 maxlength="255" size="50" 
+					 required="true" />
+		<f:verbatim><br/></f:verbatim>
+		<h:outputText value=" "/>
+		<h:message for="emailConfirm" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="password" value="#{labels.registration_newpassword} *"/>
+	<h:panelGroup>
+	<p:password id="password" value="#{userMBean.newpassword}"
+	                
+				   maxlength="64" size="20" 
+				   required="true" redisplay="true" 
+		 		   feedback="true" match="passwordConfirm"
+                   promptLabel="#{labels.registration_titlenewpassword}" weakLabel="#{labels.login_passwordweak}"
+                   goodLabel="#{labels.login_passwordgood}" strongLabel="#{labels.login_passwordstrong}"
+                   requiredMessage="#{labels.registration_titlenewpassword}"
+                   validatorMessage="#{labels.registration_newpassword} #{labels.registration_invalidshe} !!">
+			<f:validateLength minimum="6"/>
+	</p:password>
+	<f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/>
+	<p:tooltip id="toolTipPassword" for="track" value="This tooltip tracks mouse position" trackMouse="true"   />
+	<h:message for="password" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="passwordConfirm" value="*#{msg.registrationPasswordConfirm}"/>
+	<h:panelGroup>
+	<p:password id="passwordConfirm" value="#{userMBean.newpassword}" 
+		maxlength="64" size="20" 
+		required="true" redisplay="true"  /><f:verbatim><br/></f:verbatim>
+	<h:outputText value=" "/><h:message for="passwordConfirm" styleClass="formUserError"/>
+	</h:panelGroup>
+	
+	<h:outputLabel for="webSite" value="#{msg.registrationWeb}"/>
+	<h:panelGroup>
+	<h:inputText id="webSite" value=""
+		maxlength="255" size="50"/><f:verbatim><br/></f:verbatim>
+		<h:outputText value=" "/><h:message for="webSite" styleClass="formUserError"/>
+	</h:panelGroup>
+		
+</h:panelGrid>
+</div>
+</h:form>
+</p:dialog>
+
+</html>

@@ -1,0 +1,11 @@
+http://stackoverflow.com/questions/23439076/eclipse-spring-wildfly-log4j-logging
+
+Eclipse, Spring, Wildfly log4j logging
+
+ am running Spring framework 3.2.2.RELEASE on WildFly 8.0. I am trying to get logging to work. I have tried reading several tutorials, but, can not seem to get any output to the console or log. I am looking at the console in Eclipse, and the log at wildfly/standalone/log/server.log. Any help getting logging going is appreciated.
+ 
+ SOLUTION: 
+ Based on Jame's answer below, To fix this based on my setup above, I added the following to wildFly's standalone.xml, and logging works as expected:
+
+<subsystem xmlns="urn:jboss:domain:logging:2.0">
+    <use-deployment-logging-config value="false"/>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	
+<f:view locale="#{languageMBean.localeCode}" >
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		
+		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/brasao4_am.png" />
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/main.css" />
+		
+		<title>
+			<p:outputText value="#{messages.application_organization}" />
+		</title>
+	</h:head>
+	
+	<h:body >	
+		<div id="top">
+			<ui:insert name="top">
+			Top
+			</ui:insert>
+		</div>
+		
+		<div id="menu">
+			<ui:include name="menu" src="menu.xhtml" />
+		</div>
+		
+		<div id="content" class="center_content">
+			<ui:insert name="content">
+				Content
+			</ui:insert>
+		</div>
+		
+		<div id="bottom">
+			<ui:insert name="bottom">
+				<ui:include name="footer" src="footer.xhtml" />
+			</ui:insert>
+		</div>
+	</h:body>
+</f:view>
+</html>

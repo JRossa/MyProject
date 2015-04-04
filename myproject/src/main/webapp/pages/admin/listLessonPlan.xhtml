@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="../../public/templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="../../public/header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_lessonplan_list}" url="/pages/admin/listLessonPlan.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:view>
+			<f:event listener="#{lessonPlanMBean.onLoad}" type="preRenderView" />
+		</f:view>
+		
+		<p:panel id="lessonplanPanel" style="border: 0px;" >
+		
+			<h:form id="lessonplanListForm" >
+
+				<p:commandButton id="lessonplanUpdateButton" widgetVar="updateButton"
+					value="#{labels.button_update}" 
+					disabled="false" />
+			
+				<p:dataTable id="lessonplanDataTable" widgetVar="lessonplanDataTable"
+				    loadingMessage="#{labels.lessonplan_load}"
+				    scrollable="true"
+				    scrollHeight="390"
+					var="lessonplan" 
+					value="#{lessonPlanMBean.lessonPlans}" 
+					paginator="true" 
+					paginatorPosition="top"
+					rows="10"
+					rowIndexVar="lessonplanIndex"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{lessonplan.id}"
+					selectionMode="single" >
+
+					<p:ajax event="rowSelect" listener="#{lessonPlanMBean.selectLessonPlan}" update=":lessonplanListForm, lessonplanDataTable" />
+					<p:ajax event="page" listener="#{lessonPlanMBean.unselectLessonPlan}"   />
+					<p:ajax event="rowUnselect" listener="#{lessonPlanMBean.unselectLessonPlan}"  />
+
+					<f:facet name="header">
+					     <h:outputText value="#{labels.lessonplan_list}" />
+					</f:facet>
+					
+					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" >
+						<h:outputText value="#{lessonplan.id}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.lessonplan_course}" footerText=""  style="width: 10%;" 
+					          filterBy="#{lessonplan.course.code}" filterMatchMode="contains"  filterStyle="width: 40px;" >
+						<h:outputText value="#{lessonplan.course.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels.lessonplan_degree}" footerText=""  style="width: 10%;" 
+					          filterBy="#{lessonplan.degree.code}" filterMatchMode="contains" filterStyle="width: 40px;" >
+						<h:outputText value="#{lessonplan.degree.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels.lessonplan_teacher}" footerText=""  style="width: 30%;" 
+					          filterBy="#{lessonplan.teacher.fullName}" filterMatchMode="contains" >
+						<h:outputText value="#{lessonplan.teacher.fullName}" />
+					</p:column>
+
+					<p:column headerText="#{labels.lessonplan_date}" footerText=""  style="width: 20%;" 
+					          filterBy="#{lessonplan.startDate}" filterMatchMode="contains" 
+					          sortBy="#{lessonplan.startDate}" >
+						<h:outputText value="#{lessonplan.startDate}" >
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+						</h:outputText> <br/>
+						<h:outputText value="#{lessonplan.endDate}" >
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{labels.lessonplan_description}" footerText=""  style="width: 35%;" 
+					          filterBy="#{lessonplan.description}" filterMatchMode="contains" >
+						<h:outputText value="#{lessonplan.description}" />
+					</p:column>
+
+					<p:column headerText="#{labels.lessonplan_locked}" style="width: 8%;" >
+					    <p:graphicImage name="images/icons/Green pin.png" 
+					                    style="border:none; position: relative; left: 10px;" rendered="#{!lessonplan.locked}" />     
+					    <p:graphicImage name="images/icons/Red pin.png" 
+					                    style="border:none; position: relative; left: 10px;" rendered="#{lessonplan.locked}" />     
+						<h:outputText value="#{lessonplan.locked}" rendered="false" />
+					</p:column>
+					
+					
+					<p:column style="width: 15%;">
+						<p:commandButton widgetVar="deleteLessonPlanButton"
+						                 icon="ui-icon-trash"
+						                 title="#{labels.lessonplan_delete}"
+										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanDelete" 
+										 action="#{lessonPlanCRUDMBean.delete(false)}"
+										 oncomplete="PF('lessonplanDeleteDialog').show();"  >
+							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
+						</p:commandButton>				 
+						<p:commandButton widgetVar="updateLessonPlanButton"
+										 icon="ui-icon-document"
+										 title="#{labels.lessonplan_update}"
+										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanUpdate"
+										 action="#{lessonPlanCRUDMBean.update}"
+										 oncomplete="PF('lessonplanUpdateDialog').show(); " >
+							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+			<ui:include name="update" src="updateLessonPlan.xhtml"  />
+			<ui:include name="delete" src="deleteLessonPlan.xhtml"  />
+			
+		</p:panel>
+
+	</ui:define>
+	
+	</ui:composition>
+
+</html>
+
+
+<!-- 			<ui:include name="update" src="updateUserT.xhtml"  /> -->
+<!-- 			<ui:include name="delete" src="deleteUserT.xhtml"  /> -->
+
+
+<!-- 						<p:commandButton widgetVar="deleteUserButton" -->
+<!-- 						                 icon="ui-icon-trash" -->
+<!-- 						                 title="#{labels.lessonplan_delete}" -->
+<!-- 										 update=":lessonplanListForm, lessonplanDataTable, :formUserDelete"  -->
+<!-- 										 action="#{userCRUDMBean.delete(false)}" -->
+<!-- 										 oncomplete="PF('userDeleteDialog').show();"  > -->
+<!-- 							<f:setPropertyActionListener value="#{user}"  target="#{userMBean.selectedUser}" /> -->
+<!-- 						</p:commandButton>				  -->
+<!-- 						<p:commandButton widgetVar="updateUserButton" -->
+<!-- 										 icon="ui-icon-document" -->
+<!-- 										 title="#{labels.user_update}" -->
+<!-- 										 update=":userListForm, userDataTable, :formUserUpdate" -->
+<!-- 										 action="#{userCRUDMBean.update}" -->
+<!-- 										 oncomplete="PF('userUpdateDialog').show()" -->
+<!-- 										  > -->
+<!-- 							<f:setPropertyActionListener value="#{user}"  target="#{userMBean.selectedUser}" /> -->
+<!-- 						</p:commandButton> -->
+
+
+
+
+<!-- 			<ui:include name="create" src="createUser.xhtml"  />
+ -->
+<!--  p:dialog 					selection="#{userMBean.selectedUser}" -->

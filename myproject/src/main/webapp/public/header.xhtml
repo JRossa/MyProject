@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition>
+
+    	<p:separator id="headerSeparator"   />
+		
+	  	<div id="imageLogo"  >              
+            <p:graphicImage  name="images/brasao_am.png" class="imageLogoSize" />
+      	</div> 
+ 
+  	  	<div id="imagePalace" >              
+            <p:graphicImage  name="images/paco_am.png" class="imagePalaceSize" />
+      	</div> 
+ 
+		<div id="headerTitle" >
+			<p:outputLabel value="#{messages.application_name}" />
+		</div>
+
+		<div id="headerOrganization" >
+			<p:outputLabel value="#{messages.application_organization}" />
+		</div>
+ 
+        <div id="headerLogMessage" >
+			<p:outputLabel value="#{labels.login_title}" 
+			               rendered="#{sessionMBean.sessionActive()}" />
+		</div>
+        
+       <div id="headerLogNameMessage" >
+			<p:outputLabel value="${logNameMessage}" 
+			               rendered="#{sessionMBean.sessionActive()}" />
+		</div>
+ 
+        <div id="headerLastLogMessage" >
+            <p:outputLabel value="#{labels.login_last_login} :  " 
+            			   rendered="#{sessionMBean.sessionActive()}" />
+			<p:outputLabel value="${lastLogMessage}" 
+			               rendered="#{sessionMBean.sessionActive()}" />
+		</div>
+   
+   
+		<h:form >
+			<h:commandLink style="color: green;
+			                      font-family: 'Arial Narrow', Arial,sans-serif;
+			                      font-size: 15px;
+								  font-style: italic;
+								  font-variant: normal;
+								  font-weight: 400;
+								  line-height: 10px; "
+			               styleClass="headerLocaleButton" 
+			               action="#{languageMBean.setLanguage('pt')}"
+			               update="@all" 
+			               value="#{languageMBean.languageName}" 
+			               rendered="#{languageMBean.languageName ne 'English'}"
+						   ajax="false" >
+    			<f:param name="locale" value="pt" />
+    		</h:commandLink>	
+			<h:commandLink style="color: blue;
+			                      font-family: 'Arial Narrow', Arial,sans-serif;
+			                      font-size: 15px;
+								  font-style: italic;
+								  font-variant: normal;
+								  font-weight: 400;
+								  line-height: 10px; " 
+								  id="button" 
+			               styleClass="headerLocaleButton" 
+			               action="#{languageMBean.setLanguage('en')}"
+			               update="@all" 
+			               value="#{languageMBean.languageName}" 
+			               rendered="#{languageMBean.languageName eq 'English'}" 
+			               ajax="false"
+			               >
+    			<f:param name="locale" value="en" />
+    		</h:commandLink>	
+			<h:commandLink style=" 
+			                      color: white;
+			                      font-family: Verdana,sans-serif;
+			                      font-size: 15px;
+			                      font-weight: 400;" 
+				           styleClass="headerLoginButton" 
+				           action="/login/login.am?faces-redirect=true" 
+				           value="#{labels.login_go}" 
+				           rendered="#{!sessionMBean.sessionActive()}" >
+    			<f:param name="productId" value="10" />
+			</h:commandLink>
+			<h:commandLink style=" 
+			                      color: white;
+			                      font-family: Verdana,sans-serif;
+			                      font-size: 15px;
+			                      font-weight: 400;" 
+				           styleClass="headerLoginButton" 
+				           action="#{sessionMBean.sessionDestroyed()}" 
+				           value="#{labels.logout}" 
+				           rendered="#{sessionMBean.sessionActive()}" >
+    			<f:param name="productId" value="10" />
+			</h:commandLink>
+        </h:form>
+	</ui:composition>
+</h:body>
+</html>

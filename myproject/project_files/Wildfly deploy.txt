@@ -1,0 +1,15 @@
+http://www.tagwith.com/question_18840_wildfly-standalone-in-local-network
+
+
+
+The standalone.bat/standalone.sh startup scripts accept a bind parameter so you can bind the application server to specific IP addresses for incoming requests.
+
+For example standalone.bat -b 0.0.0.0 will start Wildfly listening on all your IP addresses.
+
+Possible parameters: 0.0.0.0 for all IP addresses, 127.0.0.1 to listen just on localhost, 192.168.1.72 to listen just on your LAN IP (then even from your local machine you need to enter the LAN IP). Note: This only changes the IP it's listening on, the port remains 8080 or whatever you have configured.
+
+You have -b parameter for normal client serving bind address an you also have -bmanagement for the management interface. This is the interface on which you can connect to the admin console via browser or via remote protocols.
+
+Even if you give remote access to the web applications inside it's good to reserve the management interface just for you. So for example:
+
+standalone.bat -b 0.0.0.0 -bmanagement 127.0.0.1 will enable anyone to connect but only local connections for management.

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-02-02T11:41:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" 
+              name="DB_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="62895602-c0b9-4e18-baf7-9f890fc1ca3a">
+
+	<property name="com.jaspersoft.studio.data.sql.tables" value="ZGNlLnRibF9jYXRlZ29yeSAsNyw0OTtkY2UudGJsX3RlYWNoZXIgLDI1NCwzMjs="/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariaDB"/>
+	
+	<queryString>
+		<![CDATA[SELECT dce.tbl_teacher.`CATEGORY`,	dce.tbl_teacher.`FULL_NAME`, dce.tbl_teacher.`CATEGORY_GROUP_ID`,
+						dce.tbl_category.`GROUP`
+				 FROM dce.tbl_teacher
+				 INNER JOIN dce.tbl_category ON dce.tbl_teacher.`CATEGORY_GROUP_ID` = dce.tbl_category.`ID`]]>
+	</queryString>
+	
+	<field name="CATEGORY" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FULL_NAME" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CATEGORY_GROUP_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GROUP" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="CATEGORY_GROUP_ID">
+		<groupExpression><![CDATA[$F{CATEGORY_GROUP_ID}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="0" width="81" height="30" uuid="b963b1be-e802-4ecc-b88f-78b09c830eb9"/>
+				<text><![CDATA[CATEGORY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="100" height="30" uuid="b98793e8-9c13-492a-9867-d4e2e4f88e53"/>
+				<text><![CDATA[FULL_NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="70" height="30" uuid="f0550ada-3025-429f-8711-3b835c761b39"/>
+				<text><![CDATA[GROUP]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="30" width="80" height="30" uuid="bc7c1ed7-e89d-450c-a4d1-77e1b5173e74"/>
+				<textFieldExpression><![CDATA[$F{CATEGORY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="30" width="300" height="30" uuid="fcd9f393-1a26-4230-a6b7-6083c73b22f3"/>
+				<textFieldExpression><![CDATA[$F{FULL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="30" width="75" height="30" uuid="e0fae435-ed5b-450b-a952-f53ce41b24e9"/>
+				<textFieldExpression><![CDATA[$F{GROUP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

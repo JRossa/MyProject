@@ -1,0 +1,27 @@
+http://www.coderanch.com/t/90796/JBoss/remove-URL-deployment
+
+You'll need to modify your server.xml to 
+
+Usually located here : 
+$JBOSS/server/default/deploy/jboss-web.deployer/server.xml 
+
+Search for 8080
+
+You'll find that it says something like ..
+
+
+<!-- A "Connector" represents an endpoint by which requests are received
+     and responses are returned. Documentation at :
+     Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
+     Java AJP  Connector: /docs/config/ajp.html
+     APR (HTTP/AJP) Connector: /docs/apr.html
+     Define a non-SSL HTTP/1.1 Connector on port 8080
+-->
+<Connector port="[B]8080[/B]" address="${jboss.bind.address}"
+     maxThreads="250" maxHttpHeaderSize="8192"
+     emptySessionPath="true" protocol="HTTP/1.1"
+     enableLookups="false" redirectPort="8443" acceptCount="100"
+     connectionTimeout="20000" disableUploadTimeout="true" />
+
+
+Change 8080 to 80

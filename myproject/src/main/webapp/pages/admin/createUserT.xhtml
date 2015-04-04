@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+</h:head>
+
+    
+	<p:dialog id="userCreateDlg" widgetVar="userCreateDialog"
+		      header="#{labels.user_create}"
+		      visible="#{formUserCreate.submitted and facesContext.validationFailed}"  
+		      modal="true"  
+		      resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode"  >
+
+			  
+	<h:form id="formUserCreate" onload="#{userCRUDMBean.disableButtons}" >
+
+		<h:inputHidden value="#{userCRUDMBean.user.id}" />
+		<h:inputHidden value="#{userCRUDMBean.user.password}" />
+		
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
+					 styleClass="form" 
+					 headerClass="tableHeader"
+					 footerClass="tableFooter"
+					 rowClasses="tableRowOdd, tableRowEven" >
+						 
+
+			<h:outputLabel for="firstname" value="#{labels.user_firstname}" />
+			<h:panelGroup>
+				<p:inputText id="firstname" value="#{userCRUDMBean.user.firstName}"
+							 title="#{labels.user_insert} #{labels.user_firstname} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="firstname" styleClass="formUserError"/>
+				<p:tooltip for="firstname" value="#{labels.user_insert} #{labels.user_firstname} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+					
+			<h:outputLabel for="lastname" value="#{labels.user_lastname}"/>
+			<h:panelGroup>
+				<p:inputText id="lastname" value="#{userCRUDMBean.user.lastName}"
+							 title="#{labels.user_insert} #{labels.user_lastname} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="lastname" styleClass="formUserError"/>
+				<p:tooltip for="lastname" value="#{labels.user_insert} #{labels.user_lastname} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="username" value="#{labels.user_username} *"/>
+			<h:panelGroup>
+				<p:inputText id="username" value="#{userCRUDMBean.user.userName}"
+							 title="#{labels.user_insert} #{labels.user_username} !!"
+						     maxlength="45" size="15" 
+						     required="true" 
+						     requiredMessage="#{labels.user_username_null}" 
+						     validatorMessage="#{labels.user_username} #{labels.user_invalid} !!">
+					<f:validator  binding="#{userValidator}" />
+					<p:ajax event="blur" update="username" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=""/>
+				<h:message for="username" display="icon" styleClass="formUserError"/>
+				<p:tooltip for="username" />
+			</h:panelGroup>
+
+			<h:outputLabel for="email" value="txt" />
+			<h:panelGroup>
+				<h:outputLabel id="email" value="#{userCRUDMBean.user.teacher.EMail}" />
+			</h:panelGroup>
+			
+			<h:outputLabel for="fullname" value="#{labels.user_fullname} *"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="fullname" value="#{userCRUDMBean.user.teacher.id}"
+				             filter="true" filterMatchMode="contains"
+				             effect="fade"
+				             valueChangeListener="#{userCRUDMBean.valueChanged}"
+				             panelStyle="background-color: lightblue"
+							 title="#{labels.user_insert} #{labels.user_fullname} !!"
+							 maxlength="255" size="30" >
+					<p:ajax event="change" update="email, firstname, lastname"  />		 
+					<f:selectItem itemLabel="#{labels.user_select}" itemValue="" />
+					<f:selectItems value="#{teacherMBean.selectOneItemsTeacher}" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="fullname" styleClass="formUserError"/>
+				<p:tooltip for="fullname" value="#{labels.user_insert} #{labels.user_fullname} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="rndpassword" value="#{labels.user_rndpassword}"/>
+			<h:panelGroup>
+				<p:inputText id="rndpassword" value="#{userCRUDMBean.user.rndPassword}"
+							 title="#{labels.user_insert} #{labels.user_rndpassword} !!"
+							 maxlength="255" size="30" />
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="rndpassword" styleClass="formUserError"/>
+				<p:tooltip for="rndpassword" value="#{labels.user_insert} #{labels.user_rndpassword} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="role" value="#{labels.user_role}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="role" value="#{userCRUDMBean.user.logRole.id}"
+							 title="#{labels.user_insert} #{labels.user_role} !!"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.user_select}" itemValue="" />
+					<f:selectItems value="#{roleMBean.selectOneItemsRole}" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="role" styleClass="formUserError"/>
+				<p:tooltip for="role" value="#{labels.user_insert} #{labels.user_role} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="enabled" value="#{labels.user_state}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="enabled" value="#{userCRUDMBean.user.enabled}"
+							 title="#{labels.user_insert} #{labels.user_state} !!"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.user_enabled}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.user_disabled}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="enabled" styleClass="formUserError"/>
+			</h:panelGroup>
+
+			<h:outputLabel for="creationUser" value="#{labels.user_creation_user}"/>
+			<h:panelGroup>
+				<p:inputText id="creationUser" value="#{userCRUDMBean.user.creationUser}"
+							 title="#{labels.user_creation_user}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="creationUser" styleClass="formUserError"/>
+				<p:tooltip for="creationUser" />
+			</h:panelGroup>
+					
+			<h:outputLabel for="creationDate" value="#{labels.user_creation_date}"/>
+			<h:panelGroup>
+				<p:inputText id="creationDate" value="#{userCRUDMBean.user.creationDate}"
+							 title="#{labels.user_creation_date}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30" >
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="creationDate" styleClass="formUserError"/>
+				<p:tooltip for="creationDate" />
+			</h:panelGroup>
+
+			<h:outputLabel for="modificationUser" value="#{labels.user_modification_user}"/>
+			<h:panelGroup>
+				<p:inputText id="modificationUser" value="#{userCRUDMBean.user.modificationUser}"
+							 title="#{labels.user_modification_user}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="modificationUser" styleClass="formUserError"/>
+				<p:tooltip for="modificationUser" />
+			</h:panelGroup>
+					
+			<h:outputLabel for="modificationDate" value="#{labels.user_modification_date}"/>
+			<h:panelGroup>
+				<p:inputText id="modificationDate" value="#{userCRUDMBean.user.modificationDate}"
+							 title="#{labels.user_modification_date}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+				</p:inputText>			 
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="modificationDate" styleClass="formUserError"/>
+				<p:tooltip for="modificationDate" />
+			</h:panelGroup>
+					
+			<h:outputLabel for="lastLoginDate" value="#{labels.user_last_login_date}"/>
+			<h:panelGroup>
+				<p:inputText id="lastLoginDate" value="#{userCRUDMBean.user.lastLoginDate}"
+							 title="#{labels.user_last_login_date}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30" >
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+
+				<h:message for="lastLoginDate" styleClass="formUserError"/>
+				<p:tooltip for="lastLoginDate" />
+			</h:panelGroup>
+			
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+				<p:commandButton icon="ui-icon-disk"  value="#{labels.user_save}"
+    							 action="#{userCRUDMBean.save}" />
+				<p:commandButton icon="ui-icon-key"   value="#{labels.user_generate_rndpassword}"
+    							 action="#{userCRUDMBean.generateRndPassword}"
+    							 update="rndpassword" />
+ 				<p:commandButton icon="ui-icon-mail-closed" value="#{labels.user_send_email}"
+    							 action="#{userCRUDMBean.sendEMail}" />
+    			
+ 				<p:commandButton value="#{labels.user_close}" 
+ 								 action="#{userCRUDMBean.disableButtons}"
+ 								 update="display"
+ 								 process="@this"
+    							 oncomplete="PF('userCreateDialog').hide()" 
+    							 style=" color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 180px" >
+  				</p:commandButton>
+    			
+    			</h:panelGroup>
+			</f:facet>		 
+		</h:panelGrid>
+	</h:form>	
+	</p:dialog>  
+							
+
+</html>
+
+<!--    							 oncomplete="if (#{not facesContext.validationFailed}) userCreateDialog.hide()"	 /> 
+ -->
+<!-- prependId="false" -->

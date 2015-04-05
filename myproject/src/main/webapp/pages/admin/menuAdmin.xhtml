@@ -35,9 +35,10 @@
  
         <p:submenu label="#{labels.menu_teacher}" icon="ui-icon-pencil">
             <p:menuitem value="#{labels.menu_teacher_list}" icon="ui-icon-arrowreturnthick-1-w"
-                        url="/pages/admin/listTeacher.am"  />
-            <p:menuitem value="#{labels.menu_teacher_list14}" icon="ui-icon-arrowreturnthick-1-e"
-                        url="#"  />
+                        url="/pages/admin/listTeacher.am?executionyear=all"  >
+            </p:menuitem>            
+            <p:menuitem value="#{labels.menu_teacher_executionyear_list}" icon="ui-icon-arrowreturnthick-1-e"
+                        url="/pages/admin/listTeacher.am?executionyear=year"  />
         </p:submenu>
  
         <p:submenu label="#{labels.menu_session}"  icon="ui-icon-help">
@@ -50,10 +51,14 @@
                         url="/pages/admin/listLessonPlan.am" />
             <p:menuitem value="#{labels.menu_lessonplan_report}" 
                         url="/pages/admin/reportLessonPlan.am" />
-            <p:menuitem value="#{labels.menu_lessonplan_report}" 
-                        url="/public/report.am" />
         </p:submenu>
  
+         <p:submenu label="#{labels.menu_professorship}"  icon="ui-icon-help">
+            <p:menuitem value="#{labels.menu_professorship_list}" 
+                        url="/pages/admin/listProfessorship.am" >
+            </p:menuitem>
+       </p:submenu>
+
     </p:menubar>
    
     

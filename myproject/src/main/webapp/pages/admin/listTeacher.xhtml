@@ -17,7 +17,7 @@
 		<h:form>
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
-   		 	<p:menuitem value="#{labels.menu_list_teachers}" url="/pages/admin/listTeacher.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -29,37 +29,70 @@
 	<ui:define name="content">
 
 		<f:view>
-			<f:event listener="#{teacherMBean.onLoad}" type="preRenderView" />
+			<c:if test="${param.executionyear == 'all'}">
+				<f:event listener="#{teacherMBean.onLoad('all')}" type="preRenderView" />
+			</c:if>
+			<c:if test="${param.executionyear == 'year'}">
+				<f:event listener="#{teacherMBean.onLoad('2014/2015')}" type="preRenderView" />
+			</c:if>
 		</f:view>
+		
+		<p:growl id="messages"   />
+		
 		
 		<p:panel id="teacherPanel" style="border: 0px;" >
 		
 			<h:form id="teacherListForm" >
 			
-				<p:commandButton widgetVar="addButton" value="#{labels.button_add}"
+				<p:commandButton widgetVar="addButton" 
+				    value="#{labels.button_add}"
+				    rendered="#{!teacherMBean.renderedInputExecutionYear}" 
 				    action="#{teacherCRUDMBean.add}" 
 				    update=":formTeacherCreate"
 				    oncomplete="PF('teacherCreateDialog').show()" />
 					
 				<p:commandButton widgetVar="deleteButton"
 					value="#{labels.button_delete}" 
+				    rendered="false" 
 					oncomplete="PF('teacherDeleteDialog').show();"
 					update="teacherDataTable" 
-					rendered="true" 
 					disabled="false"/>
 					
 				<p:commandButton widgetVar="updateButton"
 					value="#{labels.button_update}" 
+				    rendered="#{!teacherMBean.renderedInputExecutionYear}" 
 					update="teacherDataTable, :formTeacherUpdate"
 					actionListener="#{teacherCRUDMBean.update}"
 					oncomplete="PF('teacherUpdateDialog').show();"
 					disabled="false" />
 					
-				<p:commandButton widgetVar="addButton" value="Teste"
-				    update="teacherDataTable"
-					actionListener="#{teacherMBean.change}"
-					oncomplete="PF('changePassDialog').show();" />
-
+				<p:panelGrid id="panelExecutionYear" columns="2"
+				             style="margin-bottom:10px; 
+				                    width: 30%;
+				                    position: relative;
+				                    left: 400px; " 
+                             cellpadding="10" 
+                             styleClass="noBorderLine" >	
+				<p:commandButton widgetVar="inputButton" value="#{labels.teacher_update}"
+				    rendered="false"
+				    update="teacherDataTable" >
+					<f:ajax execute="year" render="teacherDataTable" />
+				</p:commandButton>
+				
+		        <h:outputText value="#{labels.professorship_execution_year}" 
+		                      rendered="#{teacherMBean.renderedInputExecutionYear}"  />     
+ 				<p:selectOneMenu id="year" value="#{teacherMBean.selectedExecutionYear}"
+							 title="#{labels.professorship_execution_year}"
+							 rendered="#{teacherMBean.renderedInputExecutionYear}" 
+							 maxlength="255" size="40" >
+					<f:selectItem itemLabel="2012/2013" itemValue="2012/2013" />
+					<f:selectItem itemLabel="2013/2014" itemValue="2013/2014" />
+					<f:selectItem itemLabel="2014/2015" itemValue="2014/2015" />
+					<f:selectItem itemLabel="2015/2016" itemValue="2015/2016" />
+					<f:ajax execute="year" render="teacherDataTable" />
+				</p:selectOneMenu>
+                </p:panelGrid>
+                
 				<p:dataTable id="teacherDataTable" widgetVar="dataTable"
 				    loadingMessage="#{labels.teacher_load}"
 				    scrollable="true"
@@ -80,6 +113,7 @@
 
 					<f:facet name="header">
 					     <h:outputText value="#{labels.teacher_list}" />
+					     <h:outputText value="   #{teacherMBean.selectedExecutionYear}" />
 					</f:facet>
 					
 					<p:column headerText="#{labels.teacher_id}"  style="width: 4%;" >
@@ -96,9 +130,10 @@
 					</p:column>
 
 					
-					<p:column style="width: 10%;">
+					<p:column style="width: 15%;">
 						<p:commandButton widgetVar="deleteTeacherButton"
 						                 icon="ui-icon-trash"
+						                 rendered="#{teacherMBean.renderedDelete}"
 						                 title="#{labels.teacher_delete}"
 										 update=":teacherListForm, teacherDataTable, :formTeacherDelete" 
 										 action="#{teacherCRUDMBean.delete(false)}"
@@ -106,12 +141,26 @@
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>				 
 						<p:commandButton widgetVar="updateTeacherButton"
-										 icon="ui-icon-document"
+										 icon="ui-icon-zoomin"
+						                 rendered="#{teacherMBean.renderedUpdate}"
 										 title="#{labels.teacher_update}"
 										 update=":teacherListForm, teacherDataTable, :formTeacherUpdate"
 										 action="#{teacherCRUDMBean.update}"
 										 oncomplete="PF('teacherUpdateDialog').show()"
 										  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+ 						</p:commandButton>
+						<p:commandButton widgetVar="listTeacherProfessorshipButton"
+										 icon="ui-icon-document"
+						                 rendered="#{teacherMBean.renderedProfessorship}"
+										 title="#{labels.professorship}"
+										 action="listProfessorship.am" >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>
+						<p:commandButton widgetVar="listTeacherHoursButton"
+										 icon="ui-icon-note"
+										 title="#{labels.teacherHours}"
+										 action="listProfessorship.am" >
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>
 					</p:column>

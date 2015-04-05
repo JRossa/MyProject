@@ -2,10 +2,14 @@ package org.myproject.support.teacher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,7 +17,6 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Professorship;
-import org.myproject.model.entities.ProfessorshipCourseHours;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
 import org.myproject.model.repositories.ProfessorshipRepository;
@@ -36,9 +39,6 @@ public class TeacherMBean extends BaseBean {
     private TeacherRepository teacherRepository;
 
     @Inject
-    private ProfessorshipRepository professorshipRepository;
-
-    @Inject
     private TeacherHoursRepository teacherHoursRepository;
 
     private List<Teacher> teachers;
@@ -47,27 +47,28 @@ public class TeacherMBean extends BaseBean {
 
     private Long id;
 
-    private Boolean bSearch = false;
 
     private List<SelectItem> selectOneItemsTeacher;
 
-    private List<Professorship> professorship;
-
-    private List<ProfessorshipCourseHours> professorshipCourseHours;
-
     private List<TeacherHours> teacherHours;
 
+    private Boolean bSearch = false;
+
+    private String selectedExecutionYear;
     
     // listTeacher - control buttons
-    private Boolean renderedProfessorship;
+    private Boolean disableButtons;
 
+    private Boolean renderedInputExecutionYear;
+    
     private Boolean renderedRead;
+ 
+    private Boolean renderedDelete;
 
     private Boolean renderedUpdate;
 
-    private Boolean renderedDelete;
+    private Boolean renderedProfessorship;
 
-    private Boolean disableButtons;
     
     
     public void onLoadTeste() {
@@ -79,11 +80,40 @@ public class TeacherMBean extends BaseBean {
         teachers.add(new Teacher(4L, "Categ 4", "NIM", "Nome"));
     }
 
+  
+    public Boolean getRenderedInputExecutionYear() {
+		return renderedInputExecutionYear;
+	}
+
+
+	public void setRenderedInputExecutionYear(Boolean renderedInputExecutionYear) {
+		this.renderedInputExecutionYear = renderedInputExecutionYear;
+	}
+
+
+	public String getSelectedExecutionYear() {
+		return selectedExecutionYear;
+	}
+
+
+	public void setSelectedExecutionYear(String selectedExecutionYear) {
+		this.selectedExecutionYear = selectedExecutionYear;
+	}
+
+
+	public void change() {
+ 
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, selectedExecutionYear, selectedExecutionYear);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+    }
     
     public void onLoad() {
-    	
+
     	this.disableButtons = true;
-    	 
+    	this.renderedProfessorship = false;
+    	this.renderedInputExecutionYear = false;
+    	
         if (bSearch) {
             bSearch = false;
         } else {
@@ -91,9 +121,11 @@ public class TeacherMBean extends BaseBean {
 //            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
 //            String rolename = (String) context.getSessionMap().get("rolename");
 //            
-//            setRederedListTeacherButtons (rolename);
+//            setRenderedListTeacherButtons (rolename);
 
-            this.teachers = this.teacherRepository.findAllListOrderByFullName();
+        	this.teachers = this.teacherRepository.findAllListOrderByFullName();
+
+        	  
         }
     }
 
@@ -101,18 +133,43 @@ public class TeacherMBean extends BaseBean {
     public void onLoad(String executionYear) {
         System.out.println("onLoad  : " + executionYear);
 
-        executionYear = executionYear.replace("_", "/");
-        System.out.println("onLoad  : " + executionYear);
+        this.disableButtons = true;
 
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-        String rolename = (String) context.getSessionMap().get("rolename");
-        
-        setRederedListTeacherButtons (rolename);
+        if (executionYear.equals("all")) {
 
-        this.teachers = this.teacherRepository.findByExecutionYear(executionYear.replace("_", "/"));
+	        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+	        String rolename = (String) context.getSessionMap().get("rolename");
+	        
+	        setRenderedListTeacherButtons (rolename);
+        	this.renderedProfessorship = false;
+        	this.renderedInputExecutionYear = false;
+
+	        this.teachers = this.teacherRepository.findAllListOrderByFullName();
+            return;
+        } else {
+            this.renderedProfessorship = true;
+        	this.renderedInputExecutionYear = true;
         
+	        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
+	        	executionYear = this.selectedExecutionYear;
+	        } else {
+		        executionYear = executionYear.replace("_", "/");
+	        	this.selectedExecutionYear = executionYear;
+	        }
+ 	        	
+	        System.out.println("onLoad  : " + executionYear);
+	        
+
+	        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+	        String rolename = (String) context.getSessionMap().get("rolename");
+	        
+	        setRenderedListTeacherButtons (rolename);
+
+	        this.teachers = this.teacherRepository.findByExecutionYear(executionYear.replace("_", "/"));
+        }
     }
 
+    
     public void onLoadTeacherHours(String executionYear) {
         System.out.println("onLoadTeacherHours  :  " + executionYear);
 
@@ -122,7 +179,7 @@ public class TeacherMBean extends BaseBean {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
             String rolename = (String) context.getSessionMap().get("rolename");
             
-            setRederedListTeacherButtons (rolename);
+            setRenderedListTeacherButtons (rolename);
             
             this.teacherHours = this.teacherHoursRepository.findByTeacherAndExecutionYear(this.selectedTeacher.getId(),
                     executionYear.replace("_", "/"));
@@ -130,52 +187,7 @@ public class TeacherMBean extends BaseBean {
     }
 
     
-    public void onLoadProfessorshipCourseHours() {
-        System.out.println("onLoadProfessorshipCourseHours");
-
-        this.professorshipCourseHours = new ArrayList<ProfessorshipCourseHours>();
-
-        if (this.selectedTeacher != null) {
-            System.out.println("Select Teacher Id :" + this.selectedTeacher.getId());
-
-            List<Object[]> course = this.professorshipRepository.findCoursesByUserAndExecutionYear(this.selectedTeacher.getId(),
-                    "2014/2015");
-            for (Object[] c : course) {
-                System.out.println("Code    :  " + c[1].toString());
-                System.out.println("Name    :  " + c[2].toString());
-
-                this.professorshipCourseHours.add(new ProfessorshipCourseHours(c[1].toString(), c[2].toString(), 0.0));
-            }
-
-            // Verificação
-            for (ProfessorshipCourseHours ch : professorshipCourseHours) {
-                System.out.println("Final Code    :  " + ch.getCode());
-            }
-        }
-    }
-
-    public void onLoadProfessorship() {
-        System.out.println("onLoadProfessorship");
-
-        if (this.selectedTeacher != null) {
-            System.out.println("Select Teacher Id :" + this.selectedTeacher.getId());
-
-            this.professorship = this.selectedTeacher.getProfessorship();
-
-        }
-    }
-
-    
-     public List<ProfessorshipCourseHours> getProfessorshipCourseHours() {
-         return professorshipCourseHours;
-     }
-    
-     public void setProfessorshipCourseHours(List<ProfessorshipCourseHours> professorshipCourseHours) {
-         this.professorshipCourseHours = professorshipCourseHours;
-     }
-
-    
-    public void setRederedListTeacherButtons (String rolename) {
+    public void setRenderedListTeacherButtons (String rolename) {
         
         if (rolename.equals("ROLE_ADMIN")) {
             this.renderedProfessorship = true;
@@ -262,13 +274,6 @@ public class TeacherMBean extends BaseBean {
         this.teachers = teachers;
     }
 
-    public List<Professorship> getProfessorship() {
-        return professorship;
-    }
-
-    public void setProfessorship(List<Professorship> professorship) {
-        this.professorship = professorship;
-    }
 
     public Long getId() {
         return this.id;

@@ -43,7 +43,7 @@ public class TeacherHours extends BaseEntity<Long> {
    
     
     
-    public TeacherHours() {
+	public TeacherHours() {
         super();
     }
 

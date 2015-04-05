@@ -1,7 +1,7 @@
 package org.myproject.model.entities;
 
 /*
- *  TODO - NOT USED to delete at the end
+ *  TODO - 
  */
 
 import org.myproject.model.utils.BaseEntity;

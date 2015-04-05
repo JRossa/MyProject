@@ -18,7 +18,7 @@
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
    		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
-    	 	<p:menuitem value="#{labels.menu_professorship_list}" url="/pages/admin/listProfessorship.am" />
+    	 	<p:menuitem value="#{labels.teacherhours_list}" url="/pages/admin/listTeacherHours.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -30,66 +30,79 @@
 	<ui:define name="content">
 
 		<f:view>
-			<f:event listener="#{professorshipMBean.onLoadProfessorship}" type="preRenderView" />
+			<f:event listener="#{teacherHoursMBean.onLoadTeacherHours}" type="preRenderView" />
 		</f:view>
 		
-		<p:panel id="professorshipPanel" style="border: 0px;" >
+		<p:panel id="teacherHoursPanel" style="border: 0px;" >
 		
-			<h:form id="professorshipListForm" >
+			<h:form id="teacherHoursListForm" >
 			
-				<p:dataTable id="professorshipDataTable" widgetVar="dataTable"
-				    loadingMessage="#{labels.professorship_load}"
+				<p:dataTable id="teacherHoursDataTable" widgetVar="dataTable"
+				    loadingMessage="#{labels.teacherhours_load}"
 				    scrollable="true"
 				    scrollHeight="390"
-					var="professorship" 
-					value="#{professorshipMBean.professorships}" 
+					var="teacherhours" 
+					value="#{teacherHoursMBean.teacherHours}" 
 					paginator="true" 
 					paginatorPosition="top"
 					rows="10"
-					rowIndexVar="professorshipIndex"
+					rowIndexVar="teacherhoursIndex"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,20" rowKey="#{professorship.id}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{teacherhours.id}"
 					selectionMode="single" >
 
-					<p:ajax event="rowSelect" listener="#{professorshipMBean.selectProfessorship}" 
-					                          update=":professorshipListForm, professorshipDataTable" />
-					<p:ajax event="page" listener="#{professorshipMBean.unselectProfessorship}"  />
-					<p:ajax event="rowUnselect" listener="#{professorshipMBean.unselectProfessorship}"  />
+					<p:ajax event="rowSelect" listener="#{teacherHoursMBean.selectTeacherHours}" 
+					                          update=":teacherHoursListForm, teacherHoursDataTable" />
+					<p:ajax event="page" listener="#{teacherHoursMBean.unselectTeacherHours}"  />
+					<p:ajax event="rowUnselect" listener="#{teacherHoursMBean.unselectTeacherHours}"  />
 
 					<f:facet name="header">
-					     <h:outputText value="#{labels.professorship_list}" />
+					     <h:outputText value="#{labels.teacherhours_list}" />
+					     <h:outputText value=" - #{teacherHoursMBean.selectedTeacher.fullName}" />
 					</f:facet>
 					
-					<p:column headerText="#{labels.professorship_id}"  style="width: 8%;" >
-						<h:outputText value="#{professorship.id}" />
+					<p:column headerText="#{labels.teacherhours_id}"  style="width: 8%;" >
+						<h:outputText value="#{teacherhours.id}" />
 					</p:column>
 					
-					<p:column headerText="#{labels.professorship_teacher}" style="width: 50%;" >
-						<h:outputText value="#{professorship.teacher.fullName}" />
-					</p:column>
-					
-					<p:column headerText="#{labels.professorship_course_code}" footerText="" style="width: 15%;"
-					          filterBy="#{professorship.course.code}" filterMatchMode="contains" >
-						<h:outputText value="#{professorship.course.code}" />
-					</p:column>
-					
-					<p:column headerText="#{labels.professorship_degree_code}" footerText="" style="width: 15%;"
-					          filterBy="#{professorship.degree.code}" filterMatchMode="contains" >
-						<h:outputText value="#{professorship.degree.code}" />
-					</p:column>
-
-					<p:column headerText="#{labels.professorship_responsible_forcourse}" style="width: 10%;" >
+					<p:column headerText="#{labels.teacherhours_responsible_forcourse}" style="width: 10%;" >
 					    <p:graphicImage name="images/icons/Green pin.png"  
 					                    style="border:none; position: relative; left: 20px;" 
-					                    rendered="#{professorship.responsibleForCourse}" />     
+					                    rendered="#{teacherhours.responsible}" />     
 					    <p:graphicImage name="images/icons/Red pin.png" 
 					                    style="border:none; position: relative; left: 20px;"
-					                    rendered="#{!professorship.responsibleForCourse}" />     
-						<h:outputText value="#{professorship.responsibleForCourse}" rendered="false" />
+					                    rendered="#{!teacherhours.responsible}" />     
+						<h:outputText value="#{teacherhours.responsible}" rendered="false" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_course_code}" footerText="" style="width: 10%;"
+					          filterBy="#{teacherhours.course.code}" filterMatchMode="contains" filterStyle="width: 40px;" >
+						<h:outputText value="#{teacherhours.course.code}" />
+					</p:column>
+					<p:column headerText="#{labels.teacherhours_name}" footerText="" style="width: 50%;"
+					          filterBy="#{teacherhours.course.code}" filterMatchMode="contains" >
+						<h:outputText value="#{teacherhours.course.name}" /> <br/>
+						<h:outputText value="#{teacherhours.year.executionYear}" />
+						<h:outputText value=" - #{teacherhours.semester}º Sem" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
+					          filterBy="#{teacherhourshours}" filterMatchMode="contains" filterStyle="width: 40px;" >
+						<h:outputText value="#{teacherhours.hours}" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_survey_done}" style="width: 10%;" >
+					    <p:graphicImage name="images/icons/Green pin.png"  
+					                    style="border:none; position: relative; left: 20px;" 
+					                    rendered="#{teacherhours.surveyDone}" />     
+					    <p:graphicImage name="images/icons/Red pin.png" 
+					                    style="border:none; position: relative; left: 20px;"
+					                    rendered="#{!teacherhours.surveyDone}" />     
+						<h:outputText value="#{teacherhours.surveyDone}" rendered="false" />
 					</p:column>
 
 					
-					<p:column style="width: 10%;">
+					<p:column style="width: 15%;">
 					</p:column>
 				</p:dataTable>
 			</h:form>

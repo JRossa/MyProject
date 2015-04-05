@@ -69,9 +69,17 @@ public class TeacherMBean extends BaseBean {
 
     private Boolean renderedProfessorship;
 
+    private Boolean renderedTeacherHours;
+   
     
     
-    public void onLoadTeste() {
+    
+    public TeacherMBean() {
+		super();
+	}
+
+
+	public void onLoadTeste() {
         this.teachers = new ArrayList<Teacher>();
 
         teachers.add(new Teacher(1L, "Categ 1", "NIM", "Nome"));
@@ -141,15 +149,17 @@ public class TeacherMBean extends BaseBean {
 	        String rolename = (String) context.getSessionMap().get("rolename");
 	        
 	        setRenderedListTeacherButtons (rolename);
-        	this.renderedProfessorship = false;
         	this.renderedInputExecutionYear = false;
-
+        	this.renderedProfessorship = false;
+            this.renderedTeacherHours = false;
+            
 	        this.teachers = this.teacherRepository.findAllListOrderByFullName();
             return;
         } else {
-            this.renderedProfessorship = true;
         	this.renderedInputExecutionYear = true;
-        
+        	this.renderedProfessorship = true;
+            this.renderedTeacherHours = true;
+            
 	        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
 	        	executionYear = this.selectedExecutionYear;
 	        } else {
@@ -191,11 +201,13 @@ public class TeacherMBean extends BaseBean {
         
         if (rolename.equals("ROLE_ADMIN")) {
             this.renderedProfessorship = true;
+            this.renderedTeacherHours = true;
             this.renderedRead = true;
             this.renderedUpdate = true;
             this.renderedDelete = true;
         } else if (rolename.equals("ROLE_USER_T")) {
             this.renderedProfessorship = true;
+            this.renderedTeacherHours = true;
             this.renderedRead = true;
             this.renderedUpdate = false;
             this.renderedDelete = false;
@@ -203,7 +215,17 @@ public class TeacherMBean extends BaseBean {
     }
  
     
-    public Boolean getRenderedProfessorship() {
+    public Boolean getRenderedTeacherHours() {
+		return renderedTeacherHours;
+	}
+
+
+	public void setRenderedTeacherHours(Boolean renderedTeacherHours) {
+		this.renderedTeacherHours = renderedTeacherHours;
+	}
+
+
+	public Boolean getRenderedProfessorship() {
         return renderedProfessorship;
     }
 

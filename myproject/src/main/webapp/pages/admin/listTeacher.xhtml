@@ -154,13 +154,14 @@
 										 icon="ui-icon-document"
 						                 rendered="#{teacherMBean.renderedProfessorship}"
 										 title="#{labels.professorship}"
-										 action="listProfessorship.am" >
+										 action="/pages/admin/listProfessorship.am?faces-redirect=true" >
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>
 						<p:commandButton widgetVar="listTeacherHoursButton"
 										 icon="ui-icon-note"
+										 rendered="#{teacherMBean.renderedTeacherHours}"
 										 title="#{labels.teacherHours}"
-										 action="listProfessorship.am" >
+										 action="/pages/admin/listTeacherHours.am?faces-redirect=true" >
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>
 					</p:column>

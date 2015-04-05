@@ -42,7 +42,8 @@ public class ProfessorshipMBean extends BaseBean {
 
     private Long Id;
     
- 
+    private String selectedExecutionYear;
+    
     
     public ProfessorshipMBean() {
 		super();
@@ -55,13 +56,22 @@ public class ProfessorshipMBean extends BaseBean {
 	}
 
 
-
 	public void setId(Long id) {
 		Id = id;
 	}
 
 
-    public void selectProfessorship(SelectEvent ev) {
+    public String getSelectedExecutionYear() {
+		return selectedExecutionYear;
+	}
+
+
+	public void setSelectedExecutionYear(String selectedExecutionYear) {
+		this.selectedExecutionYear = selectedExecutionYear;
+	}
+
+
+	public void selectProfessorship(SelectEvent ev) {
         try {
             if (ev.getObject() != null) {
                 this.selectProfessorship = (Professorship) ev.getObject();
@@ -112,23 +122,28 @@ public class ProfessorshipMBean extends BaseBean {
         this.professorshipCourseHours = professorshipCourseHours;
     }
 
-    
 	public void init() {
         System.out.println("A new backing bean has been created");
         this.professorships = new ArrayList<Professorship>();
+        this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
     }
 
-    @PostConstruct   
+
     public void onLoadProfessorshipCourseHours() {
         System.out.println("onLoadProfessorshipCourseHours");
 
         this.professorshipCourseHours = new ArrayList<ProfessorshipCourseHours>();
+        this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
 
         if (this.mbTeacherMBean.getSelectedTeacher() != null) {
             System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
 
+            this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
+            
             List<Object[]> course = 
-            		this.professorshipRepository.findCoursesByUserAndExecutionYear(this.mbTeacherMBean.getSelectedTeacher().getId(),"2014/2015");
+            		this.professorshipRepository.findCoursesByUserAndExecutionYear(
+            				                                 this.mbTeacherMBean.getSelectedTeacher().getId(),
+            				                                 this.selectedExecutionYear);
 
             for (Object[] c : course) {
                 System.out.println("Code    :  " + c[1].toString());
@@ -149,6 +164,8 @@ public class ProfessorshipMBean extends BaseBean {
 
         if (this.mbTeacherMBean.getSelectedTeacher() != null) {
             System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
+
+            this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
 
             this.professorships = this.mbTeacherMBean.getSelectedTeacher().getProfessorship();
 

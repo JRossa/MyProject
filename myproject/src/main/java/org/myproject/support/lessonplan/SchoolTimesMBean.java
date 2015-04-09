@@ -22,6 +22,7 @@ public class SchoolTimesMBean extends BaseBean {
 	private String[] selectedSchoolTimes;
 	private List<String> schoolTimes;
 
+	
 	@PostConstruct
 	public void init() {
 		
@@ -33,7 +34,7 @@ public class SchoolTimesMBean extends BaseBean {
 		schoolTimes.add(getResourceProperty("labels", "schooltimes_5"));
 		schoolTimes.add(getResourceProperty("labels", "schooltimes_6"));
 		schoolTimes.add(getResourceProperty("labels", "schooltimes_7"));
-		schoolTimes.add(getResourceProperty("labels", "schooltimes_8"));
+//		schoolTimes.add(getResourceProperty("labels", "schooltimes_8"));
 		// schoolTimes.add("9º TE");
 	}
 

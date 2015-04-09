@@ -194,7 +194,7 @@
 
 			<h:outputLabel for="creationuser" value="#{labels.lessonplan_creation_user}" />
 			<h:panelGroup>
-				<h:outputLabel id="creationuser" value="#{lessonPlanCRUDMBean.lessonPlan.creationUser}"
+				<h:outputLabel id="creationuser" value="#{lessonPlanCRUDMBean.lessonPlan.stamp.creationUser}"
 							   title="#{labels.lessonplan_insert} #{labels.lessonplan_creation_user} !!"
 							   maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
@@ -208,7 +208,7 @@
 
 			<h:outputLabel for="creationdate" value="#{labels.lessonplan_creation_date}" />
 			<h:panelGroup>
-				<h:outputLabel id="creationdate" value="#{lessonPlanCRUDMBean.lessonPlan.creationDate}"
+				<h:outputLabel id="creationdate" value="#{lessonPlanCRUDMBean.lessonPlan.stamp.creationDate}"
 							   title="#{labels.lessonplan_insert} #{labels.lessonplan_creation_date} !!"
 							   maxlength="255" size="30">
 					<f:convertDateTime pattern="yyyy-MM-dd  HH:mm:ss" />
@@ -224,7 +224,7 @@
 
 			<h:outputLabel for="modificationuser" value="#{labels.lessonplan_modification_user}" />
 			<h:panelGroup>
-				<h:outputLabel id="modificationuser" value="#{lessonPlanCRUDMBean.lessonPlan.modificationUser}"
+				<h:outputLabel id="modificationuser" value="#{lessonPlanCRUDMBean.lessonPlan.stamp.modificationUser}"
 							   title="#{labels.lessonplan_insert} #{labels.lessonplan_modification_user} !!"
 							   maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
@@ -238,7 +238,7 @@
 
 			<h:outputLabel for="modificationdate" value="#{labels.lessonplan_modification_date}" />
 			<h:panelGroup>
-				<h:outputLabel id="modificationdate" value="#{lessonPlanCRUDMBean.lessonPlan.modificationDate}"
+				<h:outputLabel id="modificationdate" value="#{lessonPlanCRUDMBean.lessonPlan.stamp.modificationDate}"
 							   title="#{labels.lessonplan_insert} #{labels.lessonplan_modification_date} !!"
 							   maxlength="255" size="30">
 					<f:convertDateTime pattern="yyyy-MM-dd  HH:mm:ss" />

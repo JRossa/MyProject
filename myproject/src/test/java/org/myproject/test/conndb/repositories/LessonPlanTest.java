@@ -34,14 +34,18 @@ public class LessonPlanTest  extends AbstractDatabaseTest {
         List<LessonPlan> lessonPlan = this.lessonPlanRepository.findAll();
 
         for ( LessonPlan lp: lessonPlan) {
-            System.out.println("#          : " + lp.getId());
-            System.out.println("Título     : " + lp.getTitle());
-            System.out.println("Bloqueado  : " + lp.getLocked());
-            System.out.println("Docente    : " + lp.getTeacher().getFullName());
-            System.out.println("UC         : " + lp.getCourse().getName());
-            System.out.println("Início     : " + lp.getStartDate());
-            System.out.println("Fim        : " + lp.getEndDate());
-            System.out.println("Descrição  : " + lp.getDescription());
+            System.out.println("#                    : " + lp.getId());
+            System.out.println("Título               : " + lp.getTitle());
+            System.out.println("Bloqueado            : " + lp.getLocked());
+            System.out.println("Docente              : " + lp.getTeacher().getFullName());
+            System.out.println("UC                   : " + lp.getCourse().getName());
+            System.out.println("Início               : " + lp.getStartDate());
+            System.out.println("Fim                  : " + lp.getEndDate());
+            System.out.println("Descrição            : " + lp.getDescription());
+            System.out.println("Create Date          : " + lp.getStamp().getCreationDate());
+            System.out.println("Create User          : " + lp.getStamp().getCreationUser());
+            System.out.println("Modification Date    : " + lp.getStamp().getModificationDate());
+            System.out.println("Modification User    : " + lp.getStamp().getModificationUser());
           
             SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
             

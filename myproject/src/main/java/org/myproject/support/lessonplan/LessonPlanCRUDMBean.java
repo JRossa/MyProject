@@ -22,6 +22,7 @@ import org.myproject.model.repositories.CategoryLookupTableRepository;
 import org.myproject.model.repositories.LessonPlanRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.model.utils.MailSender;
+import org.myproject.model.utils.Stamp;
 import org.myproject.support.teacher.TeacherMBean;
 import org.primefaces.context.RequestContext;
 import org.springframework.context.annotation.Scope;
@@ -200,8 +201,11 @@ public class LessonPlanCRUDMBean extends BaseBean {
 
         String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
 
-        this.lessonPlan.setModificationUser(username);
-        this.lessonPlan.setModificationDate(new Date());
+    	Stamp stamp = new Stamp();
+
+        stamp.setModificationUser(username);
+        stamp.setModificationDate(new Date());
+        this.lessonPlan.setStamp(stamp);
 
         if (this.lessonPlan != null) {
             if (this.lessonPlan.getId() == null) {

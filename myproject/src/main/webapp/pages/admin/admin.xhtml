@@ -29,17 +29,26 @@
 			
             <ui:define name="content" >
             	
-                <h:panelGroup rendered="#{!userMBean.checkUserPassword()}">
+                <c:if test="#{userMBean.checkUserPassword() == 'false'}" >
              		<ui:include name="header" src="../teacher/scheduleLessonPlan.xhtml" />
-				</h:panelGroup>
-				
-                <h:panelGroup rendered="#{userMBean.checkUserPassword()}" >
+             	</c:if>
+             	
+                <c:if test="#{userMBean.checkUserPassword() == 'true'}" >
              		<ui:include name="header" src="../../public/changeInitPasswordT.xhtml" />
-				</h:panelGroup>
-
+            	</c:if>
+				
             </ui:define>
 
         </ui:composition>
 
     </body>
 </html>
+
+<!--                 <h:panelGroup rendered="#{!userMBean.checkUserPassword()}"> -->
+<!--              		<ui:include name="header" src="../teacher/scheduleLessonPlan.xhtml" /> -->
+<!-- 				</h:panelGroup> -->
+				
+<!--                 <h:panelGroup rendered="#{userMBean.checkUserPassword()}" > -->
+<!--              		<ui:include name="header" src="../../public/changeInitPasswordT.xhtml" /> -->
+<!-- 				</h:panelGroup> -->
+

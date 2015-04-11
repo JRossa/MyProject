@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
  
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,13 +24,16 @@ import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
 import org.myproject.model.entities.LessonPlan;
+import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.repositories.DegreeRepository;
 import org.myproject.model.repositories.LessonPlanRepository;
 import org.myproject.model.repositories.TeacherRepository;
+import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.model.utils.Stamp;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -64,6 +68,9 @@ public class LessonPlanMBean extends BaseBean {
     private DegreeRepository degreeRepository;
 
     @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private SchoolTimesMBean mbSchoolTimesMBean;
 
     private ScheduleModel eventModel;
@@ -76,6 +83,9 @@ public class LessonPlanMBean extends BaseBean {
     
     private Long id;
     
+
+    private LogUser user;
+    
     private Long teacherId;
     
     private Long courseId;
@@ -86,15 +96,22 @@ public class LessonPlanMBean extends BaseBean {
     
 	private Boolean checkError = false;
 	
+    private Integer numberOfWeeks;
+
+    
     // lessonPlan - control buttons
     private Boolean renderedInit = true;
    
     private Boolean summaryLock = false;
- 
+
+    private Boolean renderedNumWeeks = false;
+    
+    
     // listLessonPlan - control buttons
     private Boolean renderedUpdate;
 
     private Boolean renderedDelete;
+
 
     private Boolean disableButtons;
 
@@ -148,19 +165,21 @@ public class LessonPlanMBean extends BaseBean {
             ev.setAllDay(false);
             ev.setEditable(true);
 
-            switch (lp.getDegree().getId().intValue()) {
-            	case 1:
-            		ev.setStyleClass("amil");
-            		break;
-            	case 2:
-            		ev.setStyleClass("armas");
-            		break;
-            	case 3:
-            		ev.setStyleClass("art");
-            		break;
-            	default:	
-            		ev.setStyleClass("armas");
-            		
+            if (lp.getDegree().getId() != null) {
+	            switch (lp.getDegree().getId().intValue()) {
+	            	case 1:
+	            		ev.setStyleClass("amil");
+	            		break;
+	            	case 2:
+	            		ev.setStyleClass("armas");
+	            		break;
+	            	case 3:
+	            		ev.setStyleClass("art");
+	            		break;
+	            	default:	
+	            		ev.setStyleClass("armas");
+	            		
+	            }
             }
             
             eventModel.addEvent(ev);
@@ -198,8 +217,15 @@ public class LessonPlanMBean extends BaseBean {
 //                System.out.println("Lock Date  : " + lockDate);
 //                System.out.println("Lock  : " + (this.lessonPlan.getEndDate().getTime() - lockDate.getTime()));
 //                System.out.println("Lock  : " + (this.lessonPlan.getEndDate().getTime() < lockDate.getTime()));
-
-                if (this.lessonPlan.getLocked() == true) {
+                
+                Boolean locked = this.lessonPlan.getLocked();
+                
+//                if (this.lessonPlan != null) {
+//                	System.out.println("LOcked  " + locked);
+//                	System.out.println("End date  " + this.lessonPlan.getEndDate());
+//                }
+                
+                if (locked == null || locked == true) {
                 	if (this.lessonPlan.getEndDate().getTime() < lockDate.getTime()) {
                     	this.setSummaryLock(true);
                     }
@@ -215,14 +241,48 @@ public class LessonPlanMBean extends BaseBean {
     }
  
     
-    public void onDateSelect(SelectEvent selectEvent) {
+    private void setupUser () {
+    	  
+        String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+
+        this.user = this.userRepository.findByUserName(username);
+        
+        if (this.user.getTeacher().getId() != null) {
+        	
+            
+        	if ((this.user.getLogRole().getRolename().equals("ROLE_ADMIN")) || 
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_U")) ||
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_T"))) {
+        		this.setRenderedNumWeeks(true);
+        	}
+        	else {
+        		this.setRenderedNumWeeks(false);
+        	}
+            
+        	this.setTeacherId(this.user.getTeacher().getId());
+            this.setCourseId(261L);
+            this.setDegreeId(1L);
+        }
+        else {
+        	this.setRenderedNumWeeks(false);
+        	this.setTeacherId(173L);
+            this.setCourseId(261L);
+            this.setDegreeId(1L);
+        }
+
+    }
+    
+    
+   public void onDateSelect(SelectEvent selectEvent) {
         ScheduleEvent event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
 
         this.lessonPlan = new LessonPlan();
 
-    	this.teacherId = 173L;
-        this.courseId = 261L;
-        this.degreeId = 1L;
+        this.setupUser();
+        
+//        this.teacherId = 173L;
+//        this.courseId = 261L;
+//        this.degreeId = 1L;
         
         this.lessonPlan.setStartDate(new Date(event.getStartDate().getTime()));
         this.lessonPlan.setEndDate(new Date(event.getEndDate().getTime()));
@@ -280,6 +340,22 @@ public class LessonPlanMBean extends BaseBean {
 //    	System.out.println("Local  : " + this.lessonPlan.getPlace());
 //    	System.out.println("Description  : " + this.lessonPlan.getDescription());
  
+    	if (this.lessonPlan.getTitle() == null) {
+            String msg = getResourceProperty("labels", "lessonplan_title_null");
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+            return;
+    	}
+    	
+    	if (this.lessonPlan.getPlace() == null) {
+            String msg = getResourceProperty("labels", "lessonplan_place_null");
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+            return;
+    	}
+
     	Stamp stamp = new Stamp();
     	
         this.convertTeacherId();
@@ -306,7 +382,8 @@ public class LessonPlanMBean extends BaseBean {
                 stamp.setCreationDate(new Date());
                 this.lessonPlan.setStamp(stamp);
 
-
+                this.lessonPlan.setLocked(true);
+                
                 LessonPlan retLessonPlan = this.lessonPlanRepository.save(this.lessonPlan);
                 
                 System.out.printf("Log ID is %d and for returned account ID is %d\n", lessonPlan.getId(), retLessonPlan.getId());
@@ -337,7 +414,24 @@ public class LessonPlanMBean extends BaseBean {
             }
      }
 
+
+    public void addSemester() {
+    	
+    	
+    	this.addEvent();
+    	
+    	for (int i = 1; i <= this.getNumberOfWeeks(); i++) {
+    		
+    		this.lessonPlan.setId(null);
+    		this.lessonPlan.setStartDate(new Date(this.lessonPlan.getStartDate().getTime() + (7 * 24 * 60 * 60 * 1000)));
+    		this.lessonPlan.setEndDate(new Date(this.lessonPlan.getEndDate().getTime() + (7 * 24 * 60 * 60 * 1000)));
+    		
+    		this.addEvent();
+    	}
+    	
+    }
     
+
     public void deleteEvent() {
  
         System.out.println("Get Id : " + this.lessonPlan.getId());
@@ -355,11 +449,12 @@ public class LessonPlanMBean extends BaseBean {
     	this.setSummaryLock(false);
     	
     	this.setLessonPlan(new LessonPlan());
+
+    	this.setupUser();
     	
-    	this.setTeacherId(173L);
-        this.setCourseId(261L);
-        this.setCourseId(1L);
         this.lessonPlan.setStartDate(new Date());
+        
+        this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
         
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE));
@@ -548,7 +643,7 @@ public class LessonPlanMBean extends BaseBean {
  
         	String msg = getResourceProperty("labels", "lessonplan_change_dates");
             
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg );
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
             addMessage(message);
         }
     }    
@@ -566,6 +661,8 @@ public class LessonPlanMBean extends BaseBean {
         Long  courseId =  Long.parseLong(msg);
   
         Course course = this.courseRepository.findOne(courseId);
+        
+        System.out.println("value changed..." + course.getCode() + "   " + courseId);
         
         this.lessonPlan.setTitle(course.getCode());
 
@@ -586,8 +683,17 @@ public class LessonPlanMBean extends BaseBean {
     }
     
     
+    public void valueChangedNumWeeks (ValueChangeEvent valueChangeEvent) {
+    	String msg = valueChangeEvent.getNewValue().toString();
+    	
+    	System.out.println("value changed..." + msg);
+    }
+    
+
     public void valueChangedSchoolTimes (AjaxBehaviorEvent ajaxBehaviorEvent) {
     	System.out.println("value changed..." );
+    	
+    	Boolean selectedST = false;
     	
     	Date stDate = null;
     	Date startDate = null;
@@ -603,6 +709,11 @@ public class LessonPlanMBean extends BaseBean {
     	
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
         Calendar calendar = Calendar.getInstance();
+        
+        System.out.println("Satrt Date :" + this.lessonPlan.getStartDate().getDate());
+        System.out.println("Satrt Day :" + this.lessonPlan.getStartDate().getDay());
+        
+        calendar.setTime(this.lessonPlan.getStartDate());
         
         calendar.setTimeZone(timezone);
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
@@ -620,8 +731,8 @@ public class LessonPlanMBean extends BaseBean {
                 startDate = calendar.getTime();
                 endDate = new Date(startDate.getTime() + (55 * 60 * 1000));
        		
-        		System.out.println("TE 1: " + s + "  " +  startDate + "  " + endDate);   
         		first = true;
+        		selectedST = true;
     		}
     		
     		if (s.toString().contains("2º")) {
@@ -636,8 +747,8 @@ public class LessonPlanMBean extends BaseBean {
         		
         		endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
         		
-        		System.out.println("TE 2: " + s + "  " +  startDate + "  " + endDate);  
     			second = true;
+        		selectedST = true;
     		}
     		
     		if (s.toString().contains("3º")) {
@@ -646,7 +757,7 @@ public class LessonPlanMBean extends BaseBean {
     	        calendar.set(Calendar.MINUTE, 20);
     	        stDate = calendar.getTime();
     	        
-    	        if (first && !second) {
+    	        if (selectedST && !second) {
     	        	this.checkError = true;
     	        	break;
     	        }
@@ -657,8 +768,8 @@ public class LessonPlanMBean extends BaseBean {
 
     	        endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
     			
-    			System.out.println("TE 3: " + s + "  " +  startDate + "  " + endDate);  
-    			third = true;
+    	        third = true;
+        		selectedST = true;
     		}
     		
     		if (s.toString().contains("4º") && (checkError == false)) {
@@ -667,7 +778,7 @@ public class LessonPlanMBean extends BaseBean {
     	        calendar.set(Calendar.MINUTE, 25);
     	        stDate = calendar.getTime();
     	        
-    	        if ((first || second) && !third) {
+    	        if (selectedST && !third) {
     	        	this.checkError = true;
     	        	break;
     	        }
@@ -678,8 +789,8 @@ public class LessonPlanMBean extends BaseBean {
 
     	        endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
     			
-    			System.out.println("TE 4: " + s + "  " +  startDate + "  " + endDate);  
     			fourth = true;
+        		selectedST = true;
     		}
 
     		if (s.toString().contains("5º") && (checkError == false)) {
@@ -688,7 +799,7 @@ public class LessonPlanMBean extends BaseBean {
     	        calendar.set(Calendar.MINUTE, 00);
     	        stDate = calendar.getTime();
     	        
-    	        if ((first || second || third) && !fourth) {
+    	        if (selectedST && !fourth) {
     	        	this.checkError = true;
     	        	break;
     	        }
@@ -699,8 +810,8 @@ public class LessonPlanMBean extends BaseBean {
 
     	        endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
     			
-    			System.out.println("TE 5: " + s + "  " +  startDate + "  " + endDate);  
-    			fifth = true;
+    	        fifth = true;
+        		selectedST = true;
     		}
 
     		if (s.toString().contains("6º") && (checkError == false)) {
@@ -709,7 +820,7 @@ public class LessonPlanMBean extends BaseBean {
     	        calendar.set(Calendar.MINUTE, 05);
     	        stDate = calendar.getTime();
     	        
-    	        if ((first || second || third || fourth) && !fifth) {
+    	        if (selectedST && !fifth) {
     	        	this.checkError = true;
     	        	break;
     	        }
@@ -720,8 +831,8 @@ public class LessonPlanMBean extends BaseBean {
 
     	        endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
     			
-    			System.out.println("TE 6: " + s + "  " +  startDate + "  " + endDate);  
-    			sixth = true;
+    	        sixth = true;
+        		selectedST = true;
     		}
     	
     		if (s.toString().contains("7º") && (checkError == false)) {
@@ -730,7 +841,7 @@ public class LessonPlanMBean extends BaseBean {
     	        calendar.set(Calendar.MINUTE, 10);
     	        stDate = calendar.getTime();
     	        
-    	        if ((first || second || third || fourth || fifth) && !sixth) {
+       	        if (selectedST && !sixth) {
     	        	this.checkError = true;
     	        	break;
     	        }
@@ -740,15 +851,15 @@ public class LessonPlanMBean extends BaseBean {
     			}
 
     	        endDate = new Date(stDate.getTime() + (55 * 60 * 1000));
-    			
-    			System.out.println("TE 7: " + s + "  " +  startDate + "  " + endDate);  
-    			seventh = true;
+
+    	        seventh = true;
+        		selectedST = true;
     		}
     	}
 
 		if (this.checkError == true) {
 			System.out.println("Error");
-            String msg = getResourceProperty("labels", "lessonplan_update_ok");
+            String msg = getResourceProperty("labels", "lessonplan_schooltimes_error");
 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
             addMessage(message);
@@ -799,6 +910,7 @@ public class LessonPlanMBean extends BaseBean {
         }
     }
 
+    
     public void valueChangedLocked (ValueChangeEvent e) {
         String msg = e.getNewValue().toString();
         
@@ -873,4 +985,33 @@ public class LessonPlanMBean extends BaseBean {
 	}
 
 
+	public Boolean getCheckError() {
+		return checkError;
+	}
+
+
+	public void setCheckError(Boolean checkError) {
+		this.checkError = checkError;
+	}
+
+
+	public Integer getNumberOfWeeks() {
+		return numberOfWeeks;
+	}
+
+
+	public void setNumberOfWeeks(Integer numberOfWeeks) {
+		this.numberOfWeeks = numberOfWeeks;
+	}
+
+
+	public Boolean getRenderedNumWeeks() {
+		return renderedNumWeeks;
+	}
+
+
+	public void setRenderedNumWeeks(Boolean renderedNumWeeks) {
+		this.renderedNumWeeks = renderedNumWeeks;
+	}
+	
 }

@@ -114,7 +114,7 @@
             <p:inputText id="title" 
                          value="#{lessonPlanMBean.lessonPlan.title}" 
                          required="true"
-                         requiredMessage="#{labels.lessonplan_value_null}"
+                         requiredMessage="#{labels.lessonplan_title_null}"
                          style="width: 150px" >
              	<p:ajax process="@this"   />
              </p:inputText>
@@ -127,7 +127,7 @@
             <p:inputText id="place" 
                          value="#{lessonPlanMBean.lessonPlan.place}" 
                          required="true"
-                         requiredMessage="#{labels.lessonplan_value_null}"
+                         requiredMessage="#{labels.lessonplan_place_null}"
                          style="width: 150px" >
              	<p:ajax process="@this"   />
              </p:inputText>
@@ -137,7 +137,7 @@
          	<h:outputText for="schooltimes" value="#{labels.lessonplan_schooltimes} :" />
  			<h:panelGroup>
             <h:form>  
- 	       		<p:selectManyCheckbox id="schooltimes" 
+ 	       		<p:selectManyCheckbox id="schooltimes" widgetVar="checkboxSchoolTimes"
  	       							  value="#{schoolTimeMBean.selectedSchoolTimes}"
  	       							  layout="grid" columns="4">
             		<f:selectItems value="#{schoolTimeMBean.schoolTimes}"
@@ -276,7 +276,42 @@
 			 </h:panelGroup>
 
 			<f:facet name="footer">
-				<p:separator />
+				<p:separator rendered="#{lessonPlanMBean.renderedNumWeeks}" />
+
+				<h:panelGroup style="white-space: nowrap">
+				
+            	<p:commandButton icon="ui-icon-mySave" style="width: 150px;"
+            	                 value="#{labels.lessonplan_set_semester}"
+            	                 rendered="#{lessonPlanMBean.renderedNumWeeks}" 
+            					 actionListener="#{lessonPlanMBean.addSemester}" />
+
+           		<h:outputLabel for="numweeks" value="    #{labels.lessonplan_number_of_weeks} :   " 
+           		               rendered="#{lessonPlanMBean.renderedNumWeeks}"
+           		               style="position: relative; 
+   									  top: 0px; 
+  									  left: 75px" />
+
+ 	 			<p:selectOneMenu id="numweeks" value="#{lessonPlanMBean.numberOfWeeks}"
+		 						 rendered="#{lessonPlanMBean.renderedNumWeeks}" 
+		 						 required="true"
+		 						 requiredMessage="#{labels.lessonplan_value_null}"
+		 						 valueChangeListener="#{lessonPlanMBean.valueChangedNumWeeks}"
+		 						 filter="true" filterMatchMode="contains"
+						         effect="fade"
+								 maxlength="60" size="40"
+								 style="position: relative; 
+   									    top: 5px; 
+  									    left: 75px" >
+						<p:ajax event="change"  />
+						<f:selectItems value="#{schoolTimeMBean.selectOneItemsNumWeeks}" 
+							               var="weeks"
+		                                   itemValue="#{weeks.id}" itemLabel="#{weeks.name}"  
+							               style="width: 260px;"/>
+		        </p:selectOneMenu>
+		        
+				</h:panelGroup>
+
+ 				<p:separator />
 				<h:panelGroup style="white-space: nowrap">
 
            		<p:commandButton icon="ui-icon-myReset" style="width: 100px;"
@@ -292,8 +327,7 @@
             	<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
             	                 value="#{labels.lessonplan_save}"
             	                 rendered="#{!lessonPlanMBean.summaryLock}" 
-            					 actionListener="#{lessonPlanMBean.addEvent}"
-            					 update="scheduleLessonPlanId"  />
+            					 actionListener="#{lessonPlanMBean.addEvent}" />
                 				  
              	<p:commandButton icon="ui-icon-myDelete" style="width: 100px;"
              	                 value="#{labels.lessonplan_delete}"
@@ -309,6 +343,7 @@
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.lessonplan_close}"
  				                 rendered="#{!lessonPlanMBean.summaryLock}"  
+ 				                 actionListener="#{lessonPlanMBean.cleanEvent}"
     							 oncomplete="PF('eventDialog').hide()" 
     							 process="@this"
     							 style=" width: 100px;

@@ -21,6 +21,10 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 	
     private String COMPILE_FILE_NAME;
 
+    private Long courseId;
+
+    private Long degreeId;
+
     
     
     public JasperReportsMBean() {
@@ -106,4 +110,21 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
         return null;
     }
 
+	public Long getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
+	}
+
+	public Long getDegreeId() {
+		return degreeId;
+	}
+
+	public void setDegreeId(Long degreeId) {
+		this.degreeId = degreeId;
+	}
+
+    
 }

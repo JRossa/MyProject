@@ -174,7 +174,7 @@ public class ScheduleController extends BaseBean {
      
     public void addEvent(ActionEvent actionEvent) {
         
-        System.out.println("Psassou : " + event.getId() + "    " + actionEvent);
+        System.out.println("Passou : " + event.getId() + "    " + actionEvent);
         
         if(event.getId() == null)
             eventModel.addEvent(event);

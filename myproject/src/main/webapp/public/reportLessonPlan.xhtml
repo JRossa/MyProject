@@ -59,6 +59,41 @@
                 </p:column>
                 
                 <p:column>
+                	<h:outputLabel for="course" value="#{labels.lessonplan_course} :" />
+            		<h:panelGroup>
+ 		 			<p:selectOneMenu id="course" value="#{jasperReportsMBean.courseId}"
+		 						     disabled="false" 
+		 						     required="true"
+		 						     requiredMessage="#{labels.lessonplan_value_null}"
+		 							 filter="true" filterMatchMode="contains"
+						             effect="fade"
+									 maxlength="450" size="30" >
+							<p:ajax event="change"  />
+							<f:selectItems value="#{courseMBean.selectOneItemsPresentCourse}" 
+							               var="course"
+		                                   itemValue="#{course.id}" itemLabel="#{course.name}"  
+							               style="width: 350px;"/>
+		            </p:selectOneMenu>
+ 					</h:panelGroup>
+ 
+          			<h:outputLabel for="degree" value="#{labels.lessonplan_degree} :" />
+            		<h:panelGroup>
+ 		 			<p:selectOneMenu id="degree" value="#{jasperReportsMBean.degreeId}"
+		 						     disabled="false" 
+		 						     required="true"
+		 						     requiredMessage="#{labels.lessonplan_value_null}"
+		 							 filter="true" filterMatchMode="contains"
+						             effect="fade"
+									 maxlength="450" size="30" >
+							<p:ajax event="change"  />
+							<f:selectItems value="#{degreeMBean.selectOneItemsMasterDegree}" 
+							               var="degree"
+		                                   itemValue="#{degree.id}" itemLabel="#{degree.name}"  
+							               style="width: 350px;"/>
+		            </p:selectOneMenu>
+					</h:panelGroup>
+ 
+                    <p:separator />
                  	<p:commandButton  action="#{jasperReportsMBean.executeListJoin}" value="Get Report" ajax="false" />
                 </p:column>
                 

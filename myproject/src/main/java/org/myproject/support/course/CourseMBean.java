@@ -28,7 +28,7 @@ public class CourseMBean extends BaseBean{
    
     private List<SelectItem> selectOneItemsCourse;
     
-    List<Course> courses;
+    private List<Course> courses;
 
     
     public void onLoad() {

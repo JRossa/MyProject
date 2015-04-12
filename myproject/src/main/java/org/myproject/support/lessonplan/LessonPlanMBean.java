@@ -98,6 +98,9 @@ public class LessonPlanMBean extends BaseBean {
 	
     private Integer numberOfWeeks;
 
+    private Date initialStartDate;
+    
+    private Date initialEndDate;
     
     // lessonPlan - control buttons
     private Boolean renderedInit = true;
@@ -247,6 +250,9 @@ public class LessonPlanMBean extends BaseBean {
 
         this.user = this.userRepository.findByUserName(username);
         
+        this.setSummaryLock(false);
+        this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
+        
         if (this.user.getTeacher().getId() != null) {
         	
             
@@ -285,7 +291,10 @@ public class LessonPlanMBean extends BaseBean {
 //        this.degreeId = 1L;
         
         this.lessonPlan.setStartDate(new Date(event.getStartDate().getTime()));
-        this.lessonPlan.setEndDate(new Date(event.getEndDate().getTime()));
+        this.lessonPlan.setEndDate(new Date(event.getEndDate().getTime() + (55 * 60 * 1000)));
+        
+        this.initialStartDate =  this.lessonPlan.getStartDate();
+        this.initialEndDate =  this.lessonPlan.getEndDate();
     }
    
  
@@ -416,16 +425,20 @@ public class LessonPlanMBean extends BaseBean {
 
 
     public void addSemester() {
-    	
+    	String msg = "Sumário da aula do dia ";
     	
     	this.addEvent();
     	
-    	for (int i = 1; i <= this.getNumberOfWeeks(); i++) {
+    	// TODO    	
+    	for (int i = 1; i < this.getNumberOfWeeks(); i++) {
     		
     		this.lessonPlan.setId(null);
     		this.lessonPlan.setStartDate(new Date(this.lessonPlan.getStartDate().getTime() + (7 * 24 * 60 * 60 * 1000)));
     		this.lessonPlan.setEndDate(new Date(this.lessonPlan.getEndDate().getTime() + (7 * 24 * 60 * 60 * 1000)));
-    		
+
+    		String description = msg + this.lessonPlan.getStartDate(); 
+    		this.lessonPlan.setDescription(description);
+   		
     		this.addEvent();
     	}
     	
@@ -446,8 +459,6 @@ public class LessonPlanMBean extends BaseBean {
     
     public void cleanEvent() {
     	
-    	this.setSummaryLock(false);
-    	
     	this.setLessonPlan(new LessonPlan());
 
     	this.setupUser();
@@ -455,13 +466,17 @@ public class LessonPlanMBean extends BaseBean {
         this.lessonPlan.setStartDate(new Date());
         
         this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
-        
+    	this.setSummaryLock(false);
+       
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE));
         calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 1);
 
         this.lessonPlan.setEndDate(calendar.getTime());
         
+        this.initialStartDate =  this.lessonPlan.getStartDate();
+        this.initialEndDate =  this.lessonPlan.getEndDate();
+
     	System.out.println("Clean Event  : ");
     	
     }
@@ -536,6 +551,7 @@ public class LessonPlanMBean extends BaseBean {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    
     public LessonPlanRepository getLessonPlanRepository() {
         return lessonPlanRepository;
     }
@@ -706,26 +722,30 @@ public class LessonPlanMBean extends BaseBean {
     	Boolean fifth = false;
     	Boolean sixth = false;
     	Boolean seventh = false;
-    	
+  	
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+        Boolean dayLight = timezone.inDaylightTime(this.lessonPlan.getStartDate());
+        
+        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+        
         Calendar calendar = Calendar.getInstance();
         
-        System.out.println("Satrt Date :" + this.lessonPlan.getStartDate().getDate());
-        System.out.println("Satrt Day :" + this.lessonPlan.getStartDate().getDay());
-        
+        System.out.println("Start Date :" + this.lessonPlan.getStartDate().getDate());
+        System.out.println("Start Day  :" + this.lessonPlan.getStartDate().getDay());
+        System.out.println("Day Light  :" + dayLight + "   Offset  " + timeOffset);
+       
         calendar.setTime(this.lessonPlan.getStartDate());
         
         calendar.setTimeZone(timezone);
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-        		0, 0, 0);
+        		      0, 0, 0);
 
     	this.checkError = false;
     	
-    	// TODO
     	for (String s : this.mbSchoolTimesMBean.getSelectedSchoolTimes()) {
     		if (s.toString().contains("1º")) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 8);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 00);
     	        
                 startDate = calendar.getTime();
@@ -737,7 +757,7 @@ public class LessonPlanMBean extends BaseBean {
     		
     		if (s.toString().contains("2º")) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 9);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 05);
     	        stDate = calendar.getTime();
     	        
@@ -753,7 +773,7 @@ public class LessonPlanMBean extends BaseBean {
     		
     		if (s.toString().contains("3º")) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 10);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 20);
     	        stDate = calendar.getTime();
     	        
@@ -774,7 +794,7 @@ public class LessonPlanMBean extends BaseBean {
     		
     		if (s.toString().contains("4º") && (checkError == false)) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 11);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 25);
     	        stDate = calendar.getTime();
     	        
@@ -795,7 +815,7 @@ public class LessonPlanMBean extends BaseBean {
 
     		if (s.toString().contains("5º") && (checkError == false)) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 14);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 00);
     	        stDate = calendar.getTime();
     	        
@@ -816,7 +836,7 @@ public class LessonPlanMBean extends BaseBean {
 
     		if (s.toString().contains("6º") && (checkError == false)) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 15);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 05);
     	        stDate = calendar.getTime();
     	        
@@ -837,7 +857,7 @@ public class LessonPlanMBean extends BaseBean {
     	
     		if (s.toString().contains("7º") && (checkError == false)) {
     	        calendar.set(Calendar.HOUR_OF_DAY, 16);
-    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timezone.getOffset(System.currentTimeMillis()));
+    	        calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
     	        calendar.set(Calendar.MINUTE, 10);
     	        stDate = calendar.getTime();
     	        
@@ -866,8 +886,18 @@ public class LessonPlanMBean extends BaseBean {
 
 		} else {
 			System.out.println("Mudou");
-    		this.lessonPlan.setStartDate(startDate);
-   			this.lessonPlan.setEndDate(endDate);
+
+			if (startDate != null) {
+				this.lessonPlan.setStartDate(startDate);
+			} else {
+				this.lessonPlan.setStartDate(this.initialStartDate);
+			}
+			
+			if (endDate != null) {
+				this.lessonPlan.setEndDate(endDate);
+			} else {
+				this.lessonPlan.setEndDate(this.initialEndDate);
+			}
 		}
 }
 

@@ -103,7 +103,7 @@
               showEffect="clip" hideEffect="clip" >
 
   		<p:messages id="messagesGrid" showDetail="false" autoUpdate="true" closable="true" />
-
+  		
    		<h:outputText id="lessonhidden" value="#{lessonPlanMBean.lessonPlan.id}   " />
         
         <h:panelGrid id="eventDetails" columns="2"  >
@@ -338,7 +338,8 @@
             	<p:commandButton icon="ui-icon-myUpdate" style="width: 150px;"
             	                 value="#{labels.lessonplan_update}"
             	                 rendered="#{!lessonPlanMBean.summaryLock}" 
-            					 update="scheduleLessonPlanId" />
+            					 update="scheduleLessonPlanId lessonPlanDlg" 
+            					 oncomplete="PF('eventDialog').show()" />
  
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.lessonplan_close}"
@@ -353,20 +354,6 @@
    										 top: 0px; 
   										 left: 75px" >
   				</p:commandButton>
-
-				<p:commandButton icon="ui-icon-myClose" 
- 				                 value="#{labels.lessonplan_close}"
- 				                 rendered="#{lessonPlanMBean.summaryLock}"  
-    							 oncomplete="PF('eventDialog').hide()" 
-    							 process="@this"
-    							 style=" width: 100px;
-    							         color: #ffffff; 
-    									 background: #0080c0;
-   										 position: relative; 
-   										 top: 0px; 
-  										 left: 525px" >
-  				</p:commandButton>
-                				  
                 </h:panelGroup>
             </f:facet>    
         </h:panelGrid>

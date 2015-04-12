@@ -1,12 +1,19 @@
 package org.myproject.report;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.myproject.report.AbstractBaseReportBean.ExportOption;
+import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -25,10 +32,23 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 
     private Long degreeId;
 
+    private Date startDate;
+    
+    private Date endDate;
     
     
     public JasperReportsMBean() {
 		super();
+		
+        this.setStartDate(new Date());
+        
+       
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 85);
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR));
+
+        this.setEndDate(calendar.getTime());
+
 	}
 
 	public ExportOption getExportOption () {
@@ -110,6 +130,26 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
         return null;
     }
 
+    
+    public String executeLessonPlan () {
+        try {
+            this.setCompileFileName("listLessonPlan");
+            super.setCompileOption(CompileOption.RS);
+
+            super.setStrQuery("SELECT CATEGORY AS category, CONTRACT AS contract, FULL_NAME AS fullName, "
+                    + "ID_NUMBER AS idNumber, MILITARY_SITUATION AS militarySituation FROM tbl_TEACHER;");
+
+            super.prepareReport();
+
+        } catch (Exception e) {
+            // make your own exception handling
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    
 	public Long getCourseId() {
 		return courseId;
 	}
@@ -126,5 +166,52 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 		this.degreeId = degreeId;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+    public void valueChangedDate (SelectEvent selectEvent) {
+        Date date = (Date) selectEvent.getObject();
+        
+        System.out.println("Start Time : " + this.getStartDate());
+        System.out.println("End   Time : " + this.getEndDate());
+        System.out.println("Compare : " + (this.getStartDate().getTime() >= 
+                                           this.getEndDate().getTime()));
+        System.out.println("Message : " + date);
+        
+        if (this.getStartDate().getTime() >= 
+                this.getEndDate().getTime()) {
+ 
+        	String msg = getResourceProperty("labels", "lessonplan_change_dates");
+            
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+        }
+    }    
+
+    public String getResourceProperty(String resource, String label) {
+        Application application = FacesContext.getCurrentInstance().getApplication();
+        ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);
+
+        return bundle.getString(label);
+    }
+
     
+    private void addMessage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+
 }

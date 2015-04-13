@@ -15,7 +15,10 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.myproject.model.entities.Professorship;
 import org.myproject.report.AbstractBaseReportBean.ExportOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -45,6 +48,9 @@ import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 public class ReportConfig {
 
+	
+	static Logger logger = LoggerFactory.getLogger(ReportConfig.class);
+	
     /*
      * PRIVATE METHODS
      */
@@ -144,19 +150,25 @@ public class ReportConfig {
 	    throws JRException {
 		parameters.put("BaseDir", reportFile.getParentFile());
 	
-		JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(), parameters, jrDataSource);
+ 
+    	JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(), parameters, jrDataSource);
 	
 		return jasperPrint;
     }
 
+    
     public static JasperPrint fillReport(String compileFile, Map<String, Object> parameters, Connection connection)
 	    throws JRException {
 		File file = new File(compileFile);
-	
 		parameters.put("BaseDir", file.getParentFile());
 	
-		JasperPrint jasperPrint = JasperFillManager.fillReport(compileFile,
-			parameters, connection);
+//		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+//		    String key = entry.getKey();
+//		    Object value = entry.getValue();
+//		    System.out.println("Key  : "  + key + "    -  value  : " + value);
+//		}		
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(compileFile,	parameters, connection);
 	
 		return jasperPrint;
     }

@@ -43,9 +43,13 @@ public abstract class AbstractBaseReportBean {
   private final String REPORTS_DIR = "/reports/";
   private final String COMPILE_DIR = "/reports/compile/";
 
+
+  
   protected abstract JRDataSource getJRDataSource();
   protected abstract String getCompileFileName();
   protected abstract void setCompileFileName(String compileFileName);
+
+
   
   public AbstractBaseReportBean() {
     super();
@@ -72,6 +76,7 @@ public abstract class AbstractBaseReportBean {
     
     if (getCompileOption().equals(CompileOption.DB)) {
       Connection connection = Database.getConnection();
+      
       jasperPrint = ReportConfig.fillReport(jasperCompileFileName, getReportParameters(), connection); 
       Database.close(connection);
     } else {
@@ -133,7 +138,7 @@ public abstract class AbstractBaseReportBean {
   
   
   protected Map<String, Object> getReportParameters() {
-	  HashMap<String, Object> parameterMap =  new HashMap<String, Object>();  
+	  Map<String, Object> reportParameters = new HashMap<String, Object>();
 	  
     //parameterMap.put("hp", new Integer(750));
     //<parameter name="hp" class="java.lang.Integer" />
@@ -142,10 +147,18 @@ public abstract class AbstractBaseReportBean {
     //parameterMap.put("REPORT_FILE_RESOLVER", fileResolver);
 	  
     //$P{hp}
+	  reportParameters.put("DEGREE_CODE", "AMIL");
+	  reportParameters.put("COURSE_CODE", "N113");
   
-    return parameterMap;
+    return reportParameters;
   }
 
+  public void setReportParameter(String paramKey, String paramValue) {
+	  
+	
+  }
+  
+  
   protected String getReportsDir() {
 	    return REPORTS_DIR;
 	  }

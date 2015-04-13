@@ -1,6 +1,5 @@
 package org.myproject.report;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,23 +9,34 @@ import java.util.ResourceBundle;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.myproject.report.AbstractBaseReportBean.ExportOption;
+import org.myproject.model.entities.Course;
+import org.myproject.model.entities.Degree;
+import org.myproject.model.repositories.CourseRepository;
+import org.myproject.model.repositories.DegreeRepository;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRException;
+
 
 @Named(value = "jasperReportsMBean")
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class JasperReportsMBean extends AbstractBaseReportBean {
 
-	
-    private String COMPILE_FILE_NAME;
+	@Inject
+    private DegreeRepository degreeRepository;
+
+	@Inject
+    private CourseRepository courseRepository;
+
+	private String COMPILE_FILE_NAME;
+
+    private Map<String, Object> reportParameters = new HashMap<String, Object>();
 
     private Long courseId;
 
@@ -71,7 +81,6 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 
     @Override
     protected Map<String, Object> getReportParameters () {
-        Map<String, Object> reportParameters = new HashMap<String, Object>();
 
         reportParameters.put("ReportTitle", "Hello JasperReports");
 
@@ -134,11 +143,21 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
     public String executeLessonPlan () {
         try {
             this.setCompileFileName("listLessonPlan");
-            super.setCompileOption(CompileOption.RS);
+            
+            super.setCompileOption(CompileOption.DB);
 
-            super.setStrQuery("SELECT CATEGORY AS category, CONTRACT AS contract, FULL_NAME AS fullName, "
-                    + "ID_NUMBER AS idNumber, MILITARY_SITUATION AS militarySituation FROM tbl_TEACHER;");
-
+            Degree degree = this.degreeRepository.findOne(this.degreeId);
+            
+            if (degree != null) {
+            	reportParameters.put("DEGREE_CODE", degree.getCode());
+            }
+            
+            Course course = this.courseRepository.findOne(this.courseId);
+            
+            if (course != null) {
+            	reportParameters.put("COURSE_CODE", course.getCode());
+            }
+            
             super.prepareReport();
 
         } catch (Exception e) {

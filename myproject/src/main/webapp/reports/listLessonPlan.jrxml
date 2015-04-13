@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-04-12T22:51:22 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LessonPlanJoim" pageWidth="400" pageHeight="842" columnWidth="360" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="12a19540-b7f0-46cf-8ab3-628befb78a9a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="ZGNlLnRibF9kZWdyZWUgLDIxMSwyNDtkY2UudGJsX3RlYWNoZXIgLDM0NywyOTtkY2UudGJsX2xl&#xA;c3Nvbl9wbGFuICwyMCwyMDs="/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariaDB"/>
+	<parameter name="COURSE_CODE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N111"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DEGREE_CODE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ARMAS"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="STR_START_DATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2015-05-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="STR_END_DATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2015-06-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EXECUTION_YEAR" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["2014/2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="START_DATE" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($P{STR_START_DATE})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="END_DATE" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").parse($P{STR_END_DATE})]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT dce.tbl_lesson_plan.`ID`,
+	dce.tbl_lesson_plan.`TITLE`,
+	dce.tbl_lesson_plan.`PLACE`,
+	dce.tbl_lesson_plan.`START_DATE`,
+	dce.tbl_lesson_plan.`END_DATE`,
+	dce.tbl_lesson_plan.`DESCRIPTION`,
+	dce.tbl_lesson_plan.`LOCKED`,
+	dce.tbl_lesson_plan.`CREATION_USER`,
+	dce.tbl_lesson_plan.`CREATION_DATE`,
+	dce.tbl_lesson_plan.`MODIFICATION_USER`,
+	dce.tbl_lesson_plan.`MODIFICATION_DATE`,
+	dce.tbl_degree.`CODE` AS DEGREE,
+	dce.tbl_course.`CODE` AS COURSE,
+	dce.tbl_teacher.`FULL_NAME` AS TEACHER,
+	dce.tbl_course.`NAME` AS COURSE_NAME, 
+	dce.tbl_degree.`NAME` AS DEGREE_NAME
+FROM dce.tbl_lesson_plan
+	INNER JOIN dce.tbl_course ON 
+	 dce.tbl_course.`ID` = dce.tbl_lesson_plan.`COURSE_ID` 
+	INNER JOIN dce.tbl_degree ON 
+	 dce.tbl_degree.`ID` = dce.tbl_lesson_plan.`DEGREE_ID` 
+	INNER JOIN dce.tbl_teacher ON 
+	 dce.tbl_teacher.`ID` = dce.tbl_lesson_plan.`TEACHER_ID` 
+WHERE
+	 dce.tbl_degree.`CODE` =  $P{DEGREE_CODE}  AND
+	 dce.tbl_course.`CODE` =  $P{COURSE_CODE}  AND
+	 dce.tbl_lesson_plan.`START_DATE` >  $P{START_DATE}  AND
+	 dce.tbl_lesson_plan.`END_DATE` <  $P{END_DATE}]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TITLE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PLACE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="START_DATE" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="END_DATE" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DESCRIPTION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LOCKED" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CREATION_USER" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CREATION_DATE" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MODIFICATION_USER" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MODIFICATION_DATE" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DEGREE" class="java.lang.String"/>
+	<field name="COURSE" class="java.lang.String"/>
+	<field name="TEACHER" class="java.lang.String"/>
+	<field name="COURSE_NAME" class="java.lang.String"/>
+	<field name="DEGREE_NAME" class="java.lang.String"/>
+	<group name="COURSE">
+		<groupExpression><![CDATA[$F{COURSE}]]></groupExpression>
+	</group>
+	<group name="DEGREE">
+		<groupExpression><![CDATA[$F{DEGREE}]]></groupExpression>
+	</group>
+	<title>
+		<band height="76" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="284" height="57" forecolor="#091D91" backcolor="#0A1C8F" uuid="b454a743-39ba-44c1-ac51-8a349f5139d3"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="61" y="10" width="188" height="30" forecolor="#FAFBFF" uuid="e3905edf-1482-443e-9da8-0e4dd7594a77"/>
+				<textElement markup="none">
+					<font fontName="Arial" size="22" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Academia Militar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="92" y="35" width="118" height="16" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="75f31e37-efcb-41d2-bc71-5630648aa3eb"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Cronograma de  Lecionação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="284" y="1" width="74" height="72" forecolor="#000000" backcolor="#D1CDCD" uuid="847497aa-8b7b-4a05-9824-3ba383f43b8a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="-1" y="59" width="285" height="15" forecolor="#000000" backcolor="#D1CDCD" uuid="4c271fff-fc10-4384-90ed-d969cb463c55"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EXECUTION_YEAR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="88" height="14" forecolor="#000000" backcolor="#E8E6E6" uuid="d29cdfef-b85f-4875-8998-a7f75c99d7c9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Curso :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="14" width="88" height="14" forecolor="#000000" backcolor="#E8E6E6" uuid="1db751fc-0a12-477a-805f-e706f80775c8"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Unidade Curricular :]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="93" y="14" width="36" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="9ae020ed-5b93-4f8f-8d43-2d210bae6af9"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COURSE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="129" y="14" width="230" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="ae7d4af8-a157-4e17-ab7e-341cd8634735">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COURSE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="93" y="0" width="210" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="4c0578e4-4f60-483b-a45c-518b2bf88983">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEGREE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="303" y="0" width="56" height="14" printWhenGroupChanges="COURSE" forecolor="#000000" backcolor="#FFFFFF" uuid="dcc915b2-8e54-4b89-9067-a858fd1ef599">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEGREE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="49" y="9" width="100" height="21" uuid="1c96df5f-1b1b-4216-a51f-6023c42f91e5"/>
+				<textFieldExpression><![CDATA[$P{START_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="8" width="100" height="30" uuid="afd72352-6686-4bcc-af2b-549152313fa2"/>
+				<textFieldExpression><![CDATA[$P{END_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="120" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="84" y="29" width="88" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="e84a65a6-ed14-434a-a97a-5f95196dd848"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("hh:mm").format($F{START_DATE})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="84" y="41" width="88" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="953f8ab7-d9ea-496a-aef0-3a619ccdfa5f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("hh:mm").format($F{END_DATE})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="257" y="29" width="100" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="0af315de-44fc-428b-aa4b-e1fc316b314d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PLACE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="0" y="65" width="358" height="52" forecolor="#000000" backcolor="#FFFFFF" uuid="9e6a7d76-355b-4215-a2f0-8e9e7a65c435"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="53" width="100" height="12" forecolor="#000000" backcolor="#E8E6E6" uuid="2a55e149-fd6e-4960-9cfc-4fb284de7ee8"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Sumário / Conteúdo Programático]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="29" width="80" height="12" forecolor="#000000" backcolor="#E8E6E6" uuid="86928aa3-5d0b-4900-bc5a-67d14a9d5bbf">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Início :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="41" width="80" height="12" forecolor="#000000" backcolor="#E8E6E6" uuid="bcb84cda-0dbd-4e87-9fc7-8da6d7347b33"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Final :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="17" width="80" height="12" forecolor="#000000" backcolor="#E8E6E6" uuid="a61307ae-708e-4681-acc9-f7d507d67cff"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Docente:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="84" y="17" width="274" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="1f3dd00d-56a0-48b1-8593-de3f57c28973"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TEACHER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="174" y="29" width="80" height="12" forecolor="#000000" backcolor="#E8E6E6" uuid="5558de4b-6313-4b69-a375-1c7b6807dc8b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[ Local:]]></text>
+			</staticText>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="1" y="4" width="357" height="11" forecolor="#091D91" backcolor="#0A1C8F" uuid="ba6e9b81-65a2-45d0-a021-afc9391fb89e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement fill="Solid"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="5" width="48" height="14" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="a3fd132d-c380-42ea-90b8-13928e44a60e"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial Narrow" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Sessão]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="245" y="5" width="100" height="14" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="6ab6ba6f-71ac-40c2-9dc6-76ac55541243"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial Narrow" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{START_DATE})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="221" y="5" width="100" height="12" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="9dd485d5-630a-4ba1-96d7-13a171640298"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial Narrow" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[Data :]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

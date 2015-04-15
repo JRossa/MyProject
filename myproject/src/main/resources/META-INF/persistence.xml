@@ -27,6 +27,7 @@
 		<class>org.myproject.model.entities.Degree</class>
 		<class>org.myproject.model.entities.ExecutionYear</class>
 		<class>org.myproject.model.entities.ScientificField</class>
+		<class>org.myproject.model.entities.DegreeCurricularPlansData</class>
 			
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />

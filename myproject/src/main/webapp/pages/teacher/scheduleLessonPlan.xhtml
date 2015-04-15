@@ -13,6 +13,14 @@
 
 	<h:head>
 		<style  type="text/css" >
+			.proj .fc-event,
+			.proj a,
+			.proj .fc-event-inner {
+			background-color: #8080ff;
+			border-color: #8080ff;
+			color: white;
+			}
+		
 			.amil .fc-event,
 			.amil a,
 			.amil .fc-event-inner {
@@ -188,7 +196,11 @@
             <h:message for="to" />
 			</h:panelGroup>
 
-            <h:outputLabel for="teacher" value="#{labels.lessonplan_teacher} :" />
+			<c:if test="#{lessonPlanMBean.enableTeacherSelect == 'true'}" >
+			<h:panelGroup>
+				<p:selectBooleanCheckbox value="#{lessonPlanMBean.teacherSelected}"/>
+            	<h:outputLabel for="teacher" value="   #{labels.lessonplan_teacher} :" />
+            </h:panelGroup>
             <h:panelGroup>
             	<h:form>
  					<p:selectOneMenu id="teacher" value="#{lessonPlanMBean.teacherId}"
@@ -199,7 +211,8 @@
 		 							 filter="true" filterMatchMode="contains"
 						             effect="fade"
 									 maxlength="450" size="30" >
-							<f:ajax process="@this"  />		 
+							<f:ajax process="@this"  />		
+							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
 							<f:selectItems value="#{teacherMBean.selectOneItemsTeacher}"
 							               var="teacher"
 		                                   itemValue="#{teacher.id}" itemLabel="#{teacher.fullName}"  
@@ -207,8 +220,17 @@
 		            </p:selectOneMenu>
             	</h:form>
 			</h:panelGroup>
+			</c:if>
 
-            <h:outputLabel for="course" value="#{labels.lessonplan_course} :" />
+			<c:if test="#{lessonPlanMBean.enableTeacherSelect == 'false'}" >
+            	<h:outputLabel value="#{labels.lessonplan_teacher} :" />
+	           	<h:outputLabel value="#{lessonPlanMBean.lessonPlan.teacher.fullName}" />
+			</c:if>
+				
+			<h:panelGroup>
+				<p:selectBooleanCheckbox value="#{lessonPlanMBean.courseSelected}"/>
+            	<h:outputLabel for="course" value="   #{labels.lessonplan_course} :" />
+            </h:panelGroup>
             <h:panelGroup>
             	<h:form>
 		 			<p:selectOneMenu id="course" value="#{lessonPlanMBean.courseId}"
@@ -220,6 +242,7 @@
 						             effect="fade"
 									 maxlength="450" size="30" >
 							<p:ajax event="change" update=":formLessonPlan:formTitle:title"  />
+							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
 							<f:selectItems value="#{courseMBean.selectOneItemsPresentCourse}" 
 							               var="course"
 		                                   itemValue="#{course.id}" itemLabel="#{course.name}"  
@@ -228,7 +251,10 @@
             	</h:form>
 			</h:panelGroup>
             
-            <h:outputLabel for="degree" value="#{labels.lessonplan_degree} :" />
+			<h:panelGroup>
+				<p:selectBooleanCheckbox value="#{lessonPlanMBean.degreeSelected}"/>
+           		<h:outputLabel for="degree" value="   #{labels.lessonplan_degree} :" />
+           	</h:panelGroup>
             <h:panelGroup>
             	<h:form>
 		 			<p:selectOneMenu id="degree" value="#{lessonPlanMBean.degreeId}"
@@ -240,6 +266,7 @@
 						             effect="fade"
 									 maxlength="450" size="30" >
 							<p:ajax event="change"  />
+							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
 							<f:selectItems value="#{degreeMBean.selectOneItemsMasterDegree}" 
 							               var="degree"
 		                                   itemValue="#{degree.id}" itemLabel="#{degree.name}"  
@@ -339,11 +366,12 @@
             	                 value="#{labels.lessonplan_update}"
             	                 rendered="#{!lessonPlanMBean.summaryLock}" 
             					 update="scheduleLessonPlanId lessonPlanDlg" 
+            					 actionListener="#{lessonPlanMBean.init}"
             					 oncomplete="PF('eventDialog').show()" />
  
+ 				<c:if test="#{lessonPlanMBean.summaryLock == 'false'}" >
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.lessonplan_close}"
- 				                 rendered="#{!lessonPlanMBean.summaryLock}"  
  				                 actionListener="#{lessonPlanMBean.cleanEvent}"
     							 oncomplete="PF('eventDialog').hide()" 
     							 process="@this"
@@ -354,6 +382,24 @@
    										 top: 0px; 
   										 left: 75px" >
   				</p:commandButton>
+				</c:if>
+
+ 				<c:if test="#{lessonPlanMBean.summaryLock == 'true'}" >
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.lessonplan_close}"
+ 				                 rendered="#{lessonPlanMBean.summaryLock}"  
+ 				                 actionListener="#{lessonPlanMBean.cleanEvent}"
+    							 oncomplete="PF('eventDialog').hide()" 
+    							 process="@this"
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 525px" >
+  				</p:commandButton>
+  				</c:if>
+  				
                 </h:panelGroup>
             </f:facet>    
         </h:panelGrid>

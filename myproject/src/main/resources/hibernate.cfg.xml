@@ -38,6 +38,7 @@
      <mapping class="org.myproject.model.entities.Degree" />
      <mapping class="org.myproject.model.entities.ExecutionYear" />
      <mapping class="org.myproject.model.entities.ScientificField" />
+     <mapping class="org.myproject.model.entities.DegreeCurricularPlansData" />
      
  <!-- <mapping resource="com/mkyong/user/DBUser.hbm.xml"></mapping> -->
 </session-factory>

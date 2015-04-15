@@ -1,5 +1,6 @@
 package org.myproject.report;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
 import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.repositories.DegreeRepository;
+import org.myproject.model.utils.ReportConfig;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -140,9 +142,11 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
     }
 
     
-    public String executeLessonPlan () {
+    public String executeLessonPlan (String compileFileName) {
+    	
+    	
         try {
-            this.setCompileFileName("listLessonPlan");
+            this.setCompileFileName(compileFileName);
             
             super.setCompileOption(CompileOption.DB);
 
@@ -158,6 +162,18 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
             	reportParameters.put("COURSE_CODE", course.getCode());
             }
             
+            if (this.startDate != null) {
+            	String strStartDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getStartDate());
+            	reportParameters.put("STR_START_DATE", strStartDate);
+            }
+ 
+            if (this.endDate != null) {
+            	String strEndDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getEndDate());
+            	reportParameters.put("STR_END_DATE", strEndDate);
+            }
+
+//            ReportConfig.listMap(reportParameters);
+           
             super.prepareReport();
 
         } catch (Exception e) {

@@ -156,17 +156,23 @@ public class ReportConfig {
 		return jasperPrint;
     }
 
+ 
+    public static void listMap (Map<String, Object> parameters) {
+ 
+		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+		    String key = entry.getKey();
+		    Object value = entry.getValue();
+		    System.out.println("Key  : "  + key + "    -  value  : " + value);
+		}		
+
+    }
     
     public static JasperPrint fillReport(String compileFile, Map<String, Object> parameters, Connection connection)
 	    throws JRException {
 		File file = new File(compileFile);
 		parameters.put("BaseDir", file.getParentFile());
 	
-//		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-//		    String key = entry.getKey();
-//		    Object value = entry.getValue();
-//		    System.out.println("Key  : "  + key + "    -  value  : " + value);
-//		}		
+		listMap(parameters);
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(compileFile,	parameters, connection);
 	

@@ -146,7 +146,7 @@
                     <p:separator />
                  	<p:commandButton  icon="ui-icon-myReport" style="width: 150px;"
                  	                  value="#{labels.lessonplan_report_execute}"
-                 	                  action="#{jasperReportsMBean.executeLessonPlan}"  ajax="false" />
+                 	                  action="#{jasperReportsMBean.executeLessonPlan('listLessonPlan')}"  ajax="false" />
                 	<p:commandButton  icon="ui-icon-myErase" style="width: 150px;"
                 	                  value="#{labels.lessonplan_report_delete}"
                 	                  action="#{jasperReportsMBean.deleteReport('listLessonPlan')}"  ajax="false" />

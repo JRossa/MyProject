@@ -23,10 +23,12 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
+import org.myproject.model.entities.DegreeCurricularPlansData;
 import org.myproject.model.entities.LessonPlan;
 import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CourseRepository;
+import org.myproject.model.repositories.DegreeCurricularPlansDataRepository;
 import org.myproject.model.repositories.DegreeRepository;
 import org.myproject.model.repositories.LessonPlanRepository;
 import org.myproject.model.repositories.TeacherRepository;
@@ -54,6 +56,10 @@ public class LessonPlanMBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(LessonPlanMBean.class);
 
 	private static final int maxDiffDays = 7;
+	
+	private static final Long voidDegree = 28L;
+	
+	private static final Long voidCourse = 261L;
 
     @Inject
     private LessonPlanRepository lessonPlanRepository;
@@ -66,6 +72,9 @@ public class LessonPlanMBean extends BaseBean {
 
     @Inject
     private DegreeRepository degreeRepository;
+    
+    @Inject 
+    DegreeCurricularPlansDataRepository degreeCurricularPlansDataRepository;
 
     @Inject
     private UserRepository userRepository;
@@ -109,6 +118,13 @@ public class LessonPlanMBean extends BaseBean {
 
     private Boolean renderedNumWeeks = false;
     
+    private Boolean teacherSelected = false;
+    
+    private Boolean degreeSelected = false;
+
+    private Boolean courseSelected = false;
+
+    private Boolean enableTeacherSelect = false;
     
     // listLessonPlan - control buttons
     private Boolean renderedUpdate;
@@ -141,7 +157,40 @@ public class LessonPlanMBean extends BaseBean {
         this.renderedInit = false;
         this.summaryLock = false;
         
-        this.lessonPlans = this.lessonPlanRepository.findAll();
+        if (this.teacherSelected) {
+        	if (this.courseSelected) {
+        		if (this.degreeSelected) {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByTeacherAndCourseAndDegree(this.teacherId,
+        					                                                                    this.courseId, this.degreeId);
+        		} else {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByTeacherAndCourse(this.teacherId, this.courseId);
+        		}
+        	} else {
+        		if (this.degreeSelected) {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByTeacherAndDegree(this.teacherId,
+        					                                                                      this.degreeId);
+        		} else {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByTeacher(this.teacherId);
+        		}
+        	}
+        // not teacher	
+        } else {
+        	if (this.courseSelected) {
+        		if (this.degreeSelected) {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByCourseAndDegree(this.courseId, this.degreeId);
+        		} else {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByCourse(this.courseId);
+        		}
+        	} else {
+        		if (this.degreeSelected) {
+        			this.lessonPlans = this.lessonPlanRepository.findLessonPlanByDegree(this.degreeId);
+        		} else {
+        			this.lessonPlans = this.lessonPlanRepository.findAll();
+        		}
+        	}
+        }
+		
+
         
         logger.info("lp:" + this.lessonPlans);
  
@@ -178,6 +227,9 @@ public class LessonPlanMBean extends BaseBean {
 	            		break;
 	            	case 3:
 	            		ev.setStyleClass("art");
+	            		break;
+	            	case 28:
+	            		ev.setStyleClass("proj");
 	            		break;
 	            	default:	
 	            		ev.setStyleClass("armas");
@@ -260,20 +312,26 @@ public class LessonPlanMBean extends BaseBean {
         			(this.user.getLogRole().getRolename().equals("ROLE_USER_U")) ||
         			(this.user.getLogRole().getRolename().equals("ROLE_USER_T"))) {
         		this.setRenderedNumWeeks(true);
+        		this.setEnableTeacherSelect(true);
         	}
         	else {
         		this.setRenderedNumWeeks(false);
+        		this.setEnableTeacherSelect(false);
         	}
             
         	this.setTeacherId(this.user.getTeacher().getId());
-            this.setCourseId(261L);
-            this.setDegreeId(1L);
+        	if (!this.getEnableTeacherSelect()) {
+        		this.convertTeacherId();
+        	}
+        	
+            this.setCourseId(-1L);
+            this.setDegreeId(-1L);
         }
         else {
         	this.setRenderedNumWeeks(false);
-        	this.setTeacherId(173L);
-            this.setCourseId(261L);
-            this.setDegreeId(1L);
+        	this.setTeacherId(-1L);
+            this.setCourseId(-1L);
+            this.setDegreeId(-1L);
         }
 
     }
@@ -316,8 +374,13 @@ public class LessonPlanMBean extends BaseBean {
         if (this.getCourseId() != null) {
             Course course = this.courseRepository.findOne(this.getCourseId());
             
-            System.out.println(course.getName());
-            this.lessonPlan.setCourse(course);
+            if (course == null) {
+            	course = new Course();
+            	course.setId(261L);
+            }
+            
+           	System.out.println(course.getName());
+           	this.lessonPlan.setCourse(course);
         }
     }
     
@@ -327,8 +390,13 @@ public class LessonPlanMBean extends BaseBean {
         if (this.getDegreeId() != null) {
             Degree degree = this.degreeRepository.findOne(this.getDegreeId());
             
-            System.out.println(degree.getName());
-            this.lessonPlan.setDegree(degree);
+            if (degree == null) {
+            	degree = new Degree();
+            	degree.setId(28L);
+            } 
+            
+           	System.out.println(degree.getName());
+           	this.lessonPlan.setDegree(degree);
         }
     }
 
@@ -672,13 +740,36 @@ public class LessonPlanMBean extends BaseBean {
     }
 
     
+    private void checkDegreeCurricularPlan (Long courseId, Long degreeId) {
+
+    	DegreeCurricularPlansData degreeCurricularPlan = 
+    			this.degreeCurricularPlansDataRepository.findCurricularPlanByCourseAndDegree(courseId, degreeId);
+    	
+    	if (degreeCurricularPlan == null) {
+    		String msg = getResourceProperty("labels", "lessonplan_degreecurricularplan_error");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+    	} else {
+    		String msg = "UC do " + degreeCurricularPlan.getCurricularYear() + "º ano / " +
+    				         degreeCurricularPlan.getCurricularSemester() + "º semestre";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg );
+            addMessage(message);
+    	}
+
+    }
+    
+    
 	public void valueChangedCourse (ValueChangeEvent valueChangeEvent) {
         String msg = valueChangeEvent.getNewValue().toString();
-        Long  courseId =  Long.parseLong(msg);
+        Long  courseId = Long.parseLong(msg);
   
         Course course = this.courseRepository.findOne(courseId);
         
         System.out.println("value changed..." + course.getCode() + "   " + courseId);
+        
+        if (this.degreeId > 0L && !this.degreeId.equals(28L)) {
+        	this.checkDegreeCurricularPlan (courseId, this.degreeId);
+       }
         
         this.lessonPlan.setTitle(course.getCode());
 
@@ -687,8 +778,13 @@ public class LessonPlanMBean extends BaseBean {
 	
     public void valueChangedDegree (ValueChangeEvent valueChangeEvent) {
     	String msg = valueChangeEvent.getNewValue().toString();
+    	Long degreeId = Long.parseLong(msg);
     	
-    	System.out.println("value changed..." + msg);
+    	System.out.println("value changed degree..." + msg);
+    	
+    	if (this.courseId > 0L && !this.courseId.equals(261L)) {
+    		this.checkDegreeCurricularPlan (this.courseId, degreeId);
+    	}
     }
     
 
@@ -1043,5 +1139,46 @@ public class LessonPlanMBean extends BaseBean {
 	public void setRenderedNumWeeks(Boolean renderedNumWeeks) {
 		this.renderedNumWeeks = renderedNumWeeks;
 	}
+
+
+	public Boolean getTeacherSelected() {
+		return teacherSelected;
+	}
+
+
+	public void setTeacherSelected(Boolean teacherSelected) {
+		this.teacherSelected = teacherSelected;
+	}
+
+
+	public Boolean getDegreeSelected() {
+		return degreeSelected;
+	}
+
+
+	public void setDegreeSelected(Boolean degreeSelected) {
+		this.degreeSelected = degreeSelected;
+	}
+
+
+	public Boolean getCourseSelected() {
+		return courseSelected;
+	}
+
+
+	public void setCourseSelected(Boolean courseSelected) {
+		this.courseSelected = courseSelected;
+	}
+
+
+	public Boolean getEnableTeacherSelect() {
+		return enableTeacherSelect;
+	}
+
+
+	public void setEnableTeacherSelect(Boolean enableTeacherSelect) {
+		this.enableTeacherSelect = enableTeacherSelect;
+	}
+	
 	
 }

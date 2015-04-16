@@ -48,9 +48,11 @@
  
          <p:submenu label="#{labels.menu_lessonplan}"  icon="ui-icon-help">
             <p:menuitem value="#{labels.menu_lessonplan_list}" 
-                        url="/pages/admin/listLessonPlan.am" />
+                        url="/pages/admin/listLessonPlan.am?list=all" />
             <p:menuitem value="#{labels.menu_lessonplan_report}" 
                         url="/pages/admin/reportLessonPlan.am" />
+            <p:menuitem value="#{labels.menu_lessonplan_list_missing}" 
+                        url="/pages/admin/listLessonPlan.am?list=missing" />
         </p:submenu>
  
          <p:submenu label="#{labels.menu_professorship}"  icon="ui-icon-help">

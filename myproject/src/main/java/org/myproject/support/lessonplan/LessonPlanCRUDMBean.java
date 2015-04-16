@@ -42,7 +42,8 @@ public class LessonPlanCRUDMBean extends BaseBean {
 
     @Inject
     private CategoryLookupTableRepository  categoryLookupTableRepository;
-    
+
+
     private LessonPlan lessonPlan;
 
     private String title;
@@ -93,33 +94,6 @@ public class LessonPlanCRUDMBean extends BaseBean {
 	}
 
 
-	public void sendEMail () {
-        String msg = getResourceProperty("labels", "user_email_sent");
-        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.mbLessonPlanMBean.getLessonPlan().getTeacher().getCategory());
-        
-        
-        System.out.println("Send EMail" + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory() + "  "
-        		                        + academicName + "  "
-        		                        + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName());
-
-        MailSender mail = new MailSender();
-        
-        String emailSubject = "Envio de dados de utilizador";
-        String emailMsg = "Exmo Senhor <br/>"
-                        + academicName + "   " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName() + "<br/>"
-                        + "<br/><br/>" 
-                        + "EMail         : " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getEMail() + "<br/>"
-                        + "<br/><br/>";
-        
-        mail.sendEmail("gepaq@academiamilitar.pt", 
-                       "gepaq@academiamilitar.pt", emailSubject, emailMsg,
-                       "gepaq@academiamilitar.pt", "chefegepaq");
-
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-
-    }
-
     public void cancel() {
         this.mbLessonPlanMBean.unselectLessonPlan();
     }
@@ -161,13 +135,12 @@ public class LessonPlanCRUDMBean extends BaseBean {
 		
     public void disableButtons()  {
         
-//        if (this.mbLessonPlanMBean.getDisableButtons()) {
-//        	UIComponent iamLookingFor = this.findComponent("lessonplanUpdateButton", FacesContext.getCurrentInstance().getViewRoot());
-//        	if (iamLookingFor != null)
-//        		RequestContext.getCurrentInstance().execute("updateButton.disable();");
-//        		RequestContext.getCurrentInstance().execute("deleteButton.disable();");
-//        		RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
-//        }
+    	// widgetVar="sendEmailButton"
+        if (this.mbLessonPlanMBean.getDisableButtons()) {
+      		RequestContext.getCurrentInstance().execute("sendEmailButton.disable();");
+//       		RequestContext.getCurrentInstance().execute("deleteButton.disable();");
+//       		RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
+        }
         
     }
  
@@ -237,7 +210,85 @@ public class LessonPlanCRUDMBean extends BaseBean {
         
     }
 
+	public void sendEMail () {
+        String msg = getResourceProperty("labels", "user_email_sent");
+        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.mbLessonPlanMBean.getLessonPlan().getTeacher().getCategory());
+        
+        
+        System.out.println("Send EMail" + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory() + "  "
+        		                        + academicName + "  "
+        		                        + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName());
 
+        MailSender mail = new MailSender();
+        
+        String emailSubject = "Envio de notificação para preenchimento de sumários";
+        String emailMsg = "Exmo Senhor <br/>"
+                        + academicName + "   " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName() + "<br/>"
+                        + "<br/><br/>" 
+                        + "EMail         : " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getEMail() + "<br/>"
+                        + "<br/><br/>";
+        
+     // TODO - mudar o endereço de email no final
+        mail.sendEmail("gepaq@academiamilitar.pt", 
+                       "gepaq@academiamilitar.pt", emailSubject, emailMsg,
+                       "gepaq@academiamilitar.pt", "chefegepaq");
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+    }
+
+
+	public void sendTeacherEMail (Teacher teacher) {
+        String msg = getResourceProperty("labels", "user_email_sent");
+        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(teacher.getCategory());
+        
+        
+        System.out.println("Send EMail" + teacher.getCategory() + "  "
+        		                        + academicName + "  "
+        		                        + teacher.getFullName());
+
+        MailSender mail = new MailSender();
+        
+        String emailSubject = "Envio de notificação para preenchimento de sumários";
+        String emailMsg = "Exmo Senhor <br/>"
+                        + academicName + "   " + teacher.getFullName() + "<br/>"
+                        + "<br/><br/>" 
+                        + "EMail         : " + teacher.getEMail() + "<br/>"
+                        + "<br/><br/>";
+        
+        // TODO - mudar o endereço de email no final
+        mail.sendEmail("gepaq@academiamilitar.pt", 
+                       "gepaq@academiamilitar.pt", emailSubject, emailMsg,
+                       "gepaq@academiamilitar.pt", "chefegepaq");
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+    }
+
+	
+	private Long computeDiffDays (Date date1, Date date2) {
+		
+        Long diffTime = date2.getTime() - date1.getTime();
+        Long numDays  =  diffTime / (24 * 60 * 60 * 1000);
+		
+        return numDays;
+	}
+	
+	
+	public void sendListEMail () { 
+		List<LessonPlan> lessonPlans = this.lessonPlanRepository.findAllMissing();
+		Date date = new Date();
+		
+		for (LessonPlan lp: lessonPlans) {
+			if (this.computeDiffDays(this.lessonPlan.getEndDate(), date) > 10L) {
+				this.sendTeacherEMail(lp.getTeacher());
+			}
+		}
+    }
+    
+    
     public String getResourceProperty(String resource, String label) {
         Application application = FacesContext.getCurrentInstance().getApplication();
         ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);

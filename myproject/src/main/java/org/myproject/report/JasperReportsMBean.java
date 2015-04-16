@@ -7,15 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
+import org.myproject.model.entities.DegreeCurricularPlansData;
 import org.myproject.model.repositories.CourseRepository;
+import org.myproject.model.repositories.DegreeCurricularPlansDataRepository;
 import org.myproject.model.repositories.DegreeRepository;
 import org.myproject.model.utils.ReportConfig;
 import org.primefaces.event.SelectEvent;
@@ -35,6 +39,10 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 
 	@Inject
     private CourseRepository courseRepository;
+	
+	@Inject
+	private DegreeCurricularPlansDataRepository degreeCurricularPlansDataRepository;
+	
 
 	private String COMPILE_FILE_NAME;
 
@@ -51,9 +59,11 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
     
     public JasperReportsMBean() {
 		super();
-		
+	
+    	this.courseId = -1L;
+    	this.degreeId = -1L;
+
         this.setStartDate(new Date());
-        
        
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 85);
@@ -63,7 +73,14 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 
 	}
 
-	public ExportOption getExportOption () {
+    
+    public void onLoad () {
+    	
+    	
+    }
+
+
+    public ExportOption getExportOption () {
 		return super.getExportOption();
 	}
 
@@ -142,6 +159,29 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
     }
 
     
+    private String computeExecutionYear(Date date) {
+    	String executionYear = null;
+    	
+    	if (date == null) {
+    		return "";
+    	}
+    	
+        SimpleDateFormat yearDate = new SimpleDateFormat("yyyy");
+        SimpleDateFormat mounthDate = new SimpleDateFormat("MM");
+
+        Integer intMounth = Integer.parseInt(mounthDate.format(date).toString());
+        Integer intYear = Integer.parseInt(yearDate.format(date).toString());
+        
+        if (intMounth >= 10) {
+        	executionYear = intYear + "/" + (intYear+1);
+        } else {
+        	executionYear = (intYear-1) + "/" + intYear;
+        }
+    	
+    	return executionYear;
+    }
+    
+    
     public String executeLessonPlan (String compileFileName) {
     	
     	
@@ -165,6 +205,8 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
             if (this.startDate != null) {
             	String strStartDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getStartDate());
             	reportParameters.put("STR_START_DATE", strStartDate);
+            	
+            	reportParameters.put("EXECUTION_YEAR", this.computeExecutionYear(this.startDate));
             }
  
             if (this.endDate != null) {
@@ -172,6 +214,7 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
             	reportParameters.put("STR_END_DATE", strEndDate);
             }
 
+            
 //            ReportConfig.listMap(reportParameters);
            
             super.prepareReport();
@@ -217,6 +260,7 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
 		this.endDate = endDate;
 	}
 
+	
     public void valueChangedDate (SelectEvent selectEvent) {
         Date date = (Date) selectEvent.getObject();
         
@@ -226,8 +270,7 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
                                            this.getEndDate().getTime()));
         System.out.println("Message : " + date);
         
-        if (this.getStartDate().getTime() >= 
-                this.getEndDate().getTime()) {
+        if (this.getStartDate().getTime() >= this.getEndDate().getTime()) {
  
         	String msg = getResourceProperty("labels", "lessonplan_change_dates");
             
@@ -236,6 +279,58 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
         }
     }    
 
+    
+    private void checkDegreeCurricularPlan (Long courseId, Long degreeId) {
+    	
+    	DegreeCurricularPlansData degreeCurricularPlan = 
+    			this.degreeCurricularPlansDataRepository.findCurricularPlanByCourseAndDegree(courseId, degreeId);
+    	
+    	if (degreeCurricularPlan == null) {
+    		String msg = getResourceProperty("labels", "lessonplan_degreecurricularplan_error");
+    		
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+    	} else {
+        	String curricularYear = getResourceProperty("labels", "lessonplan_degreecurricularplan_year");
+        	String curricularSemester = getResourceProperty("labels", "lessonplan_degreecurricularplan_semester");
+
+    		String msg = "UC do " + degreeCurricularPlan.getCurricularYear() + "º " + curricularYear + " / " +
+    				         degreeCurricularPlan.getCurricularSemester() + "º " + curricularSemester;
+    		
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg );
+            addMessage(message);
+    	}
+
+    }
+    
+    
+	public void valueChangedCourse (ValueChangeEvent valueChangeEvent) {
+        String msg = valueChangeEvent.getNewValue().toString();
+        Long  courseId = Long.parseLong(msg);
+  
+        Course course = this.courseRepository.findOne(courseId);
+        
+        System.out.println("value changed..." + course.getCode() + "   " + courseId + "   " + this.degreeId);
+        
+        if (this.degreeId > 0L && !this.degreeId.equals(28L)) {
+        	this.checkDegreeCurricularPlan (courseId, this.degreeId);
+       }
+        
+    }    
+    
+	
+    public void valueChangedDegree (ValueChangeEvent valueChangeEvent) {
+    	String msg = valueChangeEvent.getNewValue().toString();
+    	Long degreeId = Long.parseLong(msg);
+    	
+    	System.out.println("value changed degree..." + msg + "   " + this.courseId);
+    	
+    	if (this.courseId > 0L && !this.courseId.equals(261L)) {
+    		this.checkDegreeCurricularPlan (this.courseId, degreeId);
+    	}
+    }
+
+    
     public String getResourceProperty(String resource, String label) {
         Application application = FacesContext.getCurrentInstance().getApplication();
         ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);

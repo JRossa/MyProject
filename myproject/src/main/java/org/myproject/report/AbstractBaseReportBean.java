@@ -53,7 +53,8 @@ public abstract class AbstractBaseReportBean {
   
   public AbstractBaseReportBean() {
     super();
-    setExportOption(ExportOption.FILE);
+    
+    setExportOption(ExportOption.PDF);
   }
 
   protected void prepareReport() throws JRException, IOException {

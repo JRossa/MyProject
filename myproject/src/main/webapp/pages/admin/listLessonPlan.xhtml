@@ -29,16 +29,22 @@
 	<ui:define name="content">
 
 		<f:view>
-			<f:event listener="#{lessonPlanMBean.onLoad}" type="preRenderView" />
+			<c:if test="${param.list == 'all'}" >
+				<f:event listener="#{lessonPlanMBean.onLoad('all')}" type="preRenderView" />
+			</c:if>
+			<c:if test="${param.list == 'missing'}" >
+				<f:event listener="#{lessonPlanMBean.onLoad('missing')}" type="preRenderView" />
+			</c:if>
 		</f:view>
 		
 		<p:panel id="lessonplanPanel" style="border: 0px;" >
 		
 			<h:form id="lessonplanListForm" >
 
-				<p:commandButton id="lessonplanUpdateButton" widgetVar="updateButton"
-					value="#{labels.button_update}" 
-					disabled="false" />
+				<p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
+					value="#{labels.button_send_list_email}" 
+					disabled="${param.list != 'missing'}"
+					action="#{lessonPlanCRUDMBean.sendListEMail}"  />
 			
 				<p:dataTable id="lessonplanDataTable" widgetVar="lessonplanDataTable"
 				    loadingMessage="#{labels.lessonplan_load}"
@@ -60,6 +66,7 @@
 
 					<f:facet name="header">
 					     <h:outputText value="#{labels.lessonplan_list}" />
+					     <h:outputText value="   #{lessonPlanMBean.selectedListType}" />
 					</f:facet>
 					
 					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" >

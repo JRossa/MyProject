@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+    	<style type="text/css">
+            .column1 {
+                      width: 20%;
+                      height:auto
+             }
+            .column2 {
+                      width: 80%;
+                      height:auto
+             }
+            .column3 {
+                      width: 20%;
+                      height:auto
+             }
+
+			.ui-icon-myReport{
+   			background-image: url("#{resource['images/icons/Report.png']}") !important;
+			}
+
+			.ui-icon-myErase{
+   			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+			}
+
+        </style>
+ 
+    </h:head> 
+	
+    <h:body>
+        <br/>
+    	<p:panel id="teacherPanel" style="border: 0px;" >
+    	
+   		<f:facet name="header">
+		     <h:outputText value="#{labels.lessonplan_report_title}" />
+		</f:facet>
+    
+        <f:view> 
+			<f:event listener="#{jasperReportsMBean.onLoad}" type="preRenderView" />        
+        </f:view>  
+             
+			<h:form id="formReportLessonPlan" >
+				<br/>
+	         
+	         	<p:panelGrid columns="2" 
+	                      	 style="margin-bottom:10px; width: 100%; " 
+	                      	 cellpadding="10" 
+	                         styleClass="noBorderLine"
+	                         columnClasses="column1,column2" > 
+
+	            <p:column>
+		       		<p:outputLabel>
+						<h:outputText value="#{labels.lessonplan_report_format}" />
+		        	</p:outputLabel>
+		        
+		           	<p:separator />
+		           
+		           	<p:selectOneRadio value="#{jasperReportsMBean.exportOption}" layout="pageDirection" >
+		               	<f:selectItem itemValue="FILE" itemLabel="FILE" />
+		               	<f:selectItem itemValue="PDF" itemLabel="PDF" />
+		               	<f:selectItem itemValue="HTML" itemLabel="HTML" />
+		              	<f:selectItem itemValue="CSV" itemLabel="CSV" />
+		               	<f:selectItem itemValue="XLSX" itemLabel="XLSX" />
+		               	<f:selectItem itemValue="RTF" itemLabel="RTF" />
+		          	</p:selectOneRadio>
+	           	</p:column>
+           
+				<p:column>
+				
+            		<p:messages id="messagesGrid" showDetail="false" autoUpdate="true" closable="true" />
+            		
+         	 		<p:panelGrid columns="2" 
+         	              columnClasses="column3,column2" >
+         	    
+         	              
+       					<h:outputLabel for="from" value="#{labels.lessonplan_from} :" />
+						<h:panelGroup>
+       					<p:calendar id="from" 
+       		            			mode="popup" showOn="button"
+      		            			disabled="false" 
+      		            			required="true"
+      		            			requiredMessage="#{labels.lessonplan_value_null}"
+                   					pattern="yyyy-MM-dd" 
+                   					locale="#{languageMBean.locale}"
+                   					value="#{jasperReportsMBean.startDate}" 
+                   					readonlyInput="true" >
+           					<p:ajax event="dateSelect" listener="#{jasperReportsMBean.valueChangedDate}" />
+       						<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+       					</p:calendar>
+       					<h:message for="from" />
+						</h:panelGroup>
+
+       					<h:outputLabel for="to" value="#{labels.lessonplan_to} :" />
+						<h:panelGroup>
+      					<p:calendar id="to" 
+      			       				mode="popup" showOn="button"
+      		          				disabled="false" 
+			      		            required="true"
+			      		            requiredMessage="#{labels.lessonplan_value_null}"
+			                   		pattern="yyyy-MM-dd" 
+			                   		locale="#{languageMBean.locale}"
+			                   		value="#{jasperReportsMBean.endDate}" 
+			                   		readonlyInput="true" >
+			           		<p:ajax event="dateSelect" listener="#{jasperReportsMBean.valueChangedDate}" />
+			       			<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+       					</p:calendar>
+				        <h:message for="to" />
+						</h:panelGroup>
+
+				        <h:outputLabel for="course" value="#{labels.lessonplan_course} :" />
+				       	<h:panelGroup>
+						<p:selectOneMenu id="course" value="#{jasperReportsMBean.courseId}"
+								     	 disabled="false" 
+								     	 required="true"
+								     	 requiredMessage="#{labels.lessonplan_value_null}"
+							     		 valueChangeListener="#{jasperReportsMBean.valueChangedCourse}"
+									 	 filter="true" filterMatchMode="contains"
+					             		 effect="fade"
+								 		 maxlength="450" size="30" >
+								<p:ajax event="change" update="messagesGrid" />
+							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
+							<f:selectItems value="#{courseMBean.selectOneItemsPresentCourse}" 
+						               	   var="course"
+				                       	   itemValue="#{course.id}" itemLabel="#{course.name}"  
+						                   style="width: 350px;"/>
+				        </p:selectOneMenu>
+						</h:panelGroup>
+
+				    	<h:outputLabel for="degree" value="#{labels.lessonplan_degree} :" />
+				      	<h:panelGroup>
+						<p:selectOneMenu id="degree" value="#{jasperReportsMBean.degreeId}"
+							     		 disabled="false" 
+							     		 required="true"
+							     		 requiredMessage="#{labels.lessonplan_value_null}"
+							     		 valueChangeListener="#{jasperReportsMBean.valueChangedDegree}"
+								 		 filter="true" filterMatchMode="contains"
+				             			 effect="fade"
+							 			 maxlength="450" size="30" >
+							<p:ajax event="change"  update="messagesGrid" />
+							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
+							<f:selectItems value="#{degreeMBean.selectOneItemsMasterDegree}" 
+										   var="degree"
+				                       	   itemValue="#{degree.id}" itemLabel="#{degree.name}"  
+					               	   	   style="width: 350px;"/>
+				        </p:selectOneMenu>
+						</h:panelGroup>
+		
+					</p:panelGrid>
+	
+					<br />
+           			<p:separator />
+           			
+		           	<p:commandButton  icon="ui-icon-myReport" style="width: 150px;"
+		          	                  value="#{labels.lessonplan_report_execute}"
+		          	                  action="#{jasperReportsMBean.executeLessonPlan('listLessonPlan')}"  ajax="false" />
+		         	<p:commandButton  icon="ui-icon-myErase" style="width: 150px;"
+		         	                  value="#{labels.lessonplan_report_delete}"
+		          	                  action="#{jasperReportsMBean.deleteReport('listLessonPlan')}"  ajax="false" />
+ 		         </p:column>
+          
+		         <p:column>
+		         </p:column>
+          
+		         <f:facet name="footer">
+		         	<p:separator />
+		          	<p:commandButton  action="#{jasperReportsMBean.executeListJoin}" value="Get Report" ajax="false" />
+		         	<p:commandButton  action="#{jasperReportsMBean.deleteReport('listJoin')}" value="Delete Report" ajax="false" />
+				</f:facet>
+ 
+         	</p:panelGrid>
+      	 	</h:form>
+   
+		 </p:panel>
+    </h:body>
+</html>
+
+<!-- 
+vertical
+                <p:selectOneRadio value="#{jasperReportsMBean.exportOption}" layout="pageDirection" >
+horizontal
+                <p:selectOneRadio value="#{jasperReportsMBean.exportOption}" layout="lineDirection" >
+
+                
+-->                

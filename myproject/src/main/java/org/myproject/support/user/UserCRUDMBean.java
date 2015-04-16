@@ -18,6 +18,7 @@ import javax.inject.Named;
 import org.myproject.model.entities.LogRole;
 import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Teacher;
+import org.myproject.model.repositories.CategoryLookupTableRepository;
 import org.myproject.model.repositories.RoleRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
@@ -47,6 +48,9 @@ public class UserCRUDMBean extends BaseBean {
     
     @Inject
     private UserMBean mbUserBean;
+
+    @Inject
+    private CategoryLookupTableRepository  categoryLookupTableRepository;
 
     private LogUser user;
 
@@ -87,9 +91,7 @@ public class UserCRUDMBean extends BaseBean {
         this.title = getResourceProperty("labels", "user_create");
        
         String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-                
-        // ATENÇÃO: substutir no final
-//        Teacher teacher = teacherRepository.findOne(2L);
+
         Teacher teacher = new Teacher();
         
         this.user.setTeacher(teacher);
@@ -138,12 +140,19 @@ public class UserCRUDMBean extends BaseBean {
         String msg = getResourceProperty("labels", "user_email_sent");
        
         System.out.println("Send EMail");
+        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.user.getTeacher().getCategory());
+        
+        
+        System.out.println("Send EMail" + this.user.getTeacher().getCategory() + "  "
+        		                        + academicName + "  "
+        		                        + this.user.getTeacher().getFullName());
+
         
         MailSender mail = new MailSender();
         
         String emailSubject = "Envio de dados de utilizador";
         String emailMsg = "Exmo Senhor <br/>"
-                        + this.user.getTeacher().getCategory() + "   " + this.user.getTeacher().getFullName() + "<br/>"
+                        + academicName + "   " + this.user.getTeacher().getFullName() + "<br/>"
                         + "<br/><br/>" 
                         + "EMail         : " + this.getUser().getTeacher().getEMail() + "<br/>"
                         + "<br/><br/>" 
@@ -213,6 +222,7 @@ public class UserCRUDMBean extends BaseBean {
 
             System.out.println("Passou break");
             
+            // TODO - Retirar no final
             break;
             
         }

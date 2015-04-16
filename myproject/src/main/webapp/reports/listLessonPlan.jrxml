@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-04-14T11:40:43 -->
+<!-- 2015-04-16T09:28:38 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TamanhoA4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="adcce83d-9346-4148-b73a-5374bd11988c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="ZGNlLnRibF9kZWdyZWUgLDIxMSwyNDtkY2UudGJsX3RlYWNoZXIgLDM0NywyOTtkY2UudGJsX2xl&#xA;c3Nvbl9wbGFuICwyMCwyMDs="/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariaDB"/>
@@ -117,9 +117,9 @@ WHERE
 				<text><![CDATA[Academia Militar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="101" y="60" width="238" height="25" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="75f31e37-efcb-41d2-bc71-5630648aa3eb"/>
+				<reportElement mode="Transparent" x="105" y="61" width="238" height="19" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="75f31e37-efcb-41d2-bc71-5630648aa3eb"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial Narrow" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial Narrow" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[Cronograma de  Lecionação]]></text>
 			</staticText>
@@ -322,28 +322,28 @@ WHERE
 				<text><![CDATA[ Local:]]></text>
 			</staticText>
 			<rectangle radius="0">
-				<reportElement mode="Opaque" x="20" y="2" width="515" height="24" forecolor="#091D91" backcolor="#0A1C8F" uuid="ba6e9b81-65a2-45d0-a021-afc9391fb89e">
+				<reportElement mode="Opaque" x="20" y="7" width="515" height="19" forecolor="#091D91" backcolor="#0A1C8F" uuid="ba6e9b81-65a2-45d0-a021-afc9391fb89e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<graphicElement fill="Solid"/>
 			</rectangle>
 			<staticText>
-				<reportElement mode="Transparent" x="23" y="7" width="48" height="16" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="a3fd132d-c380-42ea-90b8-13928e44a60e"/>
+				<reportElement mode="Transparent" x="29" y="9" width="48" height="16" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="a3fd132d-c380-42ea-90b8-13928e44a60e"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[Sessão]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="430" y="7" width="100" height="14" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="6ab6ba6f-71ac-40c2-9dc6-76ac55541243"/>
+				<reportElement mode="Transparent" x="430" y="9" width="100" height="14" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="6ab6ba6f-71ac-40c2-9dc6-76ac55541243"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{START_DATE})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="380" y="7" width="33" height="22" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="9dd485d5-630a-4ba1-96d7-13a171640298"/>
+				<reportElement mode="Transparent" x="380" y="9" width="33" height="22" forecolor="#FAFBFF" backcolor="#FFFFFF" uuid="9dd485d5-630a-4ba1-96d7-13a171640298"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>

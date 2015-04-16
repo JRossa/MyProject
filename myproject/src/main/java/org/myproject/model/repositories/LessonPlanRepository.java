@@ -49,6 +49,11 @@ public interface LessonPlanRepository extends JpaRepository<LessonPlan, Long> {
 	public List <LessonPlan> findLessonPlanByTeacherAndCourseAndDegree(@Param("teacherId") Long teacherId,
 			                                                           @Param("courseId") Long courseId,
 		                                                	           @Param("degreeId") Long degreeId);
+
+	
+	@Query(value="SELECT tbl_LESSON_PLAN.* FROM tbl_LESSON_PLAN "
+	           + "WHERE tbl_LESSON_PLAN.DESCRIPTION IS NULL ", nativeQuery = true)
+	public List <LessonPlan> findAllMissing();
 	
 
 }

@@ -111,6 +111,8 @@ public class LessonPlanMBean extends BaseBean {
     
     private Date initialEndDate;
     
+    private String selectedListType;
+    
     // lessonPlan - control buttons
     private Boolean renderedInit = true;
    
@@ -148,14 +150,44 @@ public class LessonPlanMBean extends BaseBean {
         this.lessonPlan.setDegree(new Degree());
 	}
 
+    
+    public void setupUserData () {
+ 
+        this.setSummaryLock(false);
+        this.setRenderedInit(false);
 
+        String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+
+        this.user = this.userRepository.findByUserName(username);
+        
+        this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
+
+        if (this.user.getTeacher().getId() != null) {
+        	
+        	this.setTeacherId(this.user.getTeacher().getId());
+            
+        	if ((this.user.getLogRole().getRolename().equals("ROLE_ADMIN")) || 
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_U")) ||
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_T"))) {
+        		this.setRenderedNumWeeks(true);
+        		this.setEnableTeacherSelect(true);
+        	}
+        	else {
+        		this.setRenderedNumWeeks(false);
+        		this.setEnableTeacherSelect(false);
+        		
+        		this.convertTeacherId();
+        	}
+         }
+    }
+
+    
 	@PostConstruct
     public void init () {
 
     	// setup objects
         
-        this.renderedInit = false;
-        this.summaryLock = false;
+        this.setupUserData();
         
         if (this.teacherSelected) {
         	if (this.courseSelected) {
@@ -249,7 +281,9 @@ public class LessonPlanMBean extends BaseBean {
         this.setSummaryLock(false);
         
         for (LessonPlan lp: lessonPlans) {
+        	
             if (lp.getId() == (Long) event.getData()) {
+            	
                 this.lessonPlan = this.lessonPlanRepository.findOne(lp.getId());
 
                 
@@ -298,32 +332,8 @@ public class LessonPlanMBean extends BaseBean {
     
     private void setupUser () {
     	  
-        String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-
-        this.user = this.userRepository.findByUserName(username);
-        
-        this.setSummaryLock(false);
-        this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
-        
         if (this.user.getTeacher().getId() != null) {
-        	
-            
-        	if ((this.user.getLogRole().getRolename().equals("ROLE_ADMIN")) || 
-        			(this.user.getLogRole().getRolename().equals("ROLE_USER_U")) ||
-        			(this.user.getLogRole().getRolename().equals("ROLE_USER_T"))) {
-        		this.setRenderedNumWeeks(true);
-        		this.setEnableTeacherSelect(true);
-        	}
-        	else {
-        		this.setRenderedNumWeeks(false);
-        		this.setEnableTeacherSelect(false);
-        	}
-            
         	this.setTeacherId(this.user.getTeacher().getId());
-        	if (!this.getEnableTeacherSelect()) {
-        		this.convertTeacherId();
-        	}
-        	
             this.setCourseId(-1L);
             this.setDegreeId(-1L);
         }
@@ -497,7 +507,7 @@ public class LessonPlanMBean extends BaseBean {
     	
     	this.addEvent();
     	
-    	// TODO    	
+    	// TODO - Limpar código no final   	
     	for (int i = 1; i < this.getNumberOfWeeks(); i++) {
     		
     		this.lessonPlan.setId(null);
@@ -741,7 +751,7 @@ public class LessonPlanMBean extends BaseBean {
 
     
     private void checkDegreeCurricularPlan (Long courseId, Long degreeId) {
-
+    	
     	DegreeCurricularPlansData degreeCurricularPlan = 
     			this.degreeCurricularPlansDataRepository.findCurricularPlanByCourseAndDegree(courseId, degreeId);
     	
@@ -750,8 +760,12 @@ public class LessonPlanMBean extends BaseBean {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
             addMessage(message);
     	} else {
-    		String msg = "UC do " + degreeCurricularPlan.getCurricularYear() + "º ano / " +
-    				         degreeCurricularPlan.getCurricularSemester() + "º semestre";
+        	String curricularYear = getResourceProperty("labels", "lessonplan_degreecurricularplan_year");
+        	String curricularSemester = getResourceProperty("labels", "lessonplan_degreecurricularplan_semester");
+
+    		String msg = "UC do " + degreeCurricularPlan.getCurricularYear() + "º " + curricularYear + " / " +
+    				         degreeCurricularPlan.getCurricularSemester() + "º " + curricularSemester;
+    		
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg );
             addMessage(message);
     	}
@@ -1005,12 +1019,21 @@ public class LessonPlanMBean extends BaseBean {
         return bundle.getString(label);
     }
 
- 
     
-    
-    public void onLoad () {
+    public void onLoad (String list) {
     	
-    	this.lessonPlans = this.lessonPlanRepository.findAll();
+    	if (list.equals("all")) {
+    		this.selectedListType = "";
+    		
+    		this.lessonPlans = this.lessonPlanRepository.findAll();
+    	}
+    	
+    	if (list.equals("missing")) {
+    		this.selectedListType = getResourceProperty("labels", "lessonplan_missing");
+    		
+    		this.lessonPlans = this.lessonPlanRepository.findAllMissing();
+    	}
+
     }
     
 
@@ -1179,6 +1202,17 @@ public class LessonPlanMBean extends BaseBean {
 	public void setEnableTeacherSelect(Boolean enableTeacherSelect) {
 		this.enableTeacherSelect = enableTeacherSelect;
 	}
+
+
+	public String getSelectedListType() {
+		return selectedListType;
+	}
+
+
+	public void setSelectedListType(String selectedListType) {
+		this.selectedListType = selectedListType;
+	}
+	
 	
 	
 }

@@ -11,6 +11,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		
 		<spring.security-version>3.1.2.RELEASE</spring.security-version>
 		<spring-version>4.0.3.RELEASE</spring-version>
+
+		<primefaces-version>5.2</primefaces-version>
 		
 		<hibernate.core-version>4.3.7.Final</hibernate.core-version>
         <hibernate.entitymanager-version>4.3.7.Final</hibernate.entitymanager-version>
@@ -286,7 +288,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.1</version>
+			<version>${primefaces-version}</version>
 		</dependency>
 
 		<!-- PRIMEFACES ALL THEMES -->

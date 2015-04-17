@@ -15,7 +15,7 @@
  	
 	<h:form  >  
      <p:menubar>
-        <p:submenu label="#{labels.menu_user}" icon="ui-icon-document" >
+        <p:submenu label="#{labels.menu_user}" icon="fa fa-user" >
             <p:menuitem value="#{labels.menu_user_create}" 
             			actionListener="#{userCRUDMBean.add}"
             			update=":userCreateDlg" 
@@ -34,19 +34,19 @@
         </p:submenu>
  
         <p:submenu label="#{labels.menu_teacher}" icon="ui-icon-pencil">
-            <p:menuitem value="#{labels.menu_teacher_list}" icon="ui-icon-arrowreturnthick-1-w"
+            <p:menuitem value="#{labels.menu_teacher_list}" icon="ui-icon-triangle-1-e"
                         url="/pages/admin/listTeacher.am?executionyear=all"  >
             </p:menuitem>            
             <p:menuitem value="#{labels.menu_teacher_executionyear_list}" icon="ui-icon-arrowreturnthick-1-e"
                         url="/pages/admin/listTeacher.am?executionyear=year"  />
         </p:submenu>
  
-        <p:submenu label="#{labels.menu_session}"  icon="ui-icon-help">
+        <p:submenu label="#{labels.menu_session}"  icon="ui-icon-tag">
             <p:menuitem value="#{labels.menu_session_list}" 
                         url="/pages/admin/listLogSessionT.am" />
         </p:submenu>
  
-         <p:submenu label="#{labels.menu_lessonplan}"  icon="ui-icon-help">
+         <p:submenu label="#{labels.menu_lessonplan}"  icon="ui-icon-script">
             <p:menuitem value="#{labels.menu_lessonplan_list}" 
                         url="/pages/admin/listLessonPlan.am?list=all" />
             <p:menuitem value="#{labels.menu_lessonplan_report}" 
@@ -55,7 +55,7 @@
                         url="/pages/admin/listLessonPlan.am?list=missing" />
         </p:submenu>
  
-         <p:submenu label="#{labels.menu_professorship}"  icon="ui-icon-help">
+         <p:submenu label="#{labels.menu_professorship}"  icon="fa fa-download">
             <p:menuitem value="#{labels.menu_professorship_list}" 
                         url="/pages/admin/listProfessorship.am" >
             </p:menuitem>

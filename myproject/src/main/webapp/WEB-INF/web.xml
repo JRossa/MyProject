@@ -55,6 +55,11 @@
 		<param-value>bootstrap</param-value>
 	</context-param>
 
+	<context-param>
+	   <param-name>primefaces.FONT_AWESOME</param-name>
+	   <param-value>true</param-value>
+	</context-param>
+	
 	<!-- TO RUN PRIMEFACES 5.1 -->
 	<context-param>
 		<param-name>primefaces.LEGACY_WIDGET_NAMESPACE</param-name>

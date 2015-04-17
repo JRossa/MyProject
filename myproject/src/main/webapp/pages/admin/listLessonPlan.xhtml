@@ -17,7 +17,7 @@
 		<h:form>
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
-   		 	<p:menuitem value="#{labels.menu_lessonplan_list}" url="/pages/admin/listLessonPlan.am" />
+   		 	<p:menuitem value="#{labels.menu_lessonplan_list} #{lessonPlanMBean.selectedListType}" url="/pages/admin/listLessonPlan.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -40,7 +40,6 @@
 		<p:panel id="lessonplanPanel" style="border: 0px;" >
 		
 			<h:form id="lessonplanListForm" >
-
 				<p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
 					value="#{labels.button_send_list_email}" 
 					disabled="${param.list != 'missing'}"

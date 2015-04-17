@@ -1,0 +1,18 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+
+	<url-mapping id="reportLessonPlan">
+		<pattern value="/reportLessonPlan" />
+		<view-id value="/pages/admin/reportLessonPlan.am" />
+	</url-mapping>
+
+	<url-mapping id="logout">
+		<pattern value="/public/public.am" />
+		<view-id value="/public/public.am" />
+	</url-mapping>
+
+
+</pretty-config>

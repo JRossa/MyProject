@@ -133,7 +133,8 @@ public class LessonPlanMBean extends BaseBean {
 
     private Boolean renderedDelete;
 
-
+    private Boolean renderedEMail;
+    
     private Boolean disableButtons;
 
     
@@ -1024,12 +1025,14 @@ public class LessonPlanMBean extends BaseBean {
     	
     	if (list.equals("all")) {
     		this.selectedListType = "";
+    		this.renderedEMail = false;
     		
     		this.lessonPlans = this.lessonPlanRepository.findAll();
     	}
     	
     	if (list.equals("missing")) {
     		this.selectedListType = getResourceProperty("labels", "lessonplan_missing");
+    		this.renderedEMail = true;
     		
     		this.lessonPlans = this.lessonPlanRepository.findAllMissing();
     	}
@@ -1212,7 +1215,15 @@ public class LessonPlanMBean extends BaseBean {
 	public void setSelectedListType(String selectedListType) {
 		this.selectedListType = selectedListType;
 	}
-	
-	
+
+
+	public Boolean getRenderedEMail() {
+		return renderedEMail;
+	}
+
+
+	public void setRenderedEMail(Boolean renderedEMail) {
+		this.renderedEMail = renderedEMail;
+	}
 	
 }

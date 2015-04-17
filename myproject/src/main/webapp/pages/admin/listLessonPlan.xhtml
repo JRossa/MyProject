@@ -42,8 +42,8 @@
 			<h:form id="lessonplanListForm" >
 				<p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
 					value="#{labels.button_send_list_email}" 
-					disabled="${param.list != 'missing'}"
-					action="#{lessonPlanCRUDMBean.sendListEMail}"  />
+					disabled="#{!lessonPlanMBean.renderedEMail}"
+					onclick="PF('emailCreateDialog').show();"  />
 			
 				<p:dataTable id="lessonplanDataTable" widgetVar="lessonplanDataTable"
 				    loadingMessage="#{labels.lessonplan_load}"
@@ -135,6 +135,7 @@
 			
 			<ui:include name="update" src="updateLessonPlan.xhtml"  />
 			<ui:include name="delete" src="deleteLessonPlan.xhtml"  />
+			<ui:include name="email" src="createEMail.xhtml"  />
 			
 		</p:panel>
 

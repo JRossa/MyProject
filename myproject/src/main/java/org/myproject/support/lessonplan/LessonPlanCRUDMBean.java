@@ -210,9 +210,10 @@ public class LessonPlanCRUDMBean extends BaseBean {
         
     }
 
+    
 	public void sendEMail () {
         String msg = getResourceProperty("labels", "user_email_sent");
-        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.mbLessonPlanMBean.getLessonPlan().getTeacher().getCategory());
+        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory());
         
         
         System.out.println("Send EMail" + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory() + "  "
@@ -251,7 +252,7 @@ public class LessonPlanCRUDMBean extends BaseBean {
         MailSender mail = new MailSender();
         
         String emailSubject = "Envio de notificação para preenchimento de sumários";
-        String emailMsg = "Exmo Senhor <br/>"
+        String emailMsg = "Exmo Senhor(a) <br/>"
                         + academicName + "   " + teacher.getFullName() + "<br/>"
                         + "<br/><br/>" 
                         + "EMail         : " + teacher.getEMail() + "<br/>"
@@ -278,11 +279,16 @@ public class LessonPlanCRUDMBean extends BaseBean {
 	
 	
 	public void sendListEMail () { 
+		
 		List<LessonPlan> lessonPlans = this.lessonPlanRepository.findAllMissing();
 		Date date = new Date();
-		
+	
 		for (LessonPlan lp: lessonPlans) {
-			if (this.computeDiffDays(this.lessonPlan.getEndDate(), date) > 10L) {
+			System.out.println("Teacher Fora : " + lp.getTeacher().getFullName() + "     " 
+					+ this.computeDiffDays(lp.getEndDate(), date));
+			
+			if (this.computeDiffDays(lp.getEndDate(), date) > 10L) {
+//				System.out.println("Teacher : " + lp.getTeacher().getFullName());
 				this.sendTeacherEMail(lp.getTeacher());
 			}
 		}

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+
+	<style  type="text/css" >
+		.ui-icon-myReset{
+  			background-image: url("#{resource['images/icons/New document.png']}") !important;
+		}
+		.ui-icon-mySave{
+  			background-image: url("#{resource['images/icons/Save.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+	</style>
+	
+</h:head>
+
+	<p:dialog id="emailCreateDlg" widgetVar="emailCreateDialog"
+		      header="#{labels.email_send_message}" 
+		      visible="#{formEMailUpdate.submitted and facesContext.validationFailed}"
+			  modal="true" 
+			  resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode" >
+						  
+	<h:form id="formEMailUpdate" >
+
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+									
+		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
+						 styleClass="form" 
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="tableRowOdd, tableRowEven" >
+
+			<h:outputLabel for="subject" value="#{labels.email_subject}" />
+			<h:panelGroup>
+				<p:inputText id="subject" value="#{emailCRUDMBean.subject}"
+							 title="#{labels.email_insert} #{labels.email_subject} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="subject" styleClass="formUserError"/>
+				<p:tooltip for="subject" value="#{labels.email_insert} #{labels.email_subject} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="teacher" value="#{labels.email_teacher}" />
+			<h:panelGroup>
+				<p:inputText id="teacher" value="#{emailCRUDMBean.teacher.fullName}"
+							 title="#{labels.email_insert} #{labels.email_teacher} !!"
+							 maxlength="255" size="70"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="teacher" styleClass="formUserError"/>
+				<p:tooltip for="teacher" value="#{labels.email_insert} #{labels.email_teacher} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="email" value="#{labels.email_teacher_email}" />
+			<h:panelGroup>
+				<p:inputText id="email" value="#{emailCRUDMBean.teacher.EMail}"
+							 title="#{labels.email_insert} #{labels.email_teacher} !!"
+							 maxlength="255" size="70"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="email" styleClass="formUserError"/>
+				<p:tooltip for="email" value="#{labels.email_insert} #{labels.email_teacher_email} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+
+			<h:outputLabel for="description" value="#{labels.email_text}" />
+			<h:panelGroup>
+				<p:inputTextarea id="description" value="#{emailCRUDMBean.text}"
+							     title="#{labels.email_insert} #{labels.email_text} !!"
+							     style="width: 415px; height: 100px;"
+                                 rows="10" cols="50"
+                                 queryDelay="750" minQueryLength="4" />
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="description" styleClass="formUserError"/>
+				<p:tooltip for="description" value="#{labels.email_insert} #{labels.email_text} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+ 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+ 				                 value="#{labels.email_send_email}"
+    							 action="#{emailCRUDMBean.sendListEMail}" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.email_close}" 
+ 								 action="#{emailCRUDMBean.disableButtons}"
+    							 onclick="PF('emailCreateDialog').hide()" 
+    							 process="@this" 	 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 275px" />
+    			
+    			</h:panelGroup>
+			</f:facet>		 
+		</h:panelGrid>
+	</h:form>	
+	</p:dialog>  
+
+</html>
+
+<!--      							 oncomplete="if (#{not facesContext.validationFailed}) userUpdateDialog.hide()"	 /> 
+ -->

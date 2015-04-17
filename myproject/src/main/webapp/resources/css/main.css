@@ -20,6 +20,12 @@ ul.ui-widget-content.ui-menu-list.ui-menu-child {
 	color: black;
 }
 
+/* para resolver o problema ^ */
+.ui-icon.fa {
+     text-indent: 0px;
+     background-image: none;
+}
+
 #mainFooter {
 	font-family: Verdana,sans-serif;
 	color: grey;

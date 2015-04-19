@@ -4,15 +4,15 @@
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
 
-	<url-mapping id="reportLessonPlan">
-		<pattern value="/reportLessonPlan" />
-		<view-id value="/pages/admin/reportLessonPlan.am" />
-	</url-mapping>
+<!-- 	<url-mapping id="reportLessonPlan"> -->
+<!-- 		<pattern value="/reportLessonPlan" /> -->
+<!-- 		<view-id value="/pages/admin/reportLessonPlan.am" /> -->
+<!-- 	</url-mapping> -->
 
-	<url-mapping id="logout">
-		<pattern value="/public/public.am" />
-		<view-id value="/public/public.am" />
-	</url-mapping>
+<!-- 	<url-mapping id="logout"> -->
+<!-- 		<pattern value="/public/public.am" /> -->
+<!-- 		<view-id value="/public/public.am" /> -->
+<!-- 	</url-mapping> -->
 
 
 </pretty-config>

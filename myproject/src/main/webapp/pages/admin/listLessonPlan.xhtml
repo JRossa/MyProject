@@ -43,7 +43,9 @@
 				<p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
 					value="#{labels.button_send_list_email}" 
 					disabled="#{!lessonPlanMBean.renderedEMail}"
-					onclick="PF('emailCreateDialog').show();"  />
+					action="#{emailMBean.email('list')}"
+					update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanEMail"
+					oncomplete="PF('lessonplanEMailDialog').show();"  />
 			
 				<p:dataTable id="lessonplanDataTable" widgetVar="lessonplanDataTable"
 				    loadingMessage="#{labels.lessonplan_load}"
@@ -129,13 +131,22 @@
 										 oncomplete="PF('lessonplanUpdateDialog').show(); " >
 							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
 						</p:commandButton>
+						<p:commandButton widgetVar="emailLessonPlanButton"
+										 icon="ui-icon-mail-closed"
+										 rendered="#{lessonPlanMBean.renderedEMail}"
+										 title="#{labels.lessonplan_email}"
+										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanEMail"
+										 action="#{emailMBean.email('teacher')}"
+										 oncomplete="PF('lessonplanEMailDialog').show(); " >
+							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</h:form>
 			
 			<ui:include name="update" src="updateLessonPlan.xhtml"  />
 			<ui:include name="delete" src="deleteLessonPlan.xhtml"  />
-			<ui:include name="email" src="createEMail.xhtml"  />
+			<ui:include name="email"  src="emailLessonPlan.xhtml"  />
 			
 		</p:panel>
 

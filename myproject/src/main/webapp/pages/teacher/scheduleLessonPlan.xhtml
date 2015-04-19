@@ -66,6 +66,7 @@
 	<p:schedule id="scheduleLessonPlanId" widgetVar="myschedule"
 	            value="#{lessonPlanMBean.eventModel}" 
 	            locale="#{languageMBean.locale}"
+	            initialDate="#{lessonPlanMBean.initialScheduleDate}" 
 	            axisFormat="H:mm" 
 	            timeFormat="H:mm"
 	            style="position:relative; 
@@ -353,7 +354,8 @@
            		                 
             	<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
             	                 value="#{labels.lessonplan_save}"
-            	                 rendered="#{!lessonPlanMBean.summaryLock}" 
+            	                 rendered="#{!lessonPlanMBean.summaryLock}"
+            	                 update="scheduleLessonPlanId" 
             					 actionListener="#{lessonPlanMBean.addEvent}" />
                 				  
              	<p:commandButton icon="ui-icon-myDelete" style="width: 100px;"

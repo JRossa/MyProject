@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
 @Named(value = "courseMBean")
-public class CourseMBean extends BaseBean{
+public class CourseMBean extends BaseBean {
 
     private static final long serialVersionUID = 7979033414618829290L;
 

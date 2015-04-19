@@ -55,7 +55,7 @@ public class LessonPlanMBean extends BaseBean {
 
     private static final Logger logger = Logger.getLogger(LessonPlanMBean.class);
 
-	private static final int maxDiffDays = 7;
+	private static final int maxDiffDays = 14;
 	
 	private static final Long voidDegree = 28L;
 	
@@ -111,6 +111,8 @@ public class LessonPlanMBean extends BaseBean {
     
     private Date initialEndDate;
     
+    private Date initialScheduleDate;
+    
     private String selectedListType;
     
     // lessonPlan - control buttons
@@ -144,6 +146,8 @@ public class LessonPlanMBean extends BaseBean {
 		
 		this.disableButtons = true;
 		
+		this.setInitialScheduleDate(new Date());
+
         this.lessonPlan = new LessonPlan();
         this.lessonPlan.setStamp(new Stamp());
         this.lessonPlan.setTeacher(new Teacher());
@@ -279,6 +283,10 @@ public class LessonPlanMBean extends BaseBean {
 
     	ScheduleEvent event = (ScheduleEvent) selectEvent.getObject();
         
+    	if (event == null) {
+    		return;
+    	}
+    	
         this.setSummaryLock(false);
         
         for (LessonPlan lp: lessonPlans) {
@@ -461,10 +469,12 @@ public class LessonPlanMBean extends BaseBean {
         	this.lessonPlan.setId(null);
         }
 
-       
+        this.setInitialScheduleDate(this.lessonPlan.getStartDate());
+      
         if (this.lessonPlan.getId() == null) {
             if (this.lessonPlan.getStartDate().getTime() <= 
                        this.lessonPlan.getEndDate().getTime()) {
+
 
                 stamp.setCreationUser(username);
                 stamp.setCreationDate(new Date());
@@ -483,14 +493,16 @@ public class LessonPlanMBean extends BaseBean {
 
                 this.init();
             } else {
-                    String msg = getResourceProperty("labels", "lessonplan_change_dates");
+  
+            	String msg = getResourceProperty("labels", "lessonplan_change_dates");
 
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg );
                     addMessage(message);
                 }
             
             } else {
-                LessonPlan retLessonPlan = this.lessonPlanRepository.saveAndFlush(this.lessonPlan);
+ 
+            	LessonPlan retLessonPlan = this.lessonPlanRepository.saveAndFlush(this.lessonPlan);
                 System.out.printf("Log ID is %d and for returned account ID is %d\n", lessonPlan.getId(), retLessonPlan.getId());
  
                 String msg = getResourceProperty("labels", "lessonplan_update_ok");
@@ -1225,5 +1237,15 @@ public class LessonPlanMBean extends BaseBean {
 	public void setRenderedEMail(Boolean renderedEMail) {
 		this.renderedEMail = renderedEMail;
 	}
-	
+
+
+	public Date getInitialScheduleDate() {
+		return initialScheduleDate;
+	}
+
+
+	public void setInitialScheduleDate(Date initialScheduleDate) {
+		this.initialScheduleDate = initialScheduleDate;
+	}
+
 }

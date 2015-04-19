@@ -194,6 +194,10 @@ public class LessonPlanMBean extends BaseBean {
         
         this.setupUserData();
         
+        if (this.lessonPlan.getStartDate() != null) {
+        	this.setInitialScheduleDate(this.lessonPlan.getStartDate());
+        }
+        
         if (this.teacherSelected) {
         	if (this.courseSelected) {
         		if (this.degreeSelected) {

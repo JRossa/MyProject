@@ -13,6 +13,8 @@ import javax.inject.Named;
 
 
 
+
+
 import org.myproject.model.utils.BaseBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,6 +31,12 @@ public class ClockMBean extends BaseBean {
 	private final static int HOURS = 18;
 	private final static int MINUTES = 00;
 
+	
+	public void setupAlarm() {
+		AlarmClock alarmClock = new AlarmClock(3, 1, 20);
+		alarmClock.activateAlarmThenStop();
+		
+	}
 	
 	public void setupTimeToSendNotification () {
     	TimerTask fetchMail = new FetchMail();

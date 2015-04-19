@@ -5,6 +5,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import javax.ejb.Startup;
+
 /**
  * Run a simple task once every second, starting 3 seconds from now. Cancel the
  * task after 20 seconds.

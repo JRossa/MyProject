@@ -37,6 +37,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		
 		<jodatime-version>2.7</jodatime-version>
 		
+		<prettyfaces-version>3.3.3</prettyfaces-version>
+		
 	</properties>
 
 	<repositories>
@@ -125,16 +127,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<dependencies>
 
 		<!-- PRETTY FACES -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>org.ocpsoft.rewrite</groupId> -->
-<!-- 		    <artifactId>rewrite-servlet</artifactId> -->
-<!-- 		    <version>2.0.12.Final</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>org.ocpsoft.rewrite</groupId> -->
-<!-- 		    <artifactId>rewrite-config-prettyfaces</artifactId> -->
-<!-- 		    <version>2.0.12.Final</version> -->
-<!-- 		</dependency> -->
+		<!-- for JSF 2.x -->
+		<dependency>
+		   <groupId>com.ocpsoft</groupId>
+		   <artifactId>prettyfaces-jsf2</artifactId>
+		   <version>${prettyfaces-version}</version>
+		</dependency>
 
 		<!-- FONT AWESOME -->
 		<dependency>

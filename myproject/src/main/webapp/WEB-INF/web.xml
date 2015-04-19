@@ -107,7 +107,28 @@
         <dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	
-	    <!-- JasperReports Servlet -->
+	
+	<!--  PRETTY FACES FILTER-->
+	<filter>
+   		<filter-name>Pretty Filter</filter-name>
+   		<filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
+	</filter>
+
+	<filter-mapping> 
+   		<filter-name>Pretty Filter</filter-name> 
+   		<url-pattern>/*</url-pattern> 
+   		<dispatcher>FORWARD</dispatcher> 
+   		<dispatcher>REQUEST</dispatcher> 
+   		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
+	<context-param>
+  		<param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
+  		<param-value>true</param-value>
+	</context-param>
+	
+	
+	<!-- JasperReports Servlet -->
     <servlet>
         <servlet-name>PdfServlet</servlet-name>
         <servlet-class>net.sf.jasperreports.j2ee.servlets.PdfServlet</servlet-class>

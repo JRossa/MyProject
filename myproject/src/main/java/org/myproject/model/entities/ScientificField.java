@@ -16,7 +16,7 @@ public class ScientificField extends BaseEntity<Long> {
 
     private static final long serialVersionUID = 4797385063510283118L;
 
-    static Logger logger = LoggerFactory.getLogger(Professorship.class);
+    static Logger logger = LoggerFactory.getLogger(ScientificField.class);
     
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;

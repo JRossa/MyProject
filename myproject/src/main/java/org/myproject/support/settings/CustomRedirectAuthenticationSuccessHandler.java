@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @Named
-public class CostumRedirectAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class CustomRedirectAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     protected Logger       logger = Logger.getLogger(this.getClass());
 
     @Inject
@@ -56,7 +56,7 @@ public class CostumRedirectAuthenticationSuccessHandler extends SimpleUrlAuthent
         request.getSession().setAttribute("userId", userId);
         request.getSession().setAttribute("changepass", 0);
         
-        String adminTargetUrl = "/pages/admin/admin.am";
+        String adminTargetUrl = "/schedule";
         String userTargetUrl = "/pages/user/userT.am";
         String teacherTargetUrl = "/pages/teacher.am";
         String studentTargetUrl = "/public/student.am";

@@ -16,7 +16,7 @@ public class Degree extends BaseEntity<Long> {
 
     private static final long serialVersionUID = 6079866596451617573L;
     
-    static Logger logger = LoggerFactory.getLogger(Professorship.class);
+    static Logger logger = LoggerFactory.getLogger(Degree.class);
 
     @Column(name = "CODE")
     private String code;

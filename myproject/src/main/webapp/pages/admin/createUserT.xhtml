@@ -137,6 +137,31 @@
 				</p:tooltip>
 			</h:panelGroup>
 
+			<h:outputLabel for="changepassword" value="#{labels.user_change_password}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="changepassword" value="#{userCRUDMBean.user.changePassword}"
+							 title="#{labels.user_insert} #{labels.user_state} !!"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.user_enabled}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.user_disabled}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="changepassword" styleClass="formUserError"/>
+			</h:panelGroup>
+
+			<h:outputLabel for="creationuser" value="#{labels.user_creation_user}"/>
+			<h:panelGroup>
+				<p:inputText id="creationuser" value="#{userCRUDMBean.user.creationUser}"
+							 title="#{labels.user_creation_user}"
+							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="creationuser" styleClass="formUserError"/>
+				<p:tooltip for="creationuser" />
+			</h:panelGroup>
+
 			<h:outputLabel for="enabled" value="#{labels.user_state}"/>
 			<h:panelGroup>
 				<p:selectOneMenu id="enabled" value="#{userCRUDMBean.user.enabled}"
@@ -162,9 +187,9 @@
 				<p:tooltip for="creationUser" />
 			</h:panelGroup>
 					
-			<h:outputLabel for="creationDate" value="#{labels.user_creation_date}"/>
+			<h:outputLabel for="creationdate" value="#{labels.user_creation_date}"/>
 			<h:panelGroup>
-				<p:inputText id="creationDate" value="#{userCRUDMBean.user.creationDate}"
+				<p:inputText id="creationdate" value="#{userCRUDMBean.user.creationDate}"
 							 title="#{labels.user_creation_date}"
 							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="30" >
@@ -172,25 +197,25 @@
 				</p:inputText>
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
-				<h:message for="creationDate" styleClass="formUserError"/>
-				<p:tooltip for="creationDate" />
+				<h:message for="creationdate" styleClass="formUserError"/>
+				<p:tooltip for="creationdate" />
 			</h:panelGroup>
 
-			<h:outputLabel for="modificationUser" value="#{labels.user_modification_user}"/>
+			<h:outputLabel for="modificationuser" value="#{labels.user_modification_user}"/>
 			<h:panelGroup>
-				<p:inputText id="modificationUser" value="#{userCRUDMBean.user.modificationUser}"
+				<p:inputText id="modificationuser" value="#{userCRUDMBean.user.modificationUser}"
 							 title="#{labels.user_modification_user}"
 							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
-				<h:message for="modificationUser" styleClass="formUserError"/>
-				<p:tooltip for="modificationUser" />
+				<h:message for="modificationuser" styleClass="formUserError"/>
+				<p:tooltip for="modificationuser" />
 			</h:panelGroup>
 					
-			<h:outputLabel for="modificationDate" value="#{labels.user_modification_date}"/>
+			<h:outputLabel for="modificationdate" value="#{labels.user_modification_date}"/>
 			<h:panelGroup>
-				<p:inputText id="modificationDate" value="#{userCRUDMBean.user.modificationDate}"
+				<p:inputText id="modificationdate" value="#{userCRUDMBean.user.modificationDate}"
 							 title="#{labels.user_modification_date}"
 							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="30">
@@ -198,13 +223,13 @@
 				</p:inputText>			 
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
-				<h:message for="modificationDate" styleClass="formUserError"/>
-				<p:tooltip for="modificationDate" />
+				<h:message for="modificationdate" styleClass="formUserError"/>
+				<p:tooltip for="modificationdate" />
 			</h:panelGroup>
 					
-			<h:outputLabel for="lastLoginDate" value="#{labels.user_last_login_date}"/>
+			<h:outputLabel for="lastLogindate" value="#{labels.user_last_login_date}"/>
 			<h:panelGroup>
-				<p:inputText id="lastLoginDate" value="#{userCRUDMBean.user.lastLoginDate}"
+				<p:inputText id="lastLogindate" value="#{userCRUDMBean.user.lastLoginDate}"
 							 title="#{labels.user_last_login_date}"
 							 readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="30" >
@@ -213,8 +238,8 @@
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
 
-				<h:message for="lastLoginDate" styleClass="formUserError"/>
-				<p:tooltip for="lastLoginDate" />
+				<h:message for="lastLogindate" styleClass="formUserError"/>
+				<p:tooltip for="lastLogindate" />
 			</h:panelGroup>
 			
 			<f:facet name="footer">

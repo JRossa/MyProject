@@ -134,6 +134,10 @@ public class TeacherCRUDMBean extends BaseBean {
  
         String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
        
+        if (username == null) {
+        	return;
+        }
+        
         this.teacher = mbTeacherMBean.getSelectedTeacher();
         
         if (this.teacher != null)

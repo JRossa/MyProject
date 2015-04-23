@@ -15,6 +15,7 @@
 		<class>org.myproject.model.entities.LogUser</class>
 		<class>org.myproject.model.entities.LogRole</class>
 		<class>org.myproject.model.entities.LogSession</class>
+		<class>org.myproject.model.entities.PersistentLogin</class>
 				
 		<class>org.myproject.model.entities.Teacher</class>
 		<class>org.myproject.model.entities.TeacherHours</class>

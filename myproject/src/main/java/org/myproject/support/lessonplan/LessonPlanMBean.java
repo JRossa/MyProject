@@ -165,6 +165,11 @@ public class LessonPlanMBean extends BaseBean {
 
         this.user = this.userRepository.findByUserName(username);
         
+        // WARN - It happens when the 
+        if (this.user == null) {
+        	return;
+        }
+        
         this.mbSchoolTimesMBean.setSelectedSchoolTimes(null);
 
         if (this.user.getTeacher().getId() != null) {

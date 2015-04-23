@@ -19,7 +19,7 @@ public class DegreeCurricularPlansData extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = 240483007805620419L;
 
-    static Logger logger = LoggerFactory.getLogger(Professorship.class);
+    static Logger logger = LoggerFactory.getLogger(DegreeCurricularPlansData.class);
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "DEGREE_CODE")

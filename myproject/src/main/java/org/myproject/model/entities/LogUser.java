@@ -55,6 +55,9 @@ public class LogUser extends BaseEntity<Long> {
     @Column(name = "RND_PASSWORD")
     private String rndPassword;
 
+    @Column(name = "CHANGE_PASSWORD")
+    private Boolean changePassword;
+
     @Column(name = "ENABLED")
     private Boolean enabled;
 
@@ -159,8 +162,15 @@ public class LogUser extends BaseEntity<Long> {
         this.rndPassword = rndPassword;
     }
 
+    public Boolean getChangePassword() {
+		return changePassword;
+	}
 
-    public Boolean getEnabled() {
+	public void setChangePassword(Boolean changePassword) {
+		this.changePassword = changePassword;
+	}
+
+	public Boolean getEnabled() {
         return enabled;
     }
 

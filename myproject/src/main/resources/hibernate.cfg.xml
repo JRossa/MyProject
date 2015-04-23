@@ -27,9 +27,11 @@
      <mapping class="org.myproject.model.entities.LogUser" />
      <mapping class="org.myproject.model.entities.LogRole" />
      <mapping class="org.myproject.model.entities.LogSession" />
+     <mapping class="org.myproject.model.entities.PersistentLogin" />
      
      <mapping class="org.myproject.model.entities.Teacher" />
      <mapping class="org.myproject.model.entities.TeacherHours" />
+     
      <mapping class="org.myproject.model.entities.Professorship" />
      <mapping class="org.myproject.model.entities.CategoryGroup" />
      <mapping class="org.myproject.model.entities.CategoryLookupTable" />

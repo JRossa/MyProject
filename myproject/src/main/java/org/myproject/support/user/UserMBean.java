@@ -258,11 +258,14 @@ public class UserMBean extends BaseBean {
         String username = (String) context.getSessionMap().get("username");
         
         
-        // System.out.println("check Log User  :  " + username);
         
         LogUser user = this.userRepository.findByUserName(username);
-        
+
+
         if (user != null) {
+        	// TODO - Validar se muda a password
+            System.out.println("Check Log User  :  " + username + "  change : " + user.getChangePassword());
+
         	if (user.getRndPassword() == null || user.getRndPassword().length() == 0) {
                 // Do nothing
                 this.checkPassword = false;
@@ -271,6 +274,8 @@ public class UserMBean extends BaseBean {
         	} else {
                 if (this.lockResponse == false) {
                 	message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgTitle, msgBody);
+                	FacesContext.getCurrentInstance().addMessage(null, message);
+                	
                 	this.lockResponse = true;
                 }
         		this.checkPassword = true;

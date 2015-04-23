@@ -198,7 +198,11 @@ public class TeacherMBean extends BaseBean {
 
     
     public void setRenderedListTeacherButtons (String rolename) {
-        
+
+        if (rolename == null) {
+        	return;
+        }
+
         if (rolename.equals("ROLE_ADMIN")) {
             this.renderedProfessorship = true;
             this.renderedTeacherHours = true;

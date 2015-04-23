@@ -19,7 +19,7 @@ public class ExecutionYear extends BaseEntity<Long>  {
     
     private static final long serialVersionUID = 4820257534042861526L;
     
-    static Logger logger = LoggerFactory.getLogger(Professorship.class);
+    static Logger logger = LoggerFactory.getLogger(ExecutionYear.class);
     
 
     @Column(name = "EXECUTION_YEAR", nullable = false)

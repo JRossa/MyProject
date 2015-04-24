@@ -14,8 +14,8 @@
 		<view-id value="/pages/admin/listLessonPlan.am" />
 	</url-mapping>
 
-	<url-mapping id="mainPage">
-		<pattern value="/schedule" />
+	<url-mapping id="schedule">
+		<pattern value="/schedule/#{role}" />
 		<view-id value="/pages/admin/admin.am" />
 	</url-mapping>
 

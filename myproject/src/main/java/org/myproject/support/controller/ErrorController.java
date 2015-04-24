@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.myproject.model.entities.LogSession;
 import org.myproject.model.entities.LogUser;
 import org.myproject.model.repositories.LogSessionRepository;
 import org.myproject.model.repositories.UserRepository;
+import org.myproject.support.user.UserMBean;
 
 @Controller
 @RequestMapping(value = { "" })
@@ -31,6 +33,7 @@ public class ErrorController {
     @Inject
     private LogSessionRepository sessionRepository;
 
+    
     @RequestMapping("/403")
     public ModelAndView accessDenied(Principal principal) {
         ModelAndView model = new ModelAndView();

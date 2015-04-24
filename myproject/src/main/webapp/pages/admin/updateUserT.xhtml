@@ -104,6 +104,19 @@
 				           hideEffect="explode" trackMouse="true">
 				</p:tooltip>
 			</h:panelGroup>
+
+			<h:outputLabel for="changepassword" value="#{labels.user_change_password}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="changepassword" value="#{userCRUDMBean.user.changePassword}"
+							 title="#{labels.user_insert} #{labels.user_state} !!"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.user_change_password_yes}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.user_change_password_no}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="changepassword" styleClass="formUserError"/>
+			</h:panelGroup>
 					
 			<h:outputLabel for="enabled" value="#{labels.user_state}"/>
 			<h:panelGroup>

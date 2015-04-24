@@ -18,7 +18,7 @@
 			<ui:define name="breadcrumb" >
 				<h:form>
 				<p:breadCrumb>
-   					<p:menuitem value="" url="/pages/admin/admin.am" />
+   					<p:menuitem value="" url="/schedule/admin" />
  				</p:breadCrumb>
  				</h:form>
 			</ui:define>
@@ -28,7 +28,6 @@
 			</ui:define>
 			
             <ui:define name="content" >
-            	
                 <c:if test="#{userMBean.checkUserPassword() == 'false'}" >
              		<ui:include name="header" src="../teacher/scheduleLessonPlan.xhtml" />
              	</c:if>

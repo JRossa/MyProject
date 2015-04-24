@@ -7,109 +7,118 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/brasao4_am.png" />
-	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/reset.css" />
-	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/structure.css" />
-
-	<style type="text/css" >
-			body{
-			  background-image: url(/paco_am.jpg);
-			}
-	</style>	
-		
-	<title>
-		#{messages.application_organization}
-	</title>
+<f:view locale="#{languageMBean.locale}">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/brasao4_am.png" />
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/structure.css" />
 	
-</h:head>
-
-
-
-
-<h:body onload="document.content.dialog.login.j_username.focus();">
-
-	<p:dialog class="box login"  
-	          header="#{messages.application_organization}" 
-	          height="450"  width="350" 
-	          modal="true" closable="false" 
-	          position="center"
-			  draggable="true" 
-			  resizable="false" 
-			  visible="true" 
-			  style="margin-top: 0%;
-			         margin-left: 0%" >
-	 
-
-		<form class="box login" 
-		      name='login' 
-		      action="#{request.contextPath}/j_spring_security_check" 
-		      method='post' >
-           
-
-      
-<!--     <div align="center" >   -->
-<!--     	<h:outputLabel id="title" value="#{messages.application_organization}" /> -->
-<!--     </div> -->
-      
-			<fieldset class="boxBody">
+		<style type="text/css" >
+				body{
+				  background-image: url(/paco_am.jpg);
+				}
+		</style>	
 			
-				<div align="center" >              
-				         <p:graphicImage id="img" name="images/brasao4_am.png" class="imageLogoSize" />
-				   </div> 
+		<title>
+			#{messages.application_organization}
+		</title>
+		
+	</h:head>
+
+
+
+
+	<h:body onload="document.content.dialog.login.j_username.focus();" >
+	
+		<p:dialog class="box login"  
+		          header="#{messages.application_organization}" 
+		          height="450"  width="350" 
+		          modal="true" closable="false" 
+		          position="center"
+				  draggable="true" 
+				  resizable="false" 
+				  visible="true" 
+				  style="margin-top: 0%;
+				         margin-left: 0%" >
+		 
+	
+			<form class="box login" 
+			      name='login' 
+			      action="#{request.contextPath}/j_spring_security_check" 
+			      method='post' >
+	           
+	
+	      
+	<!--     <div align="center" >   -->
+	<!--     	<h:outputLabel id="title" value="#{messages.application_organization}" /> -->
+	<!--     </div> -->
+	      
+				<fieldset class="boxBody">
 				
-				
-				<h:outputLabel for="j_username" 
-				               value="#{labels.login_username} *: " />
-				<p:inputText type="text" 
-				             id="j_username"
-				             tabindex="1"
-				             placeholder="#{labels.login_username}" 
-				             required="true" />
-				<label>
-						<a href="#" class="rLink" tabindex="5">Forget your password?</a>
-						<h:outputLabel for="j_password" value="#{labels.login_password} *: " />
-				</label>
-
-
-				<p:password id="j_password" 
-				            type="password" 
-				            tabindex="2" 
-				            placeholder="#{labels.login_password}"
-				            required="true" />
-				
-				<c:if test="${param.error == 'true'}">
-				 <h:outputText tabindex="3" value="#{labels.login_invalid}" style="color: red; font-size: small;" /> 
-				</c:if>
-				<c:if test="${param.error != 'true'}">
-				 <h:outputText tabindex="3" value="" /> 
-				</c:if>
-				
-				<c:if test="${param.time == 'true'}">
-				 <h:outputText tabindex="3" value="#{labels.login_invalid}" style="color: red; font-size: small;" /> 
-				</c:if>
-			  
-				<br/> 
-			</fieldset>
-
-			<footer>
-			  <label>
-			  <input id="j_remember" name="_spring_security_remember_me"  value="true" type="checkbox" tabindex="4" />
-			  Keep me logged in
-			  </label>
-			  
-			  <input name="submit" 
-			         type="submit" 
-			         class="btnLogin" 
-			         value="#{labels.login_action_go}" 
-			         tabindex="4" />
-			</footer>
-
-
-		</form>
-	</p:dialog>
-
-</h:body>
+					<div align="center" >              
+					         <p:graphicImage id="img" name="images/brasao4_am.png" class="imageLogoSize" />
+					   </div> 
+					
+					
+					<h:outputLabel for="j_username" 
+					               value="#{labels.login_username} * : " />
+					<p:inputText type="text" 
+					             id="j_username"
+					             tabindex="1"
+					             placeholder="#{labels.login_username}" 
+					             required="true"
+					             value="#{userMBean.userName}"/>
+					             
+					<p:watermark for="j_username" value="#{labels.user_username}" />
+					             
+					<label>
+							<a href="#{request.contextPath}/public/forgotPassword.am?faces-redirect=true"
+							 class="rLink" tabindex="5">
+							 #{labels.user_forgot_password} ?</a>
+							<h:outputLabel for="j_password" value="#{labels.login_password} * : " />
+					</label>
+	
+	
+					<p:password id="j_password" 
+					            type="password" 
+					            tabindex="2" 
+					            placeholder="#{labels.login_password}"
+					            required="true" />
+					<p:watermark for="j_password" value="#{labels.user_password}" />
+					
+					<c:if test="${param.error == 'true'}">
+					 <h:outputText tabindex="3" value="#{labels.login_invalid}" style="color: red; font-size: small;" /> 
+					</c:if>
+					<c:if test="${param.error != 'true'}">
+					 <h:outputText tabindex="3" value="" /> 
+					</c:if>
+					
+					<c:if test="${param.time == 'true'}">
+					 <h:outputText tabindex="3" value="#{labels.login_invalid}" style="color: red; font-size: small;" /> 
+					</c:if>
+				  
+					<br/> 
+				</fieldset>
+	
+				<footer>
+				  <label>
+				  <input id="j_remember" name="_spring_security_remember_me"  value="true" type="checkbox" tabindex="4" />
+				  #{labels.login_remember_me}
+				  </label>
+				  
+				  <input name="submit" 
+				         type="submit" 
+				         class="btnLogin" 
+				         value="#{labels.login_action_go}" 
+				         tabindex="4" />
+				</footer>
+	
+	
+			</form>
+		</p:dialog>
+		
+	</h:body>
+</f:view>
 </html>
 
 

@@ -56,7 +56,8 @@ public class CustomRedirectAuthenticationSuccessHandler extends SimpleUrlAuthent
         request.getSession().setAttribute("userId", userId);
         request.getSession().setAttribute("changepass", 0);
         
-        String adminTargetUrl = "/schedule";
+//      TODO -   String adminTargetUrl = "/pages/admin/admin.am";
+        String adminTargetUrl = "/schedule/admin";
         String userTargetUrl = "/pages/user/userT.am";
         String teacherTargetUrl = "/pages/teacher.am";
         String studentTargetUrl = "/public/student.am";

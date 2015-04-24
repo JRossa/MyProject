@@ -88,17 +88,21 @@ public class SessionMBean extends BaseBean {
  
     public void sessionEnd(String username) {
  
-      System.out.println("endSession username : " + username);
+    	if (username == null) {
+    		return;
+    	}
+    	
+    	System.out.println("endSession username : " + username);
 
-      LogUser user = this.userRepository.findByUserName(username);
-      Long sessionId = this.sessionRepository.findIdByUserAndIdActive(user.getId());
+    	LogUser user = this.userRepository.findByUserName(username);
+    	Long sessionId = this.sessionRepository.findIdByUserAndIdActive(user.getId());
 
-      LogSession session = this.sessionRepository.findOne(sessionId);
+    	LogSession session = this.sessionRepository.findOne(sessionId);
 
-      session.setActive(false);  
-      session.setEndDate(new Date());
+    	session.setActive(false);  
+    	session.setEndDate(new Date());
       
-      this.sessionRepository.saveAndFlush(session);
+    	 this.sessionRepository.saveAndFlush(session);
     }
     
     public void sessionEnd(String username, Date startDate) {
@@ -187,7 +191,14 @@ public class SessionMBean extends BaseBean {
       
         this.gotoURL("/public/logout");
     }
+
     
+    public void sessionExit()  {
+     
+        this.gotoURL("/public/logout");
+    }
+    
+
     
     public Boolean sessionActive() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 

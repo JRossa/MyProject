@@ -1,5 +1,6 @@
 package org.myproject.support.user;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 
 
 
@@ -257,10 +259,7 @@ public class UserMBean extends BaseBean {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
         String username = (String) context.getSessionMap().get("username");
         
-        
-        
         LogUser user = this.userRepository.findByUserName(username);
-
 
         if (user != null) {
         	// TODO - Validar se muda a password
@@ -268,9 +267,17 @@ public class UserMBean extends BaseBean {
 
         	if (user.getRndPassword() == null || user.getRndPassword().length() == 0) {
                 // Do nothing
-                this.checkPassword = false;
-                this.lockResponse = true;
-                return false;
+        		if (user.getChangePassword().equals(false)) {
+	                this.checkPassword = false;
+	                this.lockResponse = true;
+	                return false;
+        		} else {
+        			this.checkPassword = true;
+        			this.lockResponse = true;
+        			return true;
+        		}
+        			
+                
         	} else {
                 if (this.lockResponse == false) {
                 	message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgTitle, msgBody);
@@ -278,6 +285,7 @@ public class UserMBean extends BaseBean {
                 	
                 	this.lockResponse = true;
                 }
+                
         		this.checkPassword = true;
         		return true;
         	}
@@ -302,7 +310,8 @@ public class UserMBean extends BaseBean {
         if (this.selectedUser != null) {
         	this.selectedUser.setRndPassword("");
         	this.selectedUser.setPassword(PasswordHash.createHash(this.newpassword));
-
+        	this.selectedUser.setChangePassword(false);
+        	
         	this.userRepository.saveAndFlush(this.selectedUser);
         	
         	msgBody = msgBody + "   '" +  this.newpassword + "'";
@@ -311,10 +320,12 @@ public class UserMBean extends BaseBean {
             FacesContext.getCurrentInstance().addMessage(null, message);
             
             this.changePassword = false;
+            this.checkPassword  = false;
         }
         
     }
 
+    
     public String getEmail() {
         return email;
     }
@@ -347,6 +358,13 @@ public class UserMBean extends BaseBean {
     	
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('changeInitPassDialog').show()");
+    }
+    
+    
+    public void openForgotPass () {
+    	
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('forgotPassDialog').show()");
     }
     
     

@@ -1,5 +1,6 @@
 package org.myproject.support.user;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
@@ -56,13 +57,14 @@ public class UserCRUDMBean extends BaseBean {
 
     private String title;
 
-
+    
     
     public UserCRUDMBean() {
         this.user = new LogUser();
     }
 
-    public LogUser getUser() {
+    
+	public LogUser getUser() {
         return user;
     }
 
@@ -135,31 +137,85 @@ public class UserCRUDMBean extends BaseBean {
         
     }
 
-    
+	private String insertHeaderData (String academicName, String fullName, String email,
+            String username, String password) {
+		return "Exmo Senhor(a) \n"
+		+ academicName + "   " + fullName + "\n"
+		+ "\n\n" 
+		+ "EMail      : " + email + "\n"
+		+ "\n\n"
+		+ "Utilizador    : " + username + "\n"
+		+ "Palavra Passe : " + password + "\n"
+		+ "\n\n";
+
+	}
+	
+	
+	private String insertSignature (String text) {
+		
+		return text  
+				+ "Coms os melhores cumprimentos, \n\n"
+				+ "X";
+	}
+
+	private String insertHeaderForgotPass (String academicName, String fullName, String email,
+            String username, String password) {
+		return "Exmo Senhor(a) \n"
+				+ academicName + "   " + fullName + "\n"
+            + "\n\n" 
+            + "EMail              : " + email + "\n"
+    		+ "\n\n"
+            + "Utilizador         : " + username + "\n"
+            + "Nova Palavra Passe : " + password + "\n"
+            + "\n\n";
+	}
+	
     public void sendEMail () {
+    	String subject = "Envio de dados de utilizador";
+    	
+    	this.sendUserTEMail(this.getUser(), subject, "initialData");
+    }
+    
+    
+    public void sendUserTEMail (LogUser user, String subject, String headerType) {
+    	String emailMsg = null;
+    	Teacher teacher = user.getTeacher();
+    	
         String msg = getResourceProperty("labels", "user_email_sent");
        
         System.out.println("Send EMail");
-        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.user.getTeacher().getCategory());
+        String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(teacher.getCategory());
         
         
-        System.out.println("Send EMail" + this.user.getTeacher().getCategory() + "  "
-        		                        + academicName + "  "
-        		                        + this.user.getTeacher().getFullName());
+        System.out.println("Send EMail  " + teacher.getCategory() + "  "
+        		                          + academicName + "  "
+        		                          + teacher.getFullName() + "  "
+        		                          + teacher.getEMail());
 
         
         MailSender mail = new MailSender();
+
+        if (academicName.contains("Professor")) {
+        	academicName = "Professor(a)";
+        }
+
+        String emailSubject = subject;
         
-        String emailSubject = "Envio de dados de utilizador";
-        String emailMsg = "Exmo Senhor <br/>"
-                        + academicName + "   " + this.user.getTeacher().getFullName() + "<br/>"
-                        + "<br/><br/>" 
-                        + "EMail         : " + this.getUser().getTeacher().getEMail() + "<br/>"
-                        + "<br/><br/>" 
-                        + "Utilizador    : " + this.getUser().getUserName() + "<br/>"
-                        + "Palavra Passe : " + this.getUser().getRndPassword() + "<br/>"
-                        + "<br/><br/>";
+        if (headerType.equals("initialData")) {
+        	emailMsg = insertHeaderData (academicName, teacher.getFullName(), 
+        			teacher.getEMail(), user.getUserName(), user.getRndPassword());
+        }
+
+        if (headerType.equals("forgotPass")) {
+        	emailMsg = insertHeaderForgotPass (academicName, teacher.getFullName(), 
+        			teacher.getEMail(), user.getUserName(), user.getRndPassword());
+        }
+
+        emailMsg = this.insertSignature(emailMsg);
         
+        emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
+
+        // TODO - mudar o endereço de email no final
         mail.sendEmail("gepaq@academiamilitar.pt", 
                        "gepaq@academiamilitar.pt", emailSubject, emailMsg,
                        "gepaq@academiamilitar.pt", "chefegepaq");
@@ -405,6 +461,61 @@ public class UserCRUDMBean extends BaseBean {
     }
 
     
+    public void forgotPassword () {
+    	ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+
+        String username = this.mbUserBean.getUserName();
+    	String subject = "Nova Pasword";
+
+    	this.user = this.userRepository.findByUserName(username);
+
+        System.out.println("Forgot Password  : " + context.getRequestContextPath() + "  username : '" + username + "'");
+
+    	if (user != null) {
+           this.user.setRndPassword(RandomPasswordGenerator.generatePswd(30));
+
+           try {
+        	   this.user.setPassword(PasswordHash.createHash(this.user.getRndPassword()));
+        	   this.sendUserTEMail(this.user, subject, "forgotPass");
+        	   
+        	   this.user.setRndPassword(""); 
+        	   this.user.setChangePassword(true);
+               this.user.setEnabled(true);
+               this.user.setAttempts(0);
+               
+               Date date = new Date();
+               // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
+               String strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+               System.out.println("Str Date  :  " + strDate);
+               
+              
+               this.user.setModificationUser("request");
+               this.user.setModificationDate(new Date());
+
+        	   this.userRepository.save(this.user);
+        	   
+        	   
+           } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+        	   // TODO Auto-generated catch block
+        	   e.printStackTrace();
+           }
+    		
+    	}
+    	
+        
+        
+        try {
+            System.out.println("Forgot Password  : " + context.getRequestContextPath() + "  username : '" + username + "'");
+            context.redirect(context.getRequestContextPath() + "/public/logout");
+             
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+    
+ 
     public void valueChanged (ValueChangeEvent e) {
         String msg = e.getNewValue().toString();
         Long  userId =  Long.parseLong(msg);

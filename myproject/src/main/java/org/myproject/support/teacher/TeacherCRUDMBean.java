@@ -102,7 +102,7 @@ public class TeacherCRUDMBean extends BaseBean {
         MailSender mail = new MailSender();
         
         String emailSubject = "Envio de dados para o corpo docente";
-        String emailMsg = "Exmo Senhor <br/>"
+        String emailMsg = "Exmo(a) Senhor(a) <br/>"
                         + academicName + "   " + this.teacher.getFullName() + "<br/>"
                         + "<br/><br/>" 
                         + "EMail         : " + this.teacher.getEMail() + "<br/>"
@@ -186,18 +186,14 @@ public class TeacherCRUDMBean extends BaseBean {
     
     public void disableButtons()  {
         
-        if (this.mbTeacherMBean.getDisableButtons()) {
-            RequestContext.getCurrentInstance().execute("updateButton.disable();");
-//            RequestContext.getCurrentInstance().execute("deleteButton.disable();");
-            RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
-        }
-        
+    	 this.mbTeacherMBean.disableButtons();
     }
  
     
     public void delete(boolean delete) {
 
-        disableButtons();
+    	this.mbTeacherMBean.disableButtons();
+    	
         if (delete == true) {
             this.mbTeacherMBean.delete();
         } else {

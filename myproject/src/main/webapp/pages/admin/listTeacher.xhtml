@@ -107,9 +107,9 @@
 					rowsPerPageTemplate="5,10,20" rowKey="#{teacher.id}"
 					selectionMode="single" >
 
-					<p:ajax event="rowSelect" listener="#{teacherMBean.selectTeacher}" update=":teacherListForm, teacherDataTable" oncomplete="enableButtons();" />
-					<p:ajax event="page" listener="#{teacherMBean.unselectTeacher}"  oncomplete="unselectRows();" />
-					<p:ajax event="rowUnselect" listener="#{teacherMBean.unselectTeacher}" oncomplete="disableButtons();" />
+					<p:ajax event="rowSelect" listener="#{teacherMBean.selectTeacher}" update=":teacherListForm, teacherDataTable"  />
+					<p:ajax event="page" listener="#{teacherMBean.unselectTeacher}"   />
+					<p:ajax event="rowUnselect" listener="#{teacherMBean.unselectTeacher}"  />
 
 					<f:facet name="header">
 					     <h:outputText value="#{labels.teacher_list}" />
@@ -160,7 +160,7 @@
 						<p:commandButton widgetVar="listTeacherHoursButton"
 										 icon="ui-icon-note"
 										 rendered="#{teacherMBean.renderedTeacherHours}"
-										 title="#{labels.teacherHours}"
+										 title="#{labels.teacherhours}"
 										 action="/pages/admin/listTeacherHours.am?faces-redirect=true" >
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>

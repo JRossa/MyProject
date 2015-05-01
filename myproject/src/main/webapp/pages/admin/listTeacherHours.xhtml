@@ -103,9 +103,21 @@
 
 					
 					<p:column style="width: 15%;">
+						<p:commandButton widgetVar="updateTeacherButton"
+										 icon="ui-icon-zoomin"
+						                 rendered="#{teacherMBean.renderedUpdate}"
+										 title="#{labels.teacher_update}"
+										 update="teacherHoursListForm, formSurveyCourse"
+										 action="#{surveyMBean.startCourse}"
+										 oncomplete="PF('surveyCourseDialog').show()"
+										  >
+							<f:setPropertyActionListener value="#{teacherhours}"  target="#{teacherHoursMBean.selectedTeacherHours}" />
+ 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</h:form>
+			
+ 			<ui:include name="surveycourse" src="../teacher/surveyCourse.xhtml"  />		
 			
  				
 		</p:panel>

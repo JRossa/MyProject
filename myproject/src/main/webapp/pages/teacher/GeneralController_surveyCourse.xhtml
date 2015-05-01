@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+	
+	<style  type="text/css" >
+		.ui-icon-myReset{
+  			background-image: url("#{resource['images/icons/New document.png']}") !important;
+		}
+		.ui-icon-mySave{
+  			background-image: url("#{resource['images/icons/Save.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+	</style>
+	
+</h:head>
+
+<h:body>
+
+	<p:dialog id="surveyCourseDlg" widgetVar="surveyCourseDialog"
+		      header="#{labels.teacher_update}" 
+		      visible="#{formSurveyCourse.submitted and facesContext.validationFailed}"
+			  modal="true" 
+			  resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode" >
+						  
+	<h:form id="formSurveyCourse" enctype="multipart/form-data">
+
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+     
+        Over: <h:outputText value="#{generalController.over}" id="testover"/><br/>
+									
+		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
+						 styleClass="form" 
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="tableRowOdd, tableRowEven" >
+
+
+			
+            <h:outputText id="question" value="#{generalController.getQuestion()}"/>
+            <p:inputText id="answer" value="#{generalController.answer}" rendered="#{!generalController.over}"/><br/>
+ 
+ 		           	<p:selectOneRadio value="#{jasperReportsMBean.exportOption}" layout="pageDirection" >
+		               	<f:selectItem itemValue="FILE" itemLabel="FILE" />
+		               	<f:selectItem itemValue="PDF" itemLabel="PDF" />
+		               	<f:selectItem itemValue="HTML" itemLabel="HTML" />
+		              	<f:selectItem itemValue="CSV" itemLabel="CSV" />
+		               	<f:selectItem itemValue="XLSX" itemLabel="XLSX" />
+		               	<f:selectItem itemValue="RTF" itemLabel="RTF" />
+		          	</p:selectOneRadio>
+ 
+
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+	            <p:commandButton id="submit" value="Next" 
+	                             rendered="#{!generalController.last}" 
+	                             update=":formSurveyCourse" 
+	                             actionListener="#{generalController.next}" />
+	                             
+            	<p:commandButton id="done" value="Finish" 
+            					 rendered="#{generalController.last}" 
+            					 action="end" ajax="false" />
+				
+				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+				                 value="#{labels.user_save}"
+    							 action="#{teacherCRUDMBean.save}" />
+    							 
+ 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+ 				                 value="#{labels.user_send_email}"
+    							 action="#{teacherCRUDMBean.sendEMail}" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.user_close}" 
+ 								 action="#{teacherCRUDMBean.disableButtons}"
+    							 onclick="PF('surveyCourseDialog').hide()"
+        					     process="@this" 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 150px" />
+    			
+    			</h:panelGroup>
+			</f:facet>		 
+
+		</h:panelGrid>
+		
+		
+	</h:form>	
+	</p:dialog>  
+	
+ </h:body>
+
+</html>
+
+<!--             	<p:commandButton id="done" value="Finish"  -->
+<!--             					 rendered="#{surveyMBean.last}"  -->
+<!--             					 update=":formSurveyCourse"  -->
+<!-- 	                             actionListener="#{surveyMBean.reset}" -->
+<!--             					 action="end" ajax="false" /> -->
+

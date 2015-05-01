@@ -23,6 +23,7 @@ import org.myproject.model.repositories.ProfessorshipRepository;
 import org.myproject.model.repositories.TeacherHoursRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.utils.BaseBean;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -71,8 +72,7 @@ public class TeacherMBean extends BaseBean {
 
     private Boolean renderedTeacherHours;
    
-    
-    
+     
     
     public TeacherMBean() {
 		super();
@@ -89,6 +89,7 @@ public class TeacherMBean extends BaseBean {
     }
 
   
+	
     public Boolean getRenderedInputExecutionYear() {
 		return renderedInputExecutionYear;
 	}
@@ -141,7 +142,6 @@ public class TeacherMBean extends BaseBean {
     public void onLoad(String executionYear) {
         System.out.println("onLoad  : " + executionYear);
 
-        this.disableButtons = true;
 
         if (executionYear.equals("all")) {
 
@@ -149,16 +149,20 @@ public class TeacherMBean extends BaseBean {
 	        String rolename = (String) context.getSessionMap().get("rolename");
 	        
 	        setRenderedListTeacherButtons (rolename);
+	        
         	this.renderedInputExecutionYear = false;
         	this.renderedProfessorship = false;
             this.renderedTeacherHours = false;
+            this.disableButtons = false;
             
 	        this.teachers = this.teacherRepository.findAllListOrderByFullName();
             return;
         } else {
+        	
         	this.renderedInputExecutionYear = true;
         	this.renderedProfessorship = true;
             this.renderedTeacherHours = true;
+            this.disableButtons = true;
             
 	        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
 	        	executionYear = this.selectedExecutionYear;
@@ -330,7 +334,19 @@ public class TeacherMBean extends BaseBean {
         }
     }
 
+    public void disableButtons() {
+
+	    if (this.getDisableButtons().equals(false)) {
+	        RequestContext.getCurrentInstance().execute("updateButton.disable();");
+	//        RequestContext.getCurrentInstance().execute("deleteButton.disable();");
+	        RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
+	    }
+    }
+    
     public void unselectTeacher() {
+    	
+    	this.disableButtons();
+    	
         this.selectedTeacher = null;
     }
 

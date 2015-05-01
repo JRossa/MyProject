@@ -119,6 +119,7 @@ public class UserCRUDMBean extends BaseBean {
         this.user.setLogRole(role);
 
         this.user.setEnabled(true);
+        this.user.setChangePassword(true);
         
         Date date = new Date();
         // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
@@ -139,7 +140,7 @@ public class UserCRUDMBean extends BaseBean {
 
 	private String insertHeaderData (String academicName, String fullName, String email,
             String username, String password) {
-		return "Exmo Senhor(a) \n"
+		return "Exmo(a) Senhor(a) \n"
 		+ academicName + "   " + fullName + "\n"
 		+ "\n\n" 
 		+ "EMail      : " + email + "\n"
@@ -155,12 +156,12 @@ public class UserCRUDMBean extends BaseBean {
 		
 		return text  
 				+ "Coms os melhores cumprimentos, \n\n"
-				+ "X";
+				+ "GEPAQ";
 	}
 
 	private String insertHeaderForgotPass (String academicName, String fullName, String email,
             String username, String password) {
-		return "Exmo Senhor(a) \n"
+		return "Exmo(a) Senhor(a) \n"
 				+ academicName + "   " + fullName + "\n"
             + "\n\n" 
             + "EMail              : " + email + "\n"
@@ -174,6 +175,11 @@ public class UserCRUDMBean extends BaseBean {
     	String subject = "Envio de dados de utilizador";
     	
     	this.sendUserTEMail(this.getUser(), subject, "initialData");
+
+    	// TODO - 
+    	this.user.setRndPassword("");
+    	this.user.setChangePassword(true);
+        this.userRepository.save(this.user);
     }
     
     
@@ -260,6 +266,7 @@ public class UserCRUDMBean extends BaseBean {
             this.user.setLogRole(role);
 
             this.user.setEnabled(true);
+            this.user.setChangePassword(true);
             
             Date date = new Date();
             // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
@@ -334,17 +341,14 @@ public class UserCRUDMBean extends BaseBean {
     
     public void disableButtons()  {
         
-        if (this.mbUserBean.getDisableButtons()) {
-            RequestContext.getCurrentInstance().execute("updateButton.disable();");
-            RequestContext.getCurrentInstance().execute("deleteButton.disable();");
-            RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
-        }
-        
+        this.mbUserBean.disableButtons();
     }
+    
     
     public void delete(boolean delete) {
 
-        disableButtons();
+    	this.mbUserBean.disableButtons();
+    	
         if (delete == true) {
             this.mbUserBean.delete();
         } else {
@@ -415,6 +419,7 @@ public class UserCRUDMBean extends BaseBean {
 
         if (this.user != null) {
             
+        	// TODO - Decidir se a colocação do RndPassword = "" seve ser no enviar email ou aqui
             if (this.user.getRndPassword() != null &&
                     this.user.getRndPassword().length() > 0) {
                 this.user.setPassword(PasswordHash.createHash(this.user.getRndPassword()));

@@ -1,0 +1,24 @@
+30-04-2015 09:51:50,862; [main]; INFO ; org.myproject.test.conndb.repositories.SurveyQuestionText;  - org.myproject.model.entities.SurveyQuestionScale@1082746[
+  scale=1
+  value=1
+  text=Muito insatisfeito
+  id=1
+]
+30-04-2015 09:51:50,887; [main]; INFO ; org.myproject.test.conndb.repositories.SurveyQuestionText;  - org.myproject.model.entities.SurveyQuestionScale@133adc[
+  scale=1
+  value=2
+  text=Insatisfeito
+  id=2
+]
+30-04-2015 09:51:50,887; [main]; INFO ; org.myproject.test.conndb.repositories.SurveyQuestionText;  - org.myproject.model.entities.SurveyQuestionScale@1fcd12c[
+  scale=1
+  value=3
+  text=Satisfeito
+  id=3
+]
+30-04-2015 09:51:50,888; [main]; INFO ; org.myproject.test.conndb.repositories.SurveyQuestionText;  - org.myproject.model.entities.SurveyQuestionScale@f30e0a[
+  scale=1
+  value=4
+  text=Muito Satisfeito
+  id=4
+]

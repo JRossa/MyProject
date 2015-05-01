@@ -113,9 +113,9 @@ public class UserMBean extends BaseBean {
             this.userName  = user.getUserName();
             
             
-            System.out.println("check Log User (onLoadSelectedUser) :  " + this.firstName);
-            System.out.println("check Log User (onLoadSelectedUser) :  " + this.lastName);
-            System.out.println("check Log User (onLoadSelectedUser) :  " + this.userName);
+            System.out.println("check Log User (onLoadSelectedUser) firstname  :  " + this.firstName);
+            System.out.println("check Log User (onLoadSelectedUser) lastname   :  " + this.lastName);
+            System.out.println("check Log User (onLoadSelectedUser) username   :  " + this.userName);
             
             this.password = null;
             this.newpassword = null;
@@ -223,7 +223,21 @@ public class UserMBean extends BaseBean {
         }
     }
 
+    public void disableButtons()  {
+        
+        if (this.getDisableButtons()) {
+            RequestContext.getCurrentInstance().execute("updateButton.disable();");
+            RequestContext.getCurrentInstance().execute("deleteButton.disable();");
+            RequestContext.getCurrentInstance().execute("dataTable.unselectAllRows();");
+        }
+        
+    }
+    
+    
     public void unselectUser() {
+    	
+    	this.disableButtons();
+    	
         this.selectedUser = null;
     }
 

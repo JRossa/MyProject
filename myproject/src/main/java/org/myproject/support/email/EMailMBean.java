@@ -13,6 +13,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
@@ -101,7 +103,7 @@ public class EMailMBean extends BaseBean {
 	
 	private String insertHeader (String academicName, String fullName, String email,
 			                     Date date, String degreeName, String courseName) {
-        return "Exmo Senhor(a) \n"
+        return "Exmo(a) Senhor(a) \n"
                 + academicName + "   " + fullName + "\n"
                 + "\n\n" 
                 + "EMail      : " + email + "\n"
@@ -184,7 +186,7 @@ public class EMailMBean extends BaseBean {
  
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
-        // TODO - mudar o endereço de email no final
+        // TODO - mudar e verificar se é válido o endereço de email no final
         mail.sendEmail("gepaq@academiamilitar.pt", 
                        "gepaq@academiamilitar.pt", emailSubject, emailMsg,
                        "gepaq@academiamilitar.pt", "chefegepaq");
@@ -194,6 +196,22 @@ public class EMailMBean extends BaseBean {
 
     }
 
+	
+	public static Boolean isValidEmailAddress(String email) {
+		Boolean isValid = false;
+		
+		try {
+		     InternetAddress emailAddr = new InternetAddress(email);
+		     
+		     emailAddr.validate();
+		     isValid = true;
+		} catch (AddressException ex) {
+			System.out.println("Invali email :" + email);
+		}
+		
+	   return isValid;
+	}
+	
 	
 	private Long computeDiffDays (Date date1, Date date2) {
 		
@@ -274,41 +292,4 @@ public class EMailMBean extends BaseBean {
 
 }
 
-
-//public void sendEMail () {
-//String msg = getResourceProperty("labels", "user_email_sent");
-//String academicName = this.categoryLookupTableRepository.findAcademicNameByCategory(this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory());
-//
-//
-//System.out.println("Send EMail" + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getCategory() + "  "
-//		                        + academicName + "  "
-//		                        + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName());
-//
-//MailSender mail = new MailSender();
-//
-//if (academicName.contains("Professor")) {
-//	academicName = "Professor(a)";
-//}
-//
-//String emailSubject = "Envio de notificação para preenchimento de sumários";
-//String emailMsg = "Exmo Senhor <br/>"
-//              + academicName + "   " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getFullName() + "<br/>"
-//              + "<br/><br/>" 
-//              + "EMail         : " + this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher().getEMail() + "<br/>"
-//              + "<br/><br/>";
-//
-//emailMsg = emailMsg + this.getText();
-//emailMsg = emailMsg + "<br/><br/>";
-//
-//emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
-//
-////TODO - mudar o endereço de email no final
-//mail.sendEmail("gepaq@academiamilitar.pt", 
-//             "gepaq@academiamilitar.pt", emailSubject, emailMsg,
-//             "gepaq@academiamilitar.pt", "chefegepaq");
-//
-//FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-//FacesContext.getCurrentInstance().addMessage(null, message);
-//
-//}
 

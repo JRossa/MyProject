@@ -96,9 +96,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         
         if (user != null) {
         	
-        	if (user.getRndPassword() != null || user.getRndPassword().length() > 0) {
+        	if (user.getRndPassword() != null && user.getRndPassword().length() > 0) {
         		// TODO - no final não permitir entrar
         		logger.info("Password em claro : ");
+        		return null;
         	}
         	
             logger.info("auth role user not null : ");

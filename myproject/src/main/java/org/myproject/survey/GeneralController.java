@@ -85,6 +85,13 @@ public class GeneralController {
         System.out.println("Next");
     }
 
+    public void start() {
+        this.currentQuestion = 0;
+        this.over = false;
+        this.last = false;
+	
+    }
+    
     public String reset() {
         System.out.println("Reset");
         
@@ -92,7 +99,7 @@ public class GeneralController {
         this.over = false;
         this.last = false;
         
-        return "/pages/survey/question.xhtml";
+        return "/pages/teacher/surveyCourse.xhtml";
     }
 
     public boolean isOver() {

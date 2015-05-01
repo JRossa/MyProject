@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+	
+	<style  type="text/css" >
+		.ui-icon-myReset{
+  			background-image: url("#{resource['images/icons/New document.png']}") !important;
+		}
+		.ui-icon-mySave{
+  			background-image: url("#{resource['images/icons/Save.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+		.ui-icon-myNext{
+  			background-image: url("#{resource['images/icons/Next.png']}") !important;
+		}
+		.ui-icon-myFinish{
+  			background-image: url("#{resource['images/icons/OK.png']}") !important;
+		}
+	</style>
+	
+</h:head>
+
+<h:body>
+
+		<f:view>
+			<f:event listener="#{surveyMBean.init}" type="preRenderView" />
+		</f:view>
+
+	<p:dialog id="surveyCourseDlg" widgetVar="surveyCourseDialog"
+			  width="750" 
+		      header="#{labels.survey}" 
+		      visible="#{formSurveyCourse.submitted and facesContext.validationFailed}"
+			  modal="true" 
+			  resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode" >
+						  
+	<h:form id="formSurveyCourse" enctype="multipart/form-data" 
+	         style="width: 715px; 
+	                height: 350px;
+	                background-color: lightblue; " >
+
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+     
+        Over: <h:outputText value="#{surveyMBean.over}" id="testover"/><br/>
+									
+		<h:panelGrid id="display" columns="1"  columnClasses="colStyle1,colStyle2"
+					 width="700" height="350"
+					 styleClass="form" 
+					 headerClass="tableHeader"
+					 footerClass="tableFooter"
+					 rowClasses="tableRowOdd, tableRowEven" >
+
+
+            <h:outputText id="groupquestion" 
+                          value="#{surveyMBean.getGroupQuestion()}"
+                          style="width: 415px;  height: 250px;
+						  		 font-family: Verdana,sans-serif;
+						  		 color: green;
+						  		 font-size: 20px;
+	                      		 font-weight: bolder;"
+							 	/>
+			<h:panelGroup>
+			<p:spacer width="40" height="10" />
+            <h:outputText id="question" 
+                          value="#{surveyMBean.getQuestion()}"
+                          style="width: 615px;  height: 250px;
+						  		 font-family: Verdana,sans-serif;
+						  		 color: black;
+						  		 font-size: 15px;
+	                      		 font-weight: 600;"
+							 	/>
+            </h:panelGroup>
+            
+            <h:panelGroup>
+ 				<p:inputTextarea id="answer" value="#{surveyMBean.answer}"
+							     rendered="#{!surveyMBean.over and surveyMBean.openQuestion}" 
+							     style="width: 680px; 
+							            height: 150px;
+							            max-height: 150px !important;
+                                        overflow:auto !important;" 
+                                 rows="10" cols="50"
+                                 queryDelay="750" minQueryLength="4" 
+                                 required="true" 
+						         requiredMessage="#{labels.survey_answer_null}" 
+						         validatorMessage="#{labels.survey_answer_min} !!" >
+ 					<f:validateLength minimum="6"/>	
+ 				</p:inputTextarea>
+ 					
+ 		    	<p:selectOneRadio value="#{surveyMBean.answerValue}" 
+ 		    	                  rendered="#{!surveyMBean.over and !surveyMBean.openQuestion}"
+ 		    	                  style="width: 415px; height: 150px;
+ 		    	                         padding-left: 10%;
+							             max-height: 150px !important;
+                                         overflow:auto !important;" 
+ 		    	                  layout="pageDirection" 
+ 		    	                  required="true" 
+						          requiredMessage="#{labels.survey_answer_null}" 
+						          validatorMessage="#{labels.survey_answer_select} !!" >
+ 		    	                  >
+		             <f:selectItems value="#{surveyMBean.selectOneItemsScale}" />
+		       	</p:selectOneRadio>
+		       	
+ 				<h:outputText id="finish" value="#{labels.survey_finished}" 
+ 				              rendered="#{surveyMBean.over}"
+                              style="width: 615px; height: 250px; 
+                                     min-height: 250px !important;
+						  		     font-family: Verdana,sans-serif;
+						  		     padding: 10%;
+						  		     color: blue;
+						  		     font-size: 35px;
+	                      		     font-weight: bolder;"
+                                        />
+			</h:panelGroup>
+			
+			
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+	            <p:commandButton id="submit" value="#{labels.survey_next_answer}"  
+	                             icon="ui-icon-myNext"  style="width: 100px;"
+	                             rendered="#{!surveyMBean.last}" 
+	                             update=":formSurveyCourse" 
+	                             actionListener="#{surveyMBean.next}" />
+	                             
+            	<p:commandButton id="done" value="#{labels.survey_finish}" 
+            	                 icon="ui-icon-myFinish" style="width: 100px;"
+            					 rendered="#{surveyMBean.last and !surveyMBean.over}" 
+            					 update=":formSurveyCourse" 
+	                             actionListener="#{surveyMBean.next}" />
+            					 
+				
+				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+								 rendered="#{surveyMBean.over}" 
+				                 value="#{labels.user_save}"
+    							 action="#{surveyMBean.save}" 
+    							 onclick="PF('surveyCourseDialog').hide()" />
+    							 
+ 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+ 								 rendered="false" 
+ 				                 value="#{labels.user_send_email}"
+    							 action="#{surveyMBean.sendEMail}" />
+ 
+ 				<p:spacer width="500" height="10" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.user_close}" 
+ 								 action="#{surveyMBean.disableButtons}"
+    							 onclick="PF('surveyCourseDialog').hide()"
+        					     process="@this" 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 0px" />
+    			
+    			</h:panelGroup>
+			</f:facet>		 
+
+		</h:panelGrid>
+		
+		
+	</h:form>	
+	</p:dialog>  
+	
+ </h:body>
+
+</html>
+

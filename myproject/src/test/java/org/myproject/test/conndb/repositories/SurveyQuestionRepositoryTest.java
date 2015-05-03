@@ -78,7 +78,7 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
     	}
     }	
 
-    
+    @Test
     public void SurveyTest () {	
     	System.out.println("Get Question   : " + mbSurveyMBean.getSurveyType().TEACHER);
     	
@@ -88,7 +88,6 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
 
     }
     
-    @Test
     public void SurveyQuestionSurveyTest () {	
     	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyType().TEACHER_UC.toString());
 

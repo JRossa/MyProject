@@ -159,6 +159,7 @@ public class ProfessorshipMBean extends BaseBean {
         }
     }
 
+    
     public void onLoadProfessorship() {
         System.out.println("onLoadProfessorship");
 
@@ -166,9 +167,13 @@ public class ProfessorshipMBean extends BaseBean {
             System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
 
             this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
-
-            this.professorships = this.mbTeacherMBean.getSelectedTeacher().getProfessorship();
-
+            if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
+            	this.professorships =  
+            		this.professorshipRepository.findByTeacherIdAndExecutionYear(
+            				   this.mbTeacherMBean.getSelectedTeacher().getId(), this.selectedExecutionYear);
+            } else {
+                this.professorships = this.mbTeacherMBean.getSelectedTeacher().getProfessorship();
+            }
         }
     }
 

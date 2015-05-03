@@ -1,34 +1,45 @@
 package org.myproject.model.entities;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.myproject.model.utils.BaseEntity;
 
+@Entity
+@Table(name = "tbl_SURVEY_QUESTION_GROUP")
+@AttributeOverride(name = "id", column = @Column(name = "ID"))
 public class SurveyQuestionGroup extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = 9044215406135046286L;
 	
-	private String type;
+    @Column(name = "TYPE")
+	private Long type;
 	
-	private String name;
+    @Column(name = "DESCRIPTION")
+	private String description;
 
 	public SurveyQuestionGroup() {
 		super();
 	}
 
-	public String getType() {
+	public Long getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Long type) {
 		this.type = type;
 	}
 
-	public String getName() {
-		return name;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
 	
 	
 	

@@ -112,7 +112,7 @@
                                  required="true" 
 						         requiredMessage="#{labels.survey_answer_null}" 
 						         validatorMessage="#{labels.survey_answer_min} !!" >
- 					<f:validateLength minimum="6"/>	
+ 					<f:validateLength minimum="6" maximum="256"/>	
  				</p:inputTextarea>
  					
  		    	<p:selectOneRadio value="#{surveyMBean.answerValue}" 
@@ -130,7 +130,7 @@
 		       	</p:selectOneRadio>
 		       	
  				<h:outputText id="finish" value="#{labels.survey_finished}" 
- 				              rendered="#{surveyMBean.over}"
+ 				              rendered="#{surveyMBean.over and !surveyMBean.noSurvey}"
                               style="width: 615px; height: 250px; 
                                      min-height: 250px !important;
 						  		     font-family: Verdana,sans-serif;
@@ -160,7 +160,7 @@
             					 
 				
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
-								 rendered="#{surveyMBean.over}" 
+								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey}" 
 				                 value="#{labels.user_save}"
     							 action="#{surveyMBean.save}" 
     							 onclick="PF('surveyCourseDialog').hide()" />
@@ -170,7 +170,8 @@
  				                 value="#{labels.user_send_email}"
     							 action="#{surveyMBean.sendEMail}" />
  
- 				<p:spacer width="500" height="10" />
+ 				<p:spacer width="500" height="10" rendered="#{!surveyMBean.noSurvey}"/>
+ 				<p:spacer width="600" height="10" rendered="#{surveyMBean.noSurvey}"/>
     			
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.user_close}" 

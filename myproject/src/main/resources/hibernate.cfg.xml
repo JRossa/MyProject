@@ -31,10 +31,13 @@
      
      <mapping class="org.myproject.model.entities.Teacher" />
      <mapping class="org.myproject.model.entities.TeacherHours" />
-     
-     <mapping class="org.myproject.model.entities.SurveyScaleType" />
+ 
+     <mapping class="org.myproject.model.entities.Survey" />
+     <mapping class="org.myproject.model.entities.SurveyType" />
      <mapping class="org.myproject.model.entities.SurveyAnswerScale" />
+     <mapping class="org.myproject.model.entities.SurveyScaleType" />
      <mapping class="org.myproject.model.entities.SurveyQuestion" />
+     <mapping class="org.myproject.model.entities.SurveyQuestionGroup" />
      
      <mapping class="org.myproject.model.entities.Professorship" />
      <mapping class="org.myproject.model.entities.CategoryGroup" />

@@ -164,6 +164,16 @@
 										 action="/pages/admin/listTeacherHours.am?faces-redirect=true" >
 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
 						</p:commandButton>
+						<p:commandButton widgetVar="surveyTeacherButton"
+										 icon="ui-icon-script"
+						                 rendered="#{teacherMBean.renderedProfessorship}"
+										 title="#{labels.teacher_survey}"
+										 update="teacherListForm, teacherDataTable, surveyCourseDlg"
+										 action="#{surveyMBean.startTeacher}"
+										 oncomplete="PF('surveyCourseDialog').show()"
+										  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+ 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</h:form>
@@ -171,6 +181,7 @@
  			<ui:include name="create" src="createTeacher.xhtml"  />		
 			<ui:include name="update" src="updateTeacher.xhtml"  />
 			<ui:include name="delete" src="deleteTeacher.xhtml"  />
+  			<ui:include name="surveycourse" src="../teacher/surveyCourse.xhtml"  />		
  				
 		</p:panel>
 

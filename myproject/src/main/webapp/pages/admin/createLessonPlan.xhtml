@@ -182,7 +182,9 @@
 							     title="#{labels.lessonplan_insert} #{labels.lessonplan_description} !!"
 							     style="width: 415px; height: 100px;"
                                  rows="10" cols="50"
-                                 queryDelay="750" minQueryLength="4" />
+                                 queryDelay="750" minQueryLength="4" >
+                	<f:validateLength  maximum="512"/>
+                </p:inputTextarea>
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
 				<h:message for="description" styleClass="formUserError"/>

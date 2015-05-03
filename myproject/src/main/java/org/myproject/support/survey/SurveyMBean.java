@@ -11,16 +11,14 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.myproject.model.entities.Survey.SurveyType;
+import org.myproject.model.entities.Survey;
 import org.myproject.model.entities.SurveyAnswer;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyAnswerScale;
-import org.myproject.model.entities.SurveyScaleType;
-import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
+import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.utils.BaseBean;
-import org.myproject.report.AbstractBaseReportBean.ExportOption;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
 import org.springframework.context.annotation.Scope;
@@ -31,6 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
 public class SurveyMBean extends BaseBean {
 
 	private static final long serialVersionUID = 1984764917382818173L;
+	
+	public enum SurveyType {TEACHER, TEACHER_UC, STUDENT, STUDENT_UC}
 
 	@Inject
 	private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
@@ -39,10 +39,14 @@ public class SurveyMBean extends BaseBean {
 	private SurveyQuestionRepository surveyQuestionRepository;
 
 	@Inject
+	private SurveyRepository surveyRepository;
+
+	@Inject
 	private TeacherHoursMBean mbTeacherHoursMBean;
 
-    private SurveyType surveyType;
-     
+	@Inject
+	private TeacherMBean mbTeacherMBean;
+
     private String answer;
     private Integer answerValue;
     
@@ -51,11 +55,17 @@ public class SurveyMBean extends BaseBean {
     
     private int currentQuestion = 0;
     private Long answerId = 0L;
+    
     private boolean over  = false;
     private boolean last = false;
-
-    private String title;
+    private boolean noSurvey = true;
     
+    private String title;
+
+    private SurveyType surveyType;
+    
+    private Survey activeSurvey;
+
     private List<SurveyQuestion> surveyQuestion;
     
     private List<SelectItem> selectOneItemsScale;
@@ -77,7 +87,7 @@ public class SurveyMBean extends BaseBean {
     @PostConstruct
     public void init () {
     	
-    	this.surveyQuestion = this.surveyQuestionRepository.findAll();
+//    	this.surveyQuestion = this.surveyQuestionRepository.findAll();
     }
    
  
@@ -164,6 +174,10 @@ public class SurveyMBean extends BaseBean {
         System.out.println("Get Question   : " + this.openQuestion);
        
     	if (!this.over) {
+    		if (this.surveyQuestion == null) {
+    			return "EM COSTRUÇÂO  2";
+    		}
+    		
         	this.openQuestion = (this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList().size() == 1);
         	this.answerValue = null;
         	this.answer = null;
@@ -171,6 +185,10 @@ public class SurveyMBean extends BaseBean {
             return this.surveyQuestion.get(this.currentQuestion).getText();
         }
         else {
+        	if (this.noSurvey) {
+        		return "EM COSTRUÇÂO";
+        	}
+        	
             return  getResourceProperty("labels", "survey_thanks");
         }
     }
@@ -182,8 +200,11 @@ public class SurveyMBean extends BaseBean {
         
 
     	if (!this.over) {
-//            return this.surveyQuestion.get(this.currentQuestion).getGroup().getName();
-    		return "Teste";
+    		if (this.surveyQuestion == null) {
+    			return "---------------------";
+    		}
+    		
+            return this.surveyQuestion.get(this.currentQuestion).getQuestionGroup().getDescription();
         }
         else {
             return  "";
@@ -196,34 +217,70 @@ public class SurveyMBean extends BaseBean {
     }
     
 
+    
     public void startCourse() {
     	
     	this.title = "(UC - " 
                 + this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getCode()
                 + ")";
     	
-    	System.out.println("Teacher :" + this.title);
+    	System.out.println("Title :" + this.title);
     	
     	System.out.println("Teacher :" + 
     	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
-       	System.out.println("Course :" + 
-   	             this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getCode());
     	
-        this.currentQuestion = 0;
-        this.answerId = 0L;
-        this.over = false;
-        this.last = false;
+    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+    	if (this.activeSurvey != null) {
+	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+	    	
+	    	if (this.surveyQuestion != null) {
+
+	    		this.currentQuestion = 0;
+		        this.answerId = 0L;
+		        this.over = false;
+		        this.last = false;
+		        this.noSurvey = false;
+		        
+		        return;
+	    	}
+    	}
+    	
+	    this.over = true;
+	    this.last = true;
+	    this.noSurvey = true;
 	
     }
 
     
     public void startTeacher() {
+
+    	this.title = "(Docente - " 
+                + this.mbTeacherMBean.getSelectedTeacher().getFullName()
+                + ")";
     	
-        this.currentQuestion = 0;
-        this.answerId = 0L;
-        this.over = false;
-        this.last = false;
+    	System.out.println("Title :" + this.title);
+
+		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER_UC.toString());
+    	if (this.activeSurvey != null) {
+
+	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
 	
+	    	if (this.surveyQuestion != null) {
+	    		
+		        this.currentQuestion = 0;
+		        this.answerId = 0L;
+		        this.over = false;
+		        this.last = false;
+		        this.noSurvey = false;
+		        
+		        return;
+	    	}
+    	}
+    	
+	    this.over = true;
+	    this.last = true;
+	    this.noSurvey = true;
+	    
     }
 
     
@@ -255,8 +312,15 @@ public class SurveyMBean extends BaseBean {
         this.last = last;
     }
     
-    
-    public List<SurveyAnswer> getSurveyAnswer() {
+    public boolean isNoSurvey() {
+		return noSurvey;
+	}
+
+	public void setNoSurvey(boolean noSurvey) {
+		this.noSurvey = noSurvey;
+	}
+
+	public List<SurveyAnswer> getSurveyAnswer() {
 		return surveyAnswer;
 	}
 
@@ -332,6 +396,12 @@ public class SurveyMBean extends BaseBean {
 	public List<SelectItem> getSelectOneItemsScale() {
         this.selectOneItemsScale = new ArrayList<SelectItem>();
         
+        if (this.surveyQuestion == null) {
+        	SelectItem selectItem = new SelectItem(0, "");
+            this.selectOneItemsScale.add(selectItem);
+            return selectOneItemsScale;
+        }
+
         List<SurveyAnswerScale> surveyScale = this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList();
 
         if (surveyScale != null) {

@@ -154,6 +154,7 @@ public class TeacherMBean extends BaseBean {
         	this.renderedProfessorship = false;
             this.renderedTeacherHours = false;
             this.disableButtons = false;
+            this.selectedExecutionYear = "";
             
 	        this.teachers = this.teacherRepository.findAllListOrderByFullName();
             return;

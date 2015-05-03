@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.myproject.model.utils.BaseEntity;
@@ -19,11 +20,13 @@ public class SurveyQuestion extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -4806043306042713447L;
 
-	@Column(name = "SURVEY_ID")
-	private Long surveyId;
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "SURVEY_ID")
+	private Survey survey;
 	
-	@Column(name = "GROUP_ID")
-	private Long groupId;
+    @OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "GROUP_ID")
+	private SurveyQuestionGroup questionGroup;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SCALE_TYPE")
@@ -38,23 +41,23 @@ public class SurveyQuestion extends BaseEntity<Long> {
 	}
 
 
-	public Long getSurveyId() {
-		return surveyId;
+	public Survey getSurvey() {
+		return survey;
 	}
 
 
-	public void setSurveyId(Long surveyId) {
-		this.surveyId = surveyId;
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
 	}
 
 
-	public Long getGroupId() {
-		return groupId;
+	public SurveyQuestionGroup getQuestionGroup() {
+		return questionGroup;
 	}
 
 
-	public void setGroupId(Long groupId) {
-		this.groupId = groupId;
+	public void setQuestionGroup(SurveyQuestionGroup questionGroup) {
+		this.questionGroup = questionGroup;
 	}
 
 

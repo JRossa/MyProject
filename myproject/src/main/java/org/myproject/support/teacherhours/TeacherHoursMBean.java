@@ -1,11 +1,11 @@
 package org.myproject.support.teacherhours;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -197,5 +197,14 @@ public class TeacherHoursMBean extends BaseBean {
         return selectedTeacherHours;
     }
 
+    
+    public void save () {
+    	
+    }
+    
+    
+    public void disableButtons () {
+    	
+    }
 
 }

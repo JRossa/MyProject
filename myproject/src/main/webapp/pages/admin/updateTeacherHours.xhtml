@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/register.css" />
+	
+	<style  type="text/css" >
+		.ui-icon-myReset{
+  			background-image: url("#{resource['images/icons/New document.png']}") !important;
+		}
+		.ui-icon-mySave{
+  			background-image: url("#{resource['images/icons/Save.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+	</style>
+	
+</h:head>
+
+<h:body>
+	<p:dialog id="teacherHoursUpdateDlg" widgetVar="updateTeacherHoursDialog"
+		      header="#{labels.teacher_update}" 
+		      visible="#{formTeacherUpdate.submitted and facesContext.validationFailed}"
+			  modal="true" 
+			  resizable="false" closable="false"
+			  showEffect="fade" hideEffect="explode" >
+						  
+	<h:form id="formUpdateTeacherHours" enctype="multipart/form-data">
+
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+							
+									
+		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
+		                 width="460" height="350"
+						 styleClass="form" 
+						 headerClass="tableHeader"
+						 footerClass="tableFooter"
+						 rowClasses="tableRowOdd, tableRowEven" >
+
+			<h:outputLabel for="category" value="#{labels.teacher_category}" />
+			<h:panelGroup>
+				<p:inputText id="category" value="#{teacherHoursMBean.selectedTeacherHours.teacher.category}"
+				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 title="#{labels.teacher_insert} #{labels.user_category} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="category" styleClass="formUserError"/>
+				<p:tooltip for="category" value="#{labels.teacher_insert} #{labels.user_category} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="fullname" value="#{labels.teacher_fullname}" />
+			<h:panelGroup>
+				<p:inputText id="fullname" value="#{teacherHoursMBean.selectedTeacherHours.teacher.fullName}"
+				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 title="#{labels.teacher_insert} #{labels.teacher_fullname} !!"
+							 maxlength="255" size="50"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="fullname" styleClass="formUserError"/>
+				<p:tooltip for="fullname" value="#{labels.teacher_insert} #{labels.teacher_fullname} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="lecturedhours" value="#{labels.teacherhours_lectured_hours}" />
+			<h:panelGroup>
+				<p:inputText id="lecturedhours" value="#{teacherHoursMBean.selectedTeacherHours.hours}"
+							 title="#{labels.teacherhours_insertshepl} #{labels.teacherhours_lectured_hours} !!"
+							 maxlength="10" size="10"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="lecturedhours" styleClass="formUserError"/>
+				<p:tooltip for="lecturedhours" value="#{labels.teacherhours_insertshepl} #{labels.teacherhours_lectured_hours} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+
+ 			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+				                 value="#{labels.user_save}"
+    							 action="#{teacherHoursMBean.save}" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.user_close}" 
+ 								 action="#{teacherHoursMBean.disableButtons}"
+    							 onclick="PF('updateTeacherHoursDialog').hide()"
+        					     process="@this" 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 250px" />
+    			
+    			</h:panelGroup>
+			</f:facet>	
+			
+		</h:panelGrid>
+			 
+ 	</h:form>	
+	</p:dialog>  
+</h:body>
+</html>
+

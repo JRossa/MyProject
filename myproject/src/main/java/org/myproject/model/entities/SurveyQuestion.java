@@ -2,72 +2,70 @@ package org.myproject.model.entities;
 
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.myproject.model.utils.BaseEntity;
 
+@Entity
+@Table(name = "tbl_SURVEY_QUESTION")
+@AttributeOverride(name = "id", column = @Column(name = "ID"))
 public class SurveyQuestion extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -4806043306042713447L;
 
+	@Column(name = "SURVEY_ID")
+	private Long surveyId;
 	
-	private Survey survey;
+	@Column(name = "GROUP_ID")
+	private Long groupId;
 	
-	private SurveyQuestionGroup group;
-	
-	private List<SurveyQuestionScale> scale;
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SCALE_TYPE")
+	private SurveyScaleType scaleType;
+
+	@Column(name = "TEXT")
 	private String text;
 
-	
-	
 
-
-	public SurveyQuestion(Long id, Survey survey, SurveyQuestionGroup group,
-			                                      List<SurveyQuestionScale> scale, String text) {
+	public SurveyQuestion() {
 		super();
-		
-		this.setId(id);
-		this.survey = survey;
-		this.group = group;
-		this.scale = scale;
-		this.text = text;
 	}
 
 
-
-	public Survey getSurvey() {
-		return survey;
+	public Long getSurveyId() {
+		return surveyId;
 	}
 
 
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
+	public void setSurveyId(Long surveyId) {
+		this.surveyId = surveyId;
 	}
 
 
-
-	public SurveyQuestionGroup getGroup() {
-		return group;
+	public Long getGroupId() {
+		return groupId;
 	}
 
 
-
-	public void setGroup(SurveyQuestionGroup group) {
-		this.group = group;
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
 	}
 
 
-
-	public List<SurveyQuestionScale> getScale() {
-		return scale;
+	public SurveyScaleType getScaleType() {
+		return scaleType;
 	}
 
 
-
-	public void setScale(List<SurveyQuestionScale> scale) {
-		this.scale = scale;
+	public void setScaleType(SurveyScaleType scaleType) {
+		this.scaleType = scaleType;
 	}
-
 
 
 	public String getText() {
@@ -75,11 +73,12 @@ public class SurveyQuestion extends BaseEntity<Long> {
 	}
 
 
-
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
+
+
 	
 	
 }

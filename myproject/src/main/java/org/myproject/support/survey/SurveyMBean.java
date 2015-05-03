@@ -14,8 +14,12 @@ import javax.inject.Named;
 import org.myproject.model.entities.Survey.SurveyType;
 import org.myproject.model.entities.SurveyAnswer;
 import org.myproject.model.entities.SurveyQuestion;
-import org.myproject.model.entities.SurveyQuestionScale;
+import org.myproject.model.entities.SurveyAnswerScale;
+import org.myproject.model.entities.SurveyScaleType;
 import org.myproject.model.entities.Teacher;
+import org.myproject.model.repositories.SurveyAnswerScaleRepository;
+import org.myproject.model.repositories.SurveyQuestionRepository;
+import org.myproject.model.utils.BaseBean;
 import org.myproject.report.AbstractBaseReportBean.ExportOption;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
@@ -24,12 +28,19 @@ import org.springframework.web.context.WebApplicationContext;
 
 @Named(value = "surveyMBean")
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
-public class SurveyMBean {
+public class SurveyMBean extends BaseBean {
 
+	private static final long serialVersionUID = 1984764917382818173L;
+
+	@Inject
+	private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
+
+	@Inject
+	private SurveyQuestionRepository surveyQuestionRepository;
 
 	@Inject
 	private TeacherHoursMBean mbTeacherHoursMBean;
-	
+
     private SurveyType surveyType;
      
     private String answer;
@@ -43,8 +54,7 @@ public class SurveyMBean {
     private boolean over  = false;
     private boolean last = false;
 
-    
-    private List<SurveyQuestionScale> scale;
+    private String title;
     
     private List<SurveyQuestion> surveyQuestion;
     
@@ -64,92 +74,34 @@ public class SurveyMBean {
 
     }
     
-    
-    public void initQuestionScale () {
-    	this.scale = new ArrayList<SurveyQuestionScale>();
-    	
-    	this.scale.add(new SurveyQuestionScale(1L, 1, 1, "Muito insatisfeito"));
-    	this.scale.add(new SurveyQuestionScale(2L, 1, 2, "Insatisfeito"));
-    	this.scale.add(new SurveyQuestionScale(3L, 1, 3, "Satisfeito"));
-    	this.scale.add(new SurveyQuestionScale(4L, 1, 4, "Muito Satisfeito"));
-    	
-    	this.scale.add(new SurveyQuestionScale(5L, 2, 1, "Discordo Totalmente"));
-    	this.scale.add(new SurveyQuestionScale(6L, 2, 2, "Discordo"));
-    	this.scale.add(new SurveyQuestionScale(7L, 2, 3, "Indeciso"));
-    	this.scale.add(new SurveyQuestionScale(8L, 2, 4, "Concordo"));
-    	this.scale.add(new SurveyQuestionScale(9L, 2, 5, "Concordo Totalmente"));
-    	this.scale.add(new SurveyQuestionScale(9L, 2, 6, "Concordo Muito Totalmente"));
-   	
-    	this.scale.add(new SurveyQuestionScale(10L, 3, 1, "Mau"));
-    	this.scale.add(new SurveyQuestionScale(11L, 3, 2, "Insuficiente"));
-    	this.scale.add(new SurveyQuestionScale(12L, 3, 3, "Razoável"));
-    	this.scale.add(new SurveyQuestionScale(13L, 3, 4, "Bom"));
-    	this.scale.add(new SurveyQuestionScale(14L, 3, 5, "Excelente"));
-    	
-    	this.scale.add(new SurveyQuestionScale(15L, 4, 1, "Nunca"));
-    	this.scale.add(new SurveyQuestionScale(16L, 4, 2, "Pouco"));
-    	this.scale.add(new SurveyQuestionScale(17L, 4, 3, "Algumas Vezes"));
-    	this.scale.add(new SurveyQuestionScale(18L, 4, 4, "Sempre"));
-    	
-    	this.scale.add(new SurveyQuestionScale(19L, 5, 1, "1h"));
-    	this.scale.add(new SurveyQuestionScale(20L, 5, 2, "2h"));
-    	this.scale.add(new SurveyQuestionScale(21L, 5, 3, "3h"));
-    	this.scale.add(new SurveyQuestionScale(22L, 5, 4, "5h"));
-    	
-    }
-    
-    
-    public List<SurveyQuestionScale> getSurveyQuestionScale(Integer scaleId) {
-    	List<SurveyQuestionScale> surveyScale = new ArrayList<SurveyQuestionScale>();
-	
-		for (SurveyQuestionScale sqs: this.scale) {
-			if (sqs.getScale().equals(scaleId)) {
-				surveyScale.add(sqs);
-			}
-		}
-		
-		return surveyScale;
-	}
-    
-    
-   @PostConstruct
+    @PostConstruct
     public void init () {
-        // TODO - inicializar os valores para o selectOneRadio
     	
-    	// Add Likert Items
-    	this.initQuestionScale();
-    	
-    	
-   	    
-    	this.surveyQuestion = new ArrayList<SurveyQuestion>();
-    	
-    	this.surveyQuestion.add(new SurveyQuestion(1L, null, null, this.getSurveyQuestionScale(1), 
-    			                                                 "Ambiente de Trabalho na AM"));
-    	this.surveyQuestion.add(new SurveyQuestion(2L, null, null, null, 
-                                                                 "Imagem Insitucional da AM"));
-    	this.surveyQuestion.add(new SurveyQuestion(3L, null, null, this.getSurveyQuestionScale(3), 
-                                                                 "Desempenho Global da AM"));
-    	this.surveyQuestion.add(new SurveyQuestion(4L, null, null, this.getSurveyQuestionScale(3), 
-                "O nº médio de alunos por turma é adequado para atingir os objectivos de aprendizagem ?"));
+    	this.surveyQuestion = this.surveyQuestionRepository.findAll();
     }
-    
-    
-    public SurveyType getSurveyType() {
+   
+ 
+    public List<SurveyAnswerScale> getSurveyQuestionScale(Long scaleType) {
+
+		return  this.surveyAnswerScaleRepository.findByScaleType(scaleType);
+
+	}
+
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public SurveyType getSurveyType() {
 		return surveyType;
 	}
 
 	public void setSurveyType(SurveyType surveyType) {
 		this.surveyType = surveyType;
 	}
-
-	public List<SurveyQuestionScale> getScale() {
-		return scale;
-	}
-
-	public void setScale(List<SurveyQuestionScale> scale) {
-		this.scale = scale;
-	}
-
 
 	public List<SurveyQuestion> getSurveyQuestion() {
 		return surveyQuestion;
@@ -210,9 +162,9 @@ public class SurveyMBean {
     public String getQuestion() {
     	
         System.out.println("Get Question   : " + this.openQuestion);
-        
+       
     	if (!this.over) {
-        	this.openQuestion = (this.surveyQuestion.get(this.currentQuestion).getScale() == null);
+        	this.openQuestion = (this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList().size() == 1);
         	this.answerValue = null;
         	this.answer = null;
         	
@@ -245,6 +197,12 @@ public class SurveyMBean {
     
 
     public void startCourse() {
+    	
+    	this.title = "(UC - " 
+                + this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getCode()
+                + ")";
+    	
+    	System.out.println("Teacher :" + this.title);
     	
     	System.out.println("Teacher :" + 
     	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
@@ -374,10 +332,10 @@ public class SurveyMBean {
 	public List<SelectItem> getSelectOneItemsScale() {
         this.selectOneItemsScale = new ArrayList<SelectItem>();
         
-        List<SurveyQuestionScale> surveyScale = this.surveyQuestion.get(this.currentQuestion).getScale();
+        List<SurveyAnswerScale> surveyScale = this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList();
 
         if (surveyScale != null) {
-	        for (SurveyQuestionScale scale : surveyScale) {
+	        for (SurveyAnswerScale scale : surveyScale) {
 	            SelectItem selectItem = new SelectItem(scale.getValue(), scale.getText());
 	            this.selectOneItemsScale.add(selectItem);
 	        }

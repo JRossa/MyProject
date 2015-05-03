@@ -47,7 +47,7 @@
 
 	<p:dialog id="surveyCourseDlg" widgetVar="surveyCourseDialog"
 			  width="750" 
-		      header="#{labels.survey}" 
+		      header="#{labels.survey}  #{surveyMBean.title}" 
 		      visible="#{formSurveyCourse.submitted and facesContext.validationFailed}"
 			  modal="true" 
 			  resizable="false" closable="false"
@@ -55,7 +55,7 @@
 						  
 	<h:form id="formSurveyCourse" enctype="multipart/form-data" 
 	         style="width: 715px; 
-	                height: 350px;
+	                height: 400px;
 	                background-color: lightblue; " >
 
         <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
@@ -70,25 +70,34 @@
 					 footerClass="tableFooter"
 					 rowClasses="tableRowOdd, tableRowEven" >
 
-
-            <h:outputText id="groupquestion" 
-                          value="#{surveyMBean.getGroupQuestion()}"
-                          style="width: 415px;  height: 250px;
-						  		 font-family: Verdana,sans-serif;
-						  		 color: green;
-						  		 font-size: 20px;
-	                      		 font-weight: bolder;"
-							 	/>
 			<h:panelGroup>
-			<p:spacer width="40" height="10" />
-            <h:outputText id="question" 
-                          value="#{surveyMBean.getQuestion()}"
-                          style="width: 615px;  height: 250px;
-						  		 font-family: Verdana,sans-serif;
-						  		 color: black;
-						  		 font-size: 15px;
-	                      		 font-weight: 600;"
-							 	/>
+				<br/>
+				<p:spacer width="20" height="10" />
+	            <h:outputText id="groupquestion" 
+	                          value="#{surveyMBean.getGroupQuestion()}"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: green;
+							  		 font-size: 20px;
+		                      		 font-weight: bolder;"
+								 	/>
+				<br/>
+				<br/>
+ 			</h:panelGroup>
+			
+			<h:panelGroup>
+				<br/>
+				<p:spacer width="40" height="10" />
+	            <h:outputText id="question" 
+	                          value="#{surveyMBean.getQuestion()}"
+	                          style="width: 615px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: black;
+							  		 font-size: 15px;
+		                      		 font-weight: 600;"
+								 	/>
+				<br/>
+				<br/>
             </h:panelGroup>
             
             <h:panelGroup>

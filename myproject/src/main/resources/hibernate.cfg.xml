@@ -32,6 +32,10 @@
      <mapping class="org.myproject.model.entities.Teacher" />
      <mapping class="org.myproject.model.entities.TeacherHours" />
      
+     <mapping class="org.myproject.model.entities.SurveyScaleType" />
+     <mapping class="org.myproject.model.entities.SurveyAnswerScale" />
+     <mapping class="org.myproject.model.entities.SurveyQuestion" />
+     
      <mapping class="org.myproject.model.entities.Professorship" />
      <mapping class="org.myproject.model.entities.CategoryGroup" />
      <mapping class="org.myproject.model.entities.CategoryLookupTable" />

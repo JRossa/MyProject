@@ -2,6 +2,7 @@ package org.myproject.support.lessonplan;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +27,13 @@ import org.myproject.model.entities.Degree;
 import org.myproject.model.entities.DegreeCurricularPlansData;
 import org.myproject.model.entities.LessonPlan;
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.Professorship;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.repositories.DegreeCurricularPlansDataRepository;
 import org.myproject.model.repositories.DegreeRepository;
 import org.myproject.model.repositories.LessonPlanRepository;
+import org.myproject.model.repositories.ProfessorshipRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
@@ -74,10 +77,13 @@ public class LessonPlanMBean extends BaseBean {
     private DegreeRepository degreeRepository;
     
     @Inject 
-    DegreeCurricularPlansDataRepository degreeCurricularPlansDataRepository;
+    private DegreeCurricularPlansDataRepository degreeCurricularPlansDataRepository;
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private ProfessorshipRepository professorshipRepository;
 
     @Inject
     private SchoolTimesMBean mbSchoolTimesMBean;
@@ -500,6 +506,9 @@ public class LessonPlanMBean extends BaseBean {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
                 addMessage(message);
 
+                this.checkProfessorship(this.lessonPlan.getTeacher().getId(), this.lessonPlan.getCourse().getId(), 
+                		                this.lessonPlan.getDegree().getId(), this.lessonPlan.getStartDate());
+                
                 this.init();
             } else {
   
@@ -580,6 +589,7 @@ public class LessonPlanMBean extends BaseBean {
     	System.out.println("Clean Event  : ");
     	
     }
+    
     
     public void onEventMove(ScheduleEntryMoveEvent scheduleEntryMoveEvent) {
     	
@@ -764,9 +774,49 @@ public class LessonPlanMBean extends BaseBean {
         }
     }    
 
+ 
+    public String computeExecutionYear (Date date) {
+        String executionYear = null;
+ 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        
+        SimpleDateFormat yearDate = new SimpleDateFormat("yyyy");
+        SimpleDateFormat mounthDate = new SimpleDateFormat("MM");
+
+        Integer intMounth = Integer.parseInt(mounthDate.format(date).toString());
+        Integer intYear = Integer.parseInt(yearDate.format(date).toString());
+
+        if (intMounth >= 10) {
+        	executionYear = intYear + "/" + (intYear+1);
+        } else {
+        	executionYear = (intYear-1) + "/" + intYear;
+        }
+
+        return executionYear;
+    }
+
+    
+    public void checkProfessorship (Long TeacherId, Long courseId, Long degreeId, Date date) {
+    	
+    	String executionYear = computeExecutionYear(date);
+    	
+    	List<Professorship> professorship = 
+    			this.professorshipRepository.findByTeacherIdCourseIdDegreeIdAndExecutionYear(TeacherId, 
+    					                                                  courseId, degreeId, executionYear);
+    	
+    	if (professorship == null) {
+    		String msg = getResourceProperty("labels", "lessonplan_professorship_error");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+    	}
+    }
+
     
     public void valueChangedTeacher (ValueChangeEvent valueChangeEvent) {
     	String msg = valueChangeEvent.getNewValue().toString();
+    	
+    	// TODO - Verificar se TeacherId, CourseId, DegreeId estão em professorship
+    	// findByTeacherIdCourseIdDegreeIdAndExecutionYear(TeacherId, courseId, degreeId, executionYear)
     	
     	System.out.println("value changed..." + msg);
     }

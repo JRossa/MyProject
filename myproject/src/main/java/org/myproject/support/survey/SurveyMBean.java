@@ -1,6 +1,8 @@
 package org.myproject.support.survey;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,6 +21,7 @@ import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.utils.BaseBean;
+import org.myproject.model.utils.Cryptor;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
 import org.springframework.context.annotation.Scope;
@@ -330,7 +333,13 @@ public class SurveyMBean extends BaseBean {
 	}
 
 
-	public void listAnswers () {
+	public void listAnswers () throws Exception {
+    	Date date = new Date();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	
+    	
+    	System.out.println("Date    : " + sdf.format(date));
+    	String stamp = Cryptor.EncryptString(sdf.format(date));
 
     	System.out.println("----------------- Survey N : " + this.getSurveyAnswer().size());
 
@@ -340,6 +349,7 @@ public class SurveyMBean extends BaseBean {
     		System.out.println("Survey Question : " + sa.getQuestion());
     		System.out.println("Survey Answer   : " + sa.getValue());
     		System.out.println("Survey Course   : " + sa.getCourse());
+    		System.out.println("Stamp           : " + stamp);
     	}
 
 	}
@@ -348,7 +358,12 @@ public class SurveyMBean extends BaseBean {
 	public void save () {
     	this.reset();
     	
-    	this.listAnswers();
+    	try {
+			this.listAnswers();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     }
     

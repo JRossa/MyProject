@@ -1,6 +1,8 @@
 package org.myproject.test.conndb.repositories;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.repositories.SurveyScaleTypeRepository;
+import org.myproject.model.utils.Cryptor;
 import org.myproject.support.survey.SurveyMBean;
 import org.myproject.test.conndb.AbstractDatabaseTest;
 
@@ -78,7 +81,7 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
     	}
     }	
 
-    @Test
+
     public void SurveyTest () {	
     	System.out.println("Get Question   : " + mbSurveyMBean.getSurveyType().TEACHER);
     	
@@ -87,6 +90,7 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
 		logger.info(survey);
 
     }
+    
     
     public void SurveyQuestionSurveyTest () {	
     	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyType().TEACHER_UC.toString());
@@ -97,4 +101,20 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
 		
     }
 
+    @Test
+    public void encryptStamp () throws Exception {
+    	Date date = new Date();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	
+    	
+    	System.out.println("Date    : " + sdf.format(date));
+    	String stamp = Cryptor.EncryptString(sdf.format(date));
+    	
+//    	String stamp = Cryptor.EncryptString("álvaro joão césar");
+    	System.out.println("Encrypt : " + stamp + "  (" + stamp.length() + ")");
+    	
+    	System.out.println("Dencrypt : " + Cryptor.DecryptString(stamp));
+    	System.out.println("End ");
+    }
+    
 }

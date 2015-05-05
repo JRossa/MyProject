@@ -25,6 +25,26 @@ public class LessonPlanTest  extends AbstractDatabaseTest {
     private LessonPlanRepository lessonPlanRepository;
     
     
+    public String computeExecutionYear (Date date) {
+        String executionYear = null;
+ 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        
+        SimpleDateFormat yearDate = new SimpleDateFormat("yyyy");
+        SimpleDateFormat mounthDate = new SimpleDateFormat("MM");
+
+        Integer intMounth = Integer.parseInt(mounthDate.format(date).toString());
+        Integer intYear = Integer.parseInt(yearDate.format(date).toString());
+
+        if (intMounth >= 10) {
+        	executionYear = intYear + "/" + (intYear+1);
+        } else {
+        	executionYear = (intYear-1) + "/" + intYear;
+        }
+
+        return executionYear;
+    }
+    
     
 
     public void Test1 () {
@@ -81,7 +101,7 @@ public class LessonPlanTest  extends AbstractDatabaseTest {
         }
     }
 
-    @Test
+
     public void Test2 () {
         System.out.println("Passou");
         Long dayDelta = 20L;
@@ -121,6 +141,11 @@ public class LessonPlanTest  extends AbstractDatabaseTest {
             
             System.out.println("Dias       : " + numDays + "         " + d.getDays());
         }
+    }
+    
+    @Test   
+    public void Test3 () {
+    	System.out.println("ExecYear : " + computeExecutionYear(new Date()));
     }
 
 }

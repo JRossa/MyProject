@@ -20,7 +20,7 @@ public interface ProfessorshipRepository extends JpaRepository<Professorship, Lo
 	           + "FROM tbl_EXECUTION_YEAR INNER JOIN tbl_PROFESSORSHIP "
 	           + "ON tbl_EXECUTION_YEAR.ID = tbl_PROFESSORSHIP.EXECUTION_YEAR "
 	           + "WHERE tbl_PROFESSORSHIP.TEACHER_CODE = :teacherId AND "
-	           + "tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear)", nativeQuery = true)
+	           + "tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear) ", nativeQuery = true)
 	public List <Object[]> findCoursesByUserAndExecutionYear(@Param("teacherId") Long teacherId,
 	                                                         @Param("executionYear") String executionYear);
 
@@ -28,9 +28,22 @@ public interface ProfessorshipRepository extends JpaRepository<Professorship, Lo
 	           + "FROM tbl_EXECUTION_YEAR INNER JOIN tbl_PROFESSORSHIP "
 	           + "ON tbl_EXECUTION_YEAR.ID = tbl_PROFESSORSHIP.EXECUTION_YEAR "
 	           + "WHERE tbl_PROFESSORSHIP.TEACHER_CODE = :teacherId AND "
-	           + "tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear", nativeQuery = true)
+	           + "tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear ", nativeQuery = true)
 	public List <Professorship> findByTeacherIdAndExecutionYear(@Param("teacherId") Long teacherId,
 	                                                            @Param("executionYear") String executionYear);
+
+	
+	@Query(value="SELECT DISTINCT tbl_PROFESSORSHIP.* "
+	           + "FROM tbl_EXECUTION_YEAR INNER JOIN tbl_PROFESSORSHIP "
+	           + "ON tbl_EXECUTION_YEAR.ID = tbl_PROFESSORSHIP.EXECUTION_YEAR "
+	           + "WHERE tbl_PROFESSORSHIP.TEACHER_CODE = :teacherId "
+	           + "AND tbl_PROFESSORSHIP.COURSE_CODE = :courseId "
+	           + "AND tbl_PROFESSORSHIP.DEGREE_CODE = :degreeId "
+	           + "AND tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear ", nativeQuery = true)
+	public List <Professorship> findByTeacherIdCourseIdDegreeIdAndExecutionYear(@Param("teacherId") Long teacherId,
+																				@Param("courseId") Long courseId,
+																				@Param("degreeId") Long degreeId,
+	                                                                            @Param("executionYear") String executionYear);
 
 }
 

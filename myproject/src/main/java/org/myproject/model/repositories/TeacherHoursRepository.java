@@ -28,8 +28,9 @@ public interface TeacherHoursRepository extends JpaRepository<TeacherHours, Long
                + "AND (tbl_teacher_hours.TEACHER_ID = tbl_survey_teacher.TEACHER_ID)) "
                + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
                + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
-               + "AND tbl_SURVEY_TEACHER.SURVEY_ID = 2 ", nativeQuery = true)
-    public List <TeacherHours> findByCourseSurveyDoneInExecutionYear (@Param("executionYear") String executionYear);
+               + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ", nativeQuery = true)
+    public List <TeacherHours> findByCourseSurveyDoneInExecutionYear (@Param("surveyId") Long surveyId,
+            														  @Param("executionYear") String executionYear);
     
     @Query(value="SELECT DISTINCT tbl_TEACHER_HOURS.* FROM tbl_TEACHER_HOURS "
     		+ "WHERE tbl_TEACHER_HOURS.ID NOT IN "
@@ -38,16 +39,18 @@ public interface TeacherHoursRepository extends JpaRepository<TeacherHours, Long
             + "AND (tbl_teacher_hours.TEACHER_ID = tbl_survey_teacher.TEACHER_ID)) "
             + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
             + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
-            + "AND tbl_SURVEY_TEACHER.SURVEY_ID = 2) ", nativeQuery = true)
-    public List <TeacherHours> findByCourseSurveyNOTDoneInExecutionYear (@Param("executionYear") String executionYear);
+            + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ) ", nativeQuery = true)
+    public List <TeacherHours> findByCourseSurveyNOTDoneInExecutionYear (@Param("surveyId") Long surveyId,
+    		                                                             @Param("executionYear") String executionYear);
 
     
     @Query(value="SELECT DISTINCT tbl_TEACHER_HOURS.* FROM (tbl_TEACHER_HOURS "
             + "INNER JOIN tbl_SURVEY_TEACHER ON (tbl_teacher_hours.TEACHER_ID = tbl_survey_teacher.TEACHER_ID)) "
             + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
             + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
-            + "AND tbl_SURVEY_TEACHER.SURVEY_ID = 1 ", nativeQuery = true)
-    public List <TeacherHours> findByTeacherSurveyDoneInExecutionYear (@Param("executionYear") String executionYear);
+            + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ", nativeQuery = true)
+    public List <TeacherHours> findByTeacherSurveyDoneInExecutionYear (@Param("surveyId") Long surveyId,
+    		                                                           @Param("executionYear") String executionYear);
  
 	@Query(value="SELECT DISTINCT tbl_TEACHER_HOURS.* FROM tbl_TEACHER_HOURS "
 	 		+ "WHERE tbl_TEACHER_HOURS.ID NOT IN "
@@ -55,6 +58,7 @@ public interface TeacherHoursRepository extends JpaRepository<TeacherHours, Long
 	        + "INNER JOIN tbl_SURVEY_TEACHER (tbl_teacher_hours.TEACHER_ID = tbl_survey_teacher.TEACHER_ID)) "
 	        + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
 	        + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
-	        + "AND tbl_SURVEY_TEACHER.SURVEY_ID = 1) ", nativeQuery = true)
-	public List <TeacherHours> findByTeacherSurveyNOTDoneInExecutionYear (@Param("executionYear") String executionYear);
+	        + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ) ", nativeQuery = true)
+	public List <TeacherHours> findByTeacherSurveyNOTDoneInExecutionYear (@Param("surveyId") Long surveyId,
+			                                                              @Param("executionYear") String executionYear);
 }

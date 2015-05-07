@@ -34,14 +34,14 @@
 </h:head>
 
 <h:body>
-	<p:dialog id="teacherHoursUpdateDlg" widgetVar="updateTeacherHoursDialog"
+	<p:dialog id="teacherHoursExecutionYearUpdateDlg" widgetVar="updateteacherHoursExecutionYearDialog"
 		      header="#{labels.teacher_update}" 
 		      visible="#{formTeacherUpdate.submitted and facesContext.validationFailed}"
 			  modal="true" 
 			  resizable="false" closable="false"
 			  showEffect="fade" hideEffect="explode" >
 						  
-	<h:form id="formUpdateTeacherHours" enctype="multipart/form-data">
+	<h:form id="formUpdateteacherHoursExecutionYear" enctype="multipart/form-data">
 
         <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
 							
@@ -55,7 +55,7 @@
 
 			<h:outputLabel for="category" value="#{labels.teacher_category}" />
 			<h:panelGroup>
-				<p:inputText id="category" value="#{teacherHoursMBean.selectedTeacherHours.teacher.category}"
+				<p:inputText id="category" value="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear.teacher.category}"
 				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
@@ -65,7 +65,7 @@
 			
 			<h:outputLabel for="fullname" value="#{labels.teacher_fullname}" />
 			<h:panelGroup>
-				<p:inputText id="fullname" value="#{teacherHoursMBean.selectedTeacherHours.teacher.fullName}"
+				<p:inputText id="fullname" value="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear.teacher.fullName}"
 				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
 							 maxlength="255" size="50"/>
 				<f:verbatim><br/></f:verbatim>
@@ -75,7 +75,7 @@
 
 			<h:outputLabel for="lecturedhours" value="#{labels.teacherhours_lectured_hours}" />
 			<h:panelGroup>
-				<p:spinner id="lecturedhours" value="#{teacherHoursMBean.selectedTeacherHours.hours}"
+				<p:spinner id="lecturedhours" value="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear.hours}"
 				           min="0.0" max="20.0" stepFactor="0.1" 
 						   title="#{labels.teacherhours_insertshepl} #{labels.teacherhours_lectured_hours} !!"
 						   maxlength="10" size="10">
@@ -97,12 +97,12 @@
 				
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
 				                 value="#{labels.user_save}"
-    							 action="#{teacherHoursMBean.save}" />
+    							 action="#{teacherHoursExecutionYearMBean.save}" />
     			
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.user_close}" 
- 								 action="#{teacherHoursMBean.disableButtons}"
-    							 onclick="PF('updateTeacherHoursDialog').hide()"
+ 								 action="#{teacherHoursExecutionYearMBean.disableButtons}"
+    							 onclick="PF('updateteacherHoursExecutionYearDialog').hide()"
         					     process="@this" 
     							 style=" width: 100px;
     							         color: #ffffff; 

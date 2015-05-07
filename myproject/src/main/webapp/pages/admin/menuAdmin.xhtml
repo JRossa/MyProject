@@ -41,6 +41,9 @@
             </p:menuitem>            
             <p:menuitem value="#{labels.menu_teacher_executionyear_list}" icon="ui-icon-arrow-1-e"
                         url="/pages/admin/listTeacher.am?executionyear=year"  />
+                        
+             <p:menuitem value="#{labels.menu_teacher_hours_executionyear_list}" icon="ui-icon-arrow-1-e"
+                        url="/pages/admin/listTeacherHoursExecutionYear.am"  />
         </p:submenu>
  
         <p:submenu label="#{labels.menu_session}"  icon="ui-icon-tag">
@@ -63,6 +66,16 @@
             </p:menuitem>
        </p:submenu>
 
+
+        <p:submenu label="#{labels.menu_survey}"  icon="ui-icon-document">
+            <p:menuitem value="#{labels.menu_survey_course}" 
+                        url="/pages/admin/listTeacher.am?executionyear=year" >
+            </p:menuitem>
+            <p:menuitem value="#{labels.menu_survey_teacher}" 
+                        url="/pages/admin/listTeacherHoursExecutionYear.am" >
+            </p:menuitem>
+       </p:submenu>
+
     </p:menubar>
    
     
@@ -74,4 +87,6 @@
 </h:body>
 </html>
 
+
+<!-- Largura do menu em main.css .ui-menu -->
 <!-- /pages/admin/listLessonPlan.am?list=all" -->

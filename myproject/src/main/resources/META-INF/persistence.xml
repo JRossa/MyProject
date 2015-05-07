@@ -19,7 +19,8 @@
 				
 		<class>org.myproject.model.entities.Teacher</class>
 		<class>org.myproject.model.entities.TeacherHours</class>
-
+		<class>org.myproject.model.entities.TeacherHoursExecutionYear</class>
+		
 		<class>org.myproject.model.entities.Survey</class>
 		<class>org.myproject.model.entities.SurveyType</class>
 		<class>org.myproject.model.entities.SurveyAnswerScale</class>

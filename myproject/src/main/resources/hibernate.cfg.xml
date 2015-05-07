@@ -31,6 +31,7 @@
      
      <mapping class="org.myproject.model.entities.Teacher" />
      <mapping class="org.myproject.model.entities.TeacherHours" />
+     <mapping class="org.myproject.model.entities.TeacherHoursExecutionYear" />
  
      <mapping class="org.myproject.model.entities.Survey" />
      <mapping class="org.myproject.model.entities.SurveyType" />

@@ -58,7 +58,8 @@
 
 					<f:facet name="header">
 					     <h:outputText value="#{labels.professorship_list}" />
-					     <h:outputText value=" - #{professorshipMBean.selectedExecutionYear}" />
+					     <h:outputText value=" - #{professorshipMBean.selectedExecutionYear}"
+					                   rendered="#{professorshipMBean.selectedExecutionYear != ''}" />
 					</f:facet>
 					
 					<p:column headerText="#{labels.professorship_id}"  style="width: 8%;" >
@@ -70,13 +71,21 @@
 					</p:column>
 					
 					<p:column headerText="#{labels.professorship_course_code}" footerText="" style="width: 15%;"
-					          filterBy="#{professorship.course.code}" filterMatchMode="contains" >
+					          filterBy="#{professorship.course.code}" filterMatchMode="contains" 
+					          filterStyle="width: 40px;">
 						<h:outputText value="#{professorship.course.code}" />
 					</p:column>
 					
 					<p:column headerText="#{labels.professorship_degree_code}" footerText="" style="width: 15%;"
-					          filterBy="#{professorship.degree.code}" filterMatchMode="contains" >
+					          filterBy="#{professorship.degree.code}" filterMatchMode="contains" 
+					          filterStyle="width: 60px;" >
 						<h:outputText value="#{professorship.degree.code}" />
+					</p:column>
+
+					<p:column headerText="#{labels.professorship_execution_year}" footerText="" style="width: 15%;"
+					          filterBy="#{professorship.year.executionYear}" filterMatchMode="contains" 
+					          filterStyle="width: 60px;">
+						<h:outputText value="#{professorship.year.executionYear}" />
 					</p:column>
 
 					<p:column headerText="#{labels.professorship_responsible_forcourse}" style="width: 10%;" >

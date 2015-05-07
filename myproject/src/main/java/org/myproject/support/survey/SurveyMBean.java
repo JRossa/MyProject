@@ -23,6 +23,7 @@ import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.model.utils.Cryptor;
 import org.myproject.support.teacher.TeacherMBean;
+import org.myproject.support.teacherhours.TeacherHoursExecutionYearMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -45,10 +46,13 @@ public class SurveyMBean extends BaseBean {
 	private SurveyRepository surveyRepository;
 
 	@Inject
+	private TeacherMBean mbTeacherMBean;
+
+	@Inject
 	private TeacherHoursMBean mbTeacherHoursMBean;
 
 	@Inject
-	private TeacherMBean mbTeacherMBean;
+	private TeacherHoursExecutionYearMBean mbTeacherHoursExecutionYearMBean;
 
     private String answer;
     private Integer answerValue;
@@ -143,9 +147,18 @@ public class SurveyMBean extends BaseBean {
             this.answerId++;
             
             Integer i = this.currentQuestion;
-        	this.surveyAnswer.add(new SurveyAnswer(this.answerId, 1L,  i.longValue(), 
-        			                                      answer,
-        			                                      this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
+            
+            if (this.surveyType.equals(SurveyType.TEACHER_UC)) {
+            	this.surveyAnswer.add(new SurveyAnswer(this.answerId, this.activeSurvey.getId(),  i.longValue(), 
+                        					answer,
+                        					this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
+            }
+ 
+            if (this.surveyType.equals(SurveyType.TEACHER_UC)) {
+            	this.surveyAnswer.add(new SurveyAnswer(this.answerId, this.activeSurvey.getId(),  i.longValue(), 
+                        								answer,	null));
+            }
+
             this.currentQuestion++;
            
 
@@ -232,7 +245,10 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("Teacher :" + 
     	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
     	
-    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+    	this.setSurveyType(SurveyType.TEACHER_UC);
+    	
+    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER_UC.toString());
+    	
     	if (this.activeSurvey != null) {
 	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
 	    	
@@ -263,7 +279,45 @@ public class SurveyMBean extends BaseBean {
     	
     	System.out.println("Title :" + this.title);
 
-		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER_UC.toString());
+    	this.setSurveyType(SurveyType.TEACHER);
+    	
+		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+		
+    	if (this.activeSurvey != null) {
+
+	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+	
+	    	if (this.surveyQuestion != null) {
+	    		
+		        this.currentQuestion = 0;
+		        this.answerId = 0L;
+		        this.over = false;
+		        this.last = false;
+		        this.noSurvey = false;
+		        
+		        return;
+	    	}
+    	}
+    	
+	    this.over = true;
+	    this.last = true;
+	    this.noSurvey = true;
+	    
+    }
+
+ 
+    public void startTeacherExecutionYear() {
+
+    	this.title = "(Docente - " 
+                + this.mbTeacherHoursExecutionYearMBean.getSelectedTeacherHoursExecutionYear().getTeacher().getFullName()
+                + ")";
+    	
+    	System.out.println("Title :" + this.title);
+
+    	this.setSurveyType(SurveyType.TEACHER);
+    	
+		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+		
     	if (this.activeSurvey != null) {
 
 	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());

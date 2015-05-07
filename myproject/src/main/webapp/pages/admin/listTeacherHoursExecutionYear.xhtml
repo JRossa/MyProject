@@ -17,8 +17,7 @@
 		<h:form>
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
-   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
-    	 	<p:menuitem value="#{labels.menu_teacher_course_list}" url="/pages/admin/listTeacherHours.am" />
+    	 	<p:menuitem value="#{labels.menu_teacher_hours_list}" url="/pages/admin/listTeacherHoursExecutionYear.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -30,19 +29,48 @@
 	<ui:define name="content">
 
 		<f:view>
-			<f:event listener="#{teacherHoursMBean.onLoadTeacherHours}" type="preRenderView" />
+			<f:event listener="#{teacherHoursExecutionYearMBean.onLoadTeacherHours('2014/2015')}" type="preRenderView" />
 		</f:view>
 		
-		<p:panel id="teacherHoursPanel" style="border: 0px;" >
+		<p:panel id="teacherHoursExecutionYearPanel" style="border: 0px;" >
 		
-			<h:form id="formTeacherHoursList" >
+			<h:form id="formTeacherHoursExecutionYearList" >
+
+				<p:panelGrid id="panelExecutionYear" columns="3"
+				             style="margin-bottom:10px; 
+				                    width: 40%;
+				                    position: relative;
+				                    left: 400px; " 
+                             cellpadding="10" 
+                             styleClass="noBorderLine" >	
+		        <h:outputText value="#{labels.professorship_execution_year}" 
+		                        />     
+ 				<p:selectOneMenu id="year" value="#{teacherHoursExecutionYearMBean.selectedExecutionYear}"
+							     title="#{labels.professorship_execution_year}"
+							     maxlength="255" size="40" >
+					<f:selectItem itemLabel="2012/2013" itemValue="2012/2013" />
+					<f:selectItem itemLabel="2013/2014" itemValue="2013/2014" />
+					<f:selectItem itemLabel="2014/2015" itemValue="2014/2015" />
+					<f:selectItem itemLabel="2015/2016" itemValue="2015/2016" />
+					<f:ajax execute="year"  render="teacherHoursExecutionYearDataTable"  />
+				</p:selectOneMenu>
+
+				<p:commandButton id="updateInput" widgetVar="inputButton" value="#{labels.teacher_update}"
+				    			 rendered="true"
+				   				 oncomplete="dataTable.filter();"
+				  				 update="teacherHoursExecutionYearDataTable" >
+					<f:ajax execute="year" render="teacherHoursExecutionYearDataTable" />
+				</p:commandButton>
+				
+
+                </p:panelGrid>
 			
-				<p:dataTable id="teacherHoursDataTable" widgetVar="dataTable"
+				<p:dataTable id="teacherHoursExecutionYearDataTable" widgetVar="dataTable"
 				    loadingMessage="#{labels.teacherhours_load}"
 				    scrollable="true"
 				    scrollHeight="390"
 					var="teacherhours" 
-					value="#{teacherHoursMBean.teacherHours}" 
+					value="#{teacherHoursExecutionYearMBean.teacherHoursExecutionYear}" 
 					paginator="true" 
 					paginatorPosition="top"
 					rows="10"
@@ -51,44 +79,33 @@
 					rowsPerPageTemplate="5,10,20" rowKey="#{teacherhours.id}"
 					selectionMode="single" >
 
-					<p:ajax event="rowSelect" listener="#{teacherHoursMBean.selectTeacherHours}" 
-					                          update=":formTeacherHoursList, teacherHoursDataTable" />
-					<p:ajax event="page" listener="#{teacherHoursMBean.unselectTeacherHours}"  />
-					<p:ajax event="rowUnselect" listener="#{teacherHoursMBean.unselectTeacherHours}"  />
+					<p:ajax event="rowSelect" listener="#{teacherHoursExecutionYearMBean.selectTeacherHoursExecutionYear}" 
+					                          update=":formTeacherHoursExecutionYearList, teacherHoursExecutionYearDataTable" />
+					<p:ajax event="page" listener="#{teacherHoursExecutionYearMBean.unselectTeacherHoursExecutionYear}"  />
+					<p:ajax event="rowUnselect" listener="#{teacherHoursExecutionYearMBean.unselectTeacherHoursExecutionYear}"  />
 
 					<f:facet name="header">
-					     <h:outputText value="#{labels.teacherhours_list}" />
-					     <h:outputText value=" - #{teacherHoursMBean.selectedTeacher.fullName}" />
+					     <h:outputText value="#{labels.teacherhours_teacher_list}" />
 					</f:facet>
 					
 					<p:column headerText="#{labels.teacherhours_id}"  style="width: 8%;" >
 						<h:outputText value="#{teacherhours.id}" />
 					</p:column>
 					
-					<p:column headerText="#{labels.teacherhours_responsible_forcourse}" style="width: 10%;" >
-					    <p:graphicImage name="images/icons/Green pin.png"  
-					                    style="border:none; position: relative; left: 20px;" 
-					                    rendered="#{teacherhours.responsible}" />     
-					    <p:graphicImage name="images/icons/Red pin.png" 
-					                    style="border:none; position: relative; left: 20px;"
-					                    rendered="#{!teacherhours.responsible}" />     
-						<h:outputText value="#{teacherhours.responsible}" rendered="false" />
-					</p:column>
-
-					<p:column headerText="#{labels.teacherhours_course_code}" footerText="" style="width: 10%;"
-					          filterBy="#{teacherhours.course.code}" filterMatchMode="contains" filterStyle="width: 40px;" >
-						<h:outputText value="#{teacherhours.course.code}" />
-					</p:column>
-					<p:column headerText="#{labels.teacherhours_name}" footerText="" style="width: 50%;"
-					          filterBy="#{teacherhours.course.code}" filterMatchMode="contains" >
-						<h:outputText value="#{teacherhours.course.name}" /> <br/>
-						<h:outputText value="#{teacherhours.year.executionYear}" />
-						<h:outputText value=" - #{teacherhours.semester}º Sem" />
+					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 40%;" 
+					          filterBy="#{teacherhours.teacher.fullName}" filterMatchMode="contains" >
+						<h:outputText value="#{teacherhours.teacher.fullName}" />
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
 					          filterBy="#{teacherhours.hours}" filterMatchMode="contains" filterStyle="width: 40px;" >
 						<h:outputText value="#{teacherhours.hours}" />
+					</p:column>
+
+					<p:column headerText="#{labels.professorship_execution_year}" footerText="" style="width: 15%;"
+					          filterBy="#{teacherhours.year.executionYear}" filterMatchMode="contains" 
+					          filterStyle="width: 60px;">
+						<h:outputText value="#{teacherhours.year.executionYear}" />
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_survey_done}" style="width: 10%;" >
@@ -105,28 +122,28 @@
 					<p:column style="width: 15%;">
 						<p:commandButton widgetVar="updateTeacherHoursButton"
 										 icon="ui-icon-zoomin"
-						                 rendered="#{teacherHoursMBean.renderedUpdate}"
+						                 rendered="#{teacherHoursExecutionYearMBean.renderedUpdate}"
 										 title="#{labels.teacher_update}"
-										 update="formTeacherHoursList, formUpdateTeacherHours"
-										 oncomplete="PF('updateTeacherHoursDialog').show()"
+										 update="formTeacherHoursExecutionYearList, formUpdateteacherHoursExecutionYear"
+										 oncomplete="PF('updateteacherHoursExecutionYearDialog').show()"
 										  >
-							<f:setPropertyActionListener value="#{teacherhours}"  target="#{teacherHoursMBean.selectedTeacherHours}" />
+							<f:setPropertyActionListener value="#{teacherhours}"  target="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear}" />
  						</p:commandButton>
 						<p:commandButton widgetVar="surveyTeacherButton"
 										 icon="ui-icon-script"
 						                 rendered="#{!teacherhours.surveyDone}"
-										 title="#{labels.teacher_course_survey}"
-										 update="formTeacherHoursList, surveyCourseDlg"
-										 action="#{surveyMBean.startCourse}"
+										 title="#{labels.teacher_survey}"
+										 update="formTeacherHoursExecutionYearList, surveyCourseDlg"
+										 action="#{surveyMBean.startTeacherExecutionYear}"
 										 oncomplete="PF('surveyCourseDialog').show()"
 										  >
-							<f:setPropertyActionListener value="#{teacherhours}"  target="#{teacherHoursMBean.selectedTeacherHours}" />
+							<f:setPropertyActionListener value="#{teacherhours}"  target="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear}" />
  						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</h:form>
 			
-			<ui:include name="update" src="updateTeacherHours.xhtml"  />
+			<ui:include name="update" src="updateTeacherHoursExecutionYear.xhtml"  />
  			<ui:include name="surveycourse" src="../teacher/surveyCourse.xhtml"  />		
 			
  				

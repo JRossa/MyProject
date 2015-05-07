@@ -136,6 +136,9 @@ public class LessonPlanMBean extends BaseBean {
 
     private Boolean enableTeacherSelect = false;
     
+    private Boolean multiSave = false;
+    
+    
     // listLessonPlan - control buttons
     private Boolean renderedUpdate;
 
@@ -203,8 +206,10 @@ public class LessonPlanMBean extends BaseBean {
 
     	// setup objects
         
-        this.setupUserData();
-        
+		if (!this.teacherSelected) {
+			this.setupUserData();
+		}
+		
         if (this.lessonPlan.getStartDate() != null) {
         	this.setInitialScheduleDate(this.lessonPlan.getStartDate());
         }
@@ -499,15 +504,20 @@ public class LessonPlanMBean extends BaseBean {
                 
                 LessonPlan retLessonPlan = this.lessonPlanRepository.save(this.lessonPlan);
                 
-                System.out.printf("Log ID is %d and for returned account ID is %d\n", lessonPlan.getId(), retLessonPlan.getId());
-                
-                String msg = getResourceProperty("labels", "lessonplan_save_ok");
-                
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-                addMessage(message);
-
-                this.checkProfessorship(this.lessonPlan.getTeacher().getId(), this.lessonPlan.getCourse().getId(), 
-                		                this.lessonPlan.getDegree().getId(), this.lessonPlan.getStartDate());
+                if (!this.multiSave) {
+	                System.out.printf("Log ID is %d and for returned account ID is %d\n", 
+	                		                                             lessonPlan.getId(), retLessonPlan.getId());
+	                
+	                String msg = getResourceProperty("labels", "lessonplan_save_ok");
+	                
+	                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+	                addMessage(message);
+	
+	                this.checkProfessorship(this.lessonPlan.getTeacher().getId(),
+	                                        this.lessonPlan.getCourse().getId(), 
+	                		                this.lessonPlan.getDegree().getId(), 
+	                		                this.lessonPlan.getStartDate());
+                }
                 
                 this.init();
             } else {
@@ -537,6 +547,8 @@ public class LessonPlanMBean extends BaseBean {
     	String msg = "Sumário da aula do dia ";
     	
     	this.addEvent();
+ 
+    	this.multiSave = true;
     	
     	// TODO - Limpar código no final   	
     	for (int i = 1; i < this.getNumberOfWeeks(); i++) {
@@ -551,6 +563,7 @@ public class LessonPlanMBean extends BaseBean {
     		this.addEvent();
     	}
     	
+    	this.multiSave = false;
     }
     
 

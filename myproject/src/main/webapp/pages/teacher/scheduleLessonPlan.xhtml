@@ -367,7 +367,7 @@
             	<p:commandButton icon="ui-icon-myUpdate" style="width: 150px;"
             	                 value="#{labels.lessonplan_update}"
             	                 rendered="#{!lessonPlanMBean.summaryLock}" 
-            					 update="scheduleLessonPlanId lessonPlanDlg" 
+            					 update="scheduleLessonPlanId, lessonPlanDlg" 
             					 actionListener="#{lessonPlanMBean.init}"
             					 oncomplete="PF('eventDialog').show()" />
  

@@ -200,6 +200,7 @@ public class TeacherHoursMBean extends BaseBean {
     
     public void save () {
     	
+    	this.teacherHoursRepository.saveAndFlush(this.selectedTeacherHours);
     }
     
     

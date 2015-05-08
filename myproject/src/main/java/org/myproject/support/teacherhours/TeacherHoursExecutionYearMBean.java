@@ -29,9 +29,6 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(Teacher.class);
 
     @Inject
-    private TeacherMBean mbTeacherMBean;
-    
-    @Inject
     private TeacherHoursExecutionYearRepository teacherHoursExecutionYearRepository;
 
     private List<TeacherHoursExecutionYear> teacherHoursExecutionYear;
@@ -63,38 +60,23 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
 	public void onLoadTeacherHours(String executionYear) {
         System.out.println("onLoadTeacherHours  :  " + executionYear);
 
-        if (this.mbTeacherMBean.getSelectedTeacher() != null) {
-//            System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
-//
-//            this.selectedTeacher = this.mbTeacherMBean.getSelectedTeacher();
-//            
-//            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-//            String rolename = (String) context.getSessionMap().get("rolename");
-//            
-//            setRenderedListTeacherButtons (rolename);
-//            
-//            this.teacherHoursExecutionYear = 
-//            		this.teacherHoursExecutionYearRepository.findByTeacherAndExecutionYear(this.mbTeacherMBean.getSelectedTeacher().getId(),
-//                                                                              this.mbTeacherMBean.getSelectedExecutionYear());
+        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
+        	executionYear = this.selectedExecutionYear;
         } else {
-	        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
-	        	executionYear = this.selectedExecutionYear;
-	        } else {
-		        executionYear = executionYear.replace("_", "/");
-	        	this.selectedExecutionYear = executionYear;
-	        }
- 	        	
-	        System.out.println("onLoad  : " + executionYear);
+	        executionYear = executionYear.replace("_", "/");
+        	this.selectedExecutionYear = executionYear;
+        }
+        	
+        System.out.println("onLoad  : " + executionYear);
 
-	        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-	        String rolename = (String) context.getSessionMap().get("rolename");
-	        
-	        setRenderedListTeacherButtons (rolename);
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+        String rolename = (String) context.getSessionMap().get("rolename");
+        
+        setRenderedListTeacherButtons (rolename);
 
 //        	this.teacherHoursExecutionYear = this.teacherHoursExecutionYearRepository.findAll();
-	        this.teacherHoursExecutionYear = 
-	        		this.teacherHoursExecutionYearRepository.findByExecutionYear(executionYear.replace("_", "/"));
-        }
+        this.teacherHoursExecutionYear = 
+        		this.teacherHoursExecutionYearRepository.findByExecutionYear(executionYear.replace("_", "/"));
         	
     }
 
@@ -227,6 +209,7 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
     
     public void save () {
     	
+    	this.teacherHoursExecutionYearRepository.saveAndFlush(this.selectedTeacherHoursExecutionYear);
     }
     
     

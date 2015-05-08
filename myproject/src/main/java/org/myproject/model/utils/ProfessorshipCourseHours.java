@@ -1,10 +1,9 @@
-package org.myproject.model.entities;
+package org.myproject.model.utils;
 
 /*
  *  TODO - 
  */
 
-import org.myproject.model.utils.BaseEntity;
 
 
 public class ProfessorshipCourseHours extends BaseEntity<Long> {

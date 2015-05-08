@@ -73,6 +73,26 @@
 				<h:message for="fullname" styleClass="formUserError"/>
 			</h:panelGroup>
 
+			<h:outputLabel for="course" value="#{labels.teacherhours_course_code}" />
+			<h:panelGroup>
+				<p:inputText id="course" value="#{teacherHoursMBean.selectedTeacherHours.course.code}"
+				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="course" styleClass="formUserError"/>
+			</h:panelGroup>
+
+			<h:outputLabel for="coursename" value="#{labels.teacherhours_course_code}" />
+			<h:panelGroup>
+				<p:inputText id="coursename" value="#{teacherHoursMBean.selectedTeacherHours.course.name}"
+				             readonly="#{not facesContext.postback or facesContext.renderResponse}"
+							 maxlength="255" size="50"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="coursename" styleClass="formUserError"/>
+			</h:panelGroup>
+
 			<h:outputLabel for="lecturedhours" value="#{labels.teacherhours_lectured_hours}" />
 			<h:panelGroup>
 				<p:spinner id="lecturedhours" value="#{teacherHoursMBean.selectedTeacherHours.hours}"
@@ -90,6 +110,19 @@
 				</p:tooltip>
 			</h:panelGroup>
 
+			<h:outputLabel for="surveydone" value="#{labels.teacherhours_survey_done}" 
+			               rendered="#{!surveyMBean.renderedSurveyDone}" />
+			<h:panelGroup rendered="#{!surveyMBean.renderedSurveyDone}" >
+				<p:selectOneMenu id="surveydone" value="#{teacherHoursMBean.selectedTeacherHours.surveyDone}"
+							      maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.teacherhours_survey_done_yes}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.teacherhours_survey_done_no}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="surveydone" styleClass="formUserError"/>
+			</h:panelGroup>
+
 
  			<f:facet name="footer">
 				<p:separator />
@@ -97,6 +130,7 @@
 				
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
 				                 value="#{labels.user_save}"
+				                 update="formTeacherHoursList"
     							 action="#{teacherHoursMBean.save}" />
     			
  				<p:commandButton icon="ui-icon-myClose" 

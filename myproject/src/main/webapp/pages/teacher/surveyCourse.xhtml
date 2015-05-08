@@ -75,6 +75,7 @@
 				<p:spacer width="20" height="10" />
 	            <h:outputText id="groupquestion" 
 	                          value="#{surveyMBean.getGroupQuestion()}"
+	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
 							  		 color: green;
@@ -82,6 +83,16 @@
 		                      		 font-weight: bolder;"
 								 	/>
 				<br/>
+				<p:spacer width="50" height="10" />
+	            <h:outputText id="uaxgroupquestion" 
+	                          value="#{surveyMBean.getAuxGroupQuestion()}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: red;
+							  		 font-size: 15px;
+		                      		 font-weight: bolder;"
+								 	/>
 				<br/>
  			</h:panelGroup>
 			

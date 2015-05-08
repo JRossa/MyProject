@@ -1,2142 +1,260 @@
-06-05-2015 15:33:39,060; [main]; WARN ; org.hibernate.ejb.HibernatePersistence;  - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
-06-05-2015 15:33:43,597; [main]; INFO ; org.myproject.test.conndb.repositories.TeacherHoursExecutionYearRepositoryTest;  - [org.myproject.model.entities.TeacherHoursExecutionYear@f0a747[
-  teacher=org.myproject.model.entities.Teacher@1a46e63[
-  professorship=[org.myproject.model.entities.Professorship@3c4251[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@3884e4[
-  code=I101
-  newCode=H501
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Língua Inglesa I
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=15.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=1.0
-  ectsCredits=1.0
-  id=105
+08-05-2015 15:07:26,910; [main]; WARN ; org.hibernate.ejb.HibernatePersistence;  - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+08-05-2015 15:07:31,046; [main]; INFO ; org.myproject.test.conndb.repositories.SurveyQuestionRepositoryTest;  - org.myproject.model.entities.Survey@b8b6c0[
+  active=true
+  surveyType=org.myproject.model.entities.SurveyType@5d6175[
+  group=org.myproject.model.entities.SurveyTypeGroup@144ac86[
+  description=TEACHER_UC
+  id=2
 ]
-  degree=org.myproject.model.entities.Degree@4f5433[
-  code=S-VET
-  name=Formação Militar Complementar do Mestrado em Medicina Veterinária
-  master=false
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=24
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=1.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=96
-], org.myproject.model.entities.Professorship@b59b7d[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@3884e4[
-  code=I101
-  newCode=H501
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Língua Inglesa I
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=15.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=1.0
-  ectsCredits=1.0
-  id=105
-]
-  degree=org.myproject.model.entities.Degree@1311681[
-  code=S-FARM
-  name=Formação Militar Complementar do Mestrado em Farmácia
-  master=false
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=22
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=1.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=95
-], org.myproject.model.entities.Professorship@37ac07[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@3884e4[
-  code=I101
-  newCode=H501
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Língua Inglesa I
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=15.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=1.0
-  ectsCredits=1.0
-  id=105
-]
-  degree=org.myproject.model.entities.Degree@11ed068[
-  code=S-MED
-  name=Formação Militar Complementar do Mestrado em Medicina
-  master=false
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=23
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=1
-  lecturedHours=0.0
-  responsibleForCourse=true
-  beginDate=2012-10-01
-  endDate=2013-02-15
-  id=921
-], org.myproject.model.entities.Professorship@645fbd[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@14a89e2[
-  code=I102
-  newCode=H502
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Língua Inglesa II
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=15.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=1.0
-  ectsCredits=1.0
-  id=106
-]
-  degree=org.myproject.model.entities.Degree@11ed068[
-  code=S-MED
-  name=Formação Militar Complementar do Mestrado em Medicina
-  master=false
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=23
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=671
-], org.myproject.model.entities.Professorship@1e9ef3[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@1d31157[
-  code=I112
-  newCode=H512
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês II
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=108
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=false
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=2106
-], org.myproject.model.entities.Professorship@40b2a4[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@1d31157[
-  code=I112
-  newCode=H512
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês II
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=108
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
+  description=01 - TEACHER_UC
+  questionList=[org.myproject.model.entities.SurveyQuestion@127b497[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
   id=1
 ]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=1.0
-  responsibleForCourse=false
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=2105
-], org.myproject.model.entities.Professorship@13fb0ef[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@1d31157[
-  code=I112
-  newCode=H512
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês II
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=108
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=false
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=2107
-], org.myproject.model.entities.Professorship@dc663e[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=104
-], org.myproject.model.entities.Professorship@bd86c8[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1126
-], org.myproject.model.entities.Professorship@13ef181[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=103
-], org.myproject.model.entities.Professorship@4c0d8c[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1125
-], org.myproject.model.entities.Professorship@3315d9[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=105
-], org.myproject.model.entities.Professorship@db4967[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=102
-], org.myproject.model.entities.Professorship@e6094b[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1127
-], org.myproject.model.entities.Professorship@f3157b[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@85e7ff[
-  code=I113
-  newCode=H513
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês III
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=109
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1124
-], org.myproject.model.entities.Professorship@5dfff3[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=1987
-], org.myproject.model.entities.Professorship@9469b8[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=1984
-], org.myproject.model.entities.Professorship@8efdc[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1297
-], org.myproject.model.entities.Professorship@1272109[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=1986
-], org.myproject.model.entities.Professorship@1696551[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1299
-], org.myproject.model.entities.Professorship@8d0e6d[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1296
-], org.myproject.model.entities.Professorship@1e66b2f[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2015-03-02
-  endDate=2015-06-26
-  id=1985
-], org.myproject.model.entities.Professorship@1273273[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@350ea2[
-  code=I114
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês IV
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=110
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=3.0
-  responsibleForCourse=true
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1298
-], org.myproject.model.entities.Professorship@1f69e2b[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@184169e[
-  code=I115
-  newCode=H514
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês V
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=111
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=1
-  lecturedHours=0.0
-  responsibleForCourse=true
-  beginDate=2012-10-01
-  endDate=2013-02-15
-  id=1039
-], org.myproject.model.entities.Professorship@1f1bb92[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@16bbd35[
-  code=I116
-  newCode=H516
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VI
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=112
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=1.5
-  responsibleForCourse=true
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=1406
-], org.myproject.model.entities.Professorship@5d6175[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@16bbd35[
-  code=I116
-  newCode=H516
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VI
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=45.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=3.0
-  ectsCredits=2.0
-  id=112
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=1.5
-  responsibleForCourse=true
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=476
-], org.myproject.model.entities.Professorship@144ac86[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=1
-  lecturedHours=0.0
-  responsibleForCourse=false
-  beginDate=2012-10-01
-  endDate=2013-02-15
-  id=204
-], org.myproject.model.entities.Professorship@11534d3[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@74aa0d[
-  code=INF
-  name=Ciências Militares, na especialidade de Infantaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
   id=18
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1252
-], org.myproject.model.entities.Professorship@841199[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@818392[
-  code=CAV
-  name=Ciências Militares, na especialidade de Cavalaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=4
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1249
-], org.myproject.model.entities.Professorship@9091bd[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@2341c6[
-  code=ARMAS
-  name=Armas
-  master=true
-  mainScientificArea=<null>
-  departmentId=5
-  departmentAcronym=DCTM
-  id=2
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=1
-  lecturedHours=0.0
-  responsibleForCourse=false
-  beginDate=2012-10-01
-  endDate=2013-02-15
-  id=203
-], org.myproject.model.entities.Professorship@12d6e60[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1251
-], org.myproject.model.entities.Professorship@1e9b505[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@1122839[
-  code=ART
-  name=Ciências Militares, na especialidade de Artilharia
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=3
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1248
-], org.myproject.model.entities.Professorship@143539f[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=1
-  lecturedHours=0.0
-  responsibleForCourse=false
-  beginDate=2012-10-01
-  endDate=2013-02-15
-  id=205
-], org.myproject.model.entities.Professorship@1277579[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1253
-], org.myproject.model.entities.Professorship@1b6b845[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@127b497[
-  code=I117
-  newCode=H517
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=113
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2013-10-01
-  endDate=2014-02-12
-  id=1250
-], org.myproject.model.entities.Professorship@18f002a[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@818392[
-  code=CAV
-  name=Ciências Militares, na especialidade de Cavalaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=4
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=1.0
-  responsibleForCourse=false
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=240
-], org.myproject.model.entities.Professorship@c75074[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@434b19[
-  code=AMIL
-  name=Administração Militar
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=1
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1538
-], org.myproject.model.entities.Professorship@5bb139[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@818392[
-  code=CAV
-  name=Ciências Militares, na especialidade de Cavalaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=4
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1535
-], org.myproject.model.entities.Professorship@19a77c8[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@1122839[
-  code=ART
-  name=Ciências Militares, na especialidade de Artilharia
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=3
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=1.0
-  responsibleForCourse=false
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=239
-], org.myproject.model.entities.Professorship@81065e[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@1c628e7[
-  code=GNR-AMIL
-  name=Administração da Guarda Nacional Republicana
-  master=true
-  mainScientificArea=2
-  departmentId=4
-  departmentAcronym=DCSH
-  id=7
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1537
-], org.myproject.model.entities.Professorship@d3ad8a[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@1122839[
-  code=ART
-  name=Ciências Militares, na especialidade de Artilharia
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=3
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1534
-], org.myproject.model.entities.Professorship@1181b50[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@74aa0d[
-  code=INF
-  name=Ciências Militares, na especialidade de Infantaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=18
-]
-  year=org.myproject.model.entities.ExecutionYear@13aca85[
-  executionYear=2012/2013
-  transitionTable=<null>
-  id=7
-]
-  semester=2
-  lecturedHours=1.0
-  responsibleForCourse=false
-  beginDate=2013-03-04
-  endDate=2013-07-16
-  id=241
-], org.myproject.model.entities.Professorship@164160c[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@1be2ebf[
-  code=GNR-ARMAS
-  name=Ciências Militares (GNR)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=8
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1536
-], org.myproject.model.entities.Professorship@1254608[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@fd72ef[
-  code=I118
-  newCode=H518
-  startExecutionYear=2
-  endExecutionYear=<null>
-  name=Inglês VIII
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=114
-]
-  degree=org.myproject.model.entities.Degree@74aa0d[
-  code=INF
-  name=Ciências Militares, na especialidade de Infantaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=18
-]
-  year=org.myproject.model.entities.ExecutionYear@fa9ab6[
-  executionYear=2013/2014
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_13
-  id=8
-]
-  semester=2
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-02-27
-  endDate=2014-07-16
-  id=1533
-], org.myproject.model.entities.Professorship@eb0f9b[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@11c538d[
-  code=I120
-  newCode=H520
-  startExecutionYear=8
-  endExecutionYear=<null>
-  name=Inglês para Ambiente Operacional
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=216
-]
-  degree=org.myproject.model.entities.Degree@45f294[
-  code=GNR-CAV
-  name=Ciências Militares, na especialidade de Segurança (GNR-CAV)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=9
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=1715
-], org.myproject.model.entities.Professorship@125f352[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@11c538d[
-  code=I120
-  newCode=H520
-  startExecutionYear=8
-  endExecutionYear=<null>
-  name=Inglês para Ambiente Operacional
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=216
-]
-  degree=org.myproject.model.entities.Degree@74aa0d[
-  code=INF
-  name=Ciências Militares, na especialidade de Infantaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=18
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=1717
-], org.myproject.model.entities.Professorship@1c4af7a[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@11c538d[
-  code=I120
-  newCode=H520
-  startExecutionYear=8
-  endExecutionYear=<null>
-  name=Inglês para Ambiente Operacional
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=216
-]
-  degree=org.myproject.model.entities.Degree@818392[
-  code=CAV
-  name=Ciências Militares, na especialidade de Cavalaria
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=4
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=1714
-], org.myproject.model.entities.Professorship@bd0674[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@11c538d[
-  code=I120
-  newCode=H520
-  startExecutionYear=8
-  endExecutionYear=<null>
-  name=Inglês para Ambiente Operacional
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=216
-]
-  degree=org.myproject.model.entities.Degree@1d58825[
-  code=GNR-INF
-  name=Ciências Militares, na especialidade de Segurança (GNR-INF)
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=13
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=1716
-], org.myproject.model.entities.Professorship@1a64eae[
-  teacher=org.myproject.model.entities.Teacher@1a46e63
-  course=org.myproject.model.entities.Course@11c538d[
-  code=I120
-  newCode=H520
-  startExecutionYear=8
-  endExecutionYear=<null>
-  name=Inglês para Ambiente Operacional
-  unitId=5
-  unitAcronym=I
-  theoreticalHours=<null>
-  theoreticalProblemsHours=30.0
-  problemsHours=<null>
-  laboratorialHours=<null>
-  seminaryHours=<null>
-  fieldWorkHours=<null>
-  trainingPeriodHours=<null>
-  tutorialOrientationHours=<null>
-  autonomousWorkHours=<null>
-  weekHours=2.0
-  ectsCredits=2.0
-  id=216
-]
-  degree=org.myproject.model.entities.Degree@1122839[
-  code=ART
-  name=Ciências Militares, na especialidade de Artilharia
-  master=true
-  mainScientificArea=1
-  departmentId=5
-  departmentAcronym=DCTM
-  id=3
-]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
-  executionYear=2014/2015
-  transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
-  id=9
-]
-  semester=1
-  lecturedHours=2.0
-  responsibleForCourse=false
-  beginDate=2014-10-01
-  endDate=2015-02-27
-  id=1713
 ]]
-  category=ASSISTENTE
-  militarySituation=<null>
-  idNumber=91033398
-  fullName=Elisabete Sofia Nabais de Oliveira de Freitas e Menezes
-  contract=CTFPTRC (CAP)
-  beginDate=1998-09-01
-  endDate=<null>
-  EMail=menezes.sofia@gmail.com
-  mobilePhone=965489837
-  scientificField=<null>
-  academicDegree=<null>
-  categoryDate=1998-09-01
-  inCharge=true
-  categoryGroup=org.myproject.model.entities.CategoryGroup@e2db25[
-  group=B_M-CAP
-  names=Mestre
-  designation=Professor Civil com Mestrado - CTFPTRC (CAP)
+  id=4
+]
+  text=Lição
+  id=8
+], org.myproject.model.entities.SurveyQuestion@1181b50[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
+  id=1
+]
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Resolução de problemas
+  id=9
+], org.myproject.model.entities.SurveyQuestion@164160c[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
+  id=1
+]
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Debates
+  id=10
+], org.myproject.model.entities.SurveyQuestion@1254608[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
+  id=1
+]
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Apresentações / Briefings
   id=11
-]
-  masterDegreeId=<null>
+], org.myproject.model.entities.SurveyQuestion@eb0f9b[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
   id=1
 ]
-  year=org.myproject.model.entities.ExecutionYear@12fa3a[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Estudo de caso
+  id=12
+], org.myproject.model.entities.SurveyQuestion@11c538d[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
+  id=1
+]
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Seminário / Workshop
+  id=13
+], org.myproject.model.entities.SurveyQuestion@45f294[
+  surveyType=org.myproject.model.entities.SurveyType@5d6175
+  questionGroup=org.myproject.model.entities.SurveyQuestionGroup@11534d3[
+  type=10
+  description=Métodos Pedagógicos Utilizados
+  id=1
+]
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d[
+  description=Temp_4
+  scaleList=[org.myproject.model.entities.SurveyAnswerScale@aa712c[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=1
+  text=Nunca
+  id=15
+], org.myproject.model.entities.SurveyAnswerScale@7c351d[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=2
+  text=Pouco
+  id=16
+], org.myproject.model.entities.SurveyAnswerScale@14a0aef[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=3
+  text=Algumas Vezes
+  id=17
+], org.myproject.model.entities.SurveyAnswerScale@1cec376[
+  scaleType=org.myproject.model.entities.SurveyScaleType@74aa0d
+  value=4
+  text=Sempre
+  id=18
+]]
+  id=4
+]
+  text=Simulação / Desempenho de papéis
+  id=14
+]]
+  id=2
+]
+  description=Inquérito das UC - 2015
+  surveyDate=2015-07-01 00:00:00.0
+  endDate=2015-07-31 00:00:00.0
+  executionYear=org.myproject.model.entities.ExecutionYear@1272109[
   executionYear=2014/2015
   transitionTable=tbl_DEGREE_CURRICULAR_PLANS_TRANSITION_14
   id=9
 ]
-  hours=43.0
-  surveyDone=false
   id=3
-]]
+]

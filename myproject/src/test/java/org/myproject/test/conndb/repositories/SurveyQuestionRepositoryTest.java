@@ -13,10 +13,12 @@ import org.myproject.model.entities.Survey;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyAnswerScale;
 import org.myproject.model.entities.SurveyScaleType;
+import org.myproject.model.entities.SurveyTypeGroup;
 import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.repositories.SurveyScaleTypeRepository;
+import org.myproject.model.repositories.SurveyTypeGroupRepository;
 import org.myproject.model.utils.Cryptor;
 import org.myproject.support.survey.SurveyMBean;
 import org.myproject.test.conndb.AbstractDatabaseTest;
@@ -33,6 +35,9 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
 
 	@Inject
 	private SurveyScaleTypeRepository surveyScaleTypeRepository;
+
+	@Inject
+	private SurveyTypeGroupRepository surveyTypeGroupRepository;
 
 	@Inject
 	private SurveyQuestionRepository surveyQuestionRepository;
@@ -83,25 +88,32 @@ public class SurveyQuestionRepositoryTest extends AbstractDatabaseTest {
 
 
     public void SurveyTest () {	
-    	System.out.println("Get Question   : " + mbSurveyMBean.getSurveyType().TEACHER);
+    	System.out.println("Get Question   : " + mbSurveyMBean.getSurveyTypeGroup().TEACHER);
     	
-    	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyType().TEACHER.toString());
+    	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyTypeGroup().TEACHER.toString());
 
 		logger.info(survey);
 
     }
     
-    
+    @Test   
     public void SurveyQuestionSurveyTest () {	
-    	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyType().TEACHER_UC.toString());
+   	Survey survey = this.surveyRepository.findByActiveType(mbSurveyMBean.getSurveyTypeGroup().TEACHER_UC.toString());
+//    	List<Survey> survey = this.surveyRepository.findAll();
+    	
+//    	List<SurveyTypeGroup> survey = this.surveyTypeGroupRepository.findAll();
+    	
+   		survey.getSurveyType().getQuestionList();
+    	logger.info(survey);
+    	
+//    	List<SurveyQuestion> question = this.surveyQuestionRepository.findBySurvey(survey.getId());
 
-    	List<SurveyQuestion> question = this.surveyQuestionRepository.findBySurvey(survey.getId());
-       	
-		logger.info(survey.getQuestionList());
+//    	logger.info(question);
+//    	logger.info(survey.getQuestionList());
 		
     }
 
-    @Test
+
     public void encryptStamp () throws Exception {
     	Date date = new Date();
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

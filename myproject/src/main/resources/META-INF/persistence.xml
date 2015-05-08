@@ -20,14 +20,18 @@
 		<class>org.myproject.model.entities.Teacher</class>
 		<class>org.myproject.model.entities.TeacherHours</class>
 		<class>org.myproject.model.entities.TeacherHoursExecutionYear</class>
-		
+
 		<class>org.myproject.model.entities.Survey</class>
 		<class>org.myproject.model.entities.SurveyType</class>
+		<class>org.myproject.model.entities.SurveyTypeGroup</class>
 		<class>org.myproject.model.entities.SurveyAnswerScale</class>
 		<class>org.myproject.model.entities.SurveyScaleType</class>
 		<class>org.myproject.model.entities.SurveyQuestion</class>
 		<class>org.myproject.model.entities.SurveyQuestionGroup</class>
 
+		<class>org.myproject.model.entities.SurveyTeacher</class>
+		<class>org.myproject.model.entities.SurveyTeacherAnswer</class>
+		
 		<class>org.myproject.model.entities.Professorship</class>
 		<class>org.myproject.model.entities.CategoryGroup</class>
 		<class>org.myproject.model.entities.CategoryLookupTable</class>

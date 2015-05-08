@@ -1,26 +1,20 @@
-package org.myproject.model.entities;
+package org.myproject.model.utils;
 
-import org.myproject.model.utils.BaseEntity;
 
-public class SurveyAnswer  extends BaseEntity<Long> {
-
-	private static final long serialVersionUID = -5070534644569347219L;
-	
+public class SurveyAnswer {
 
 	private Long survey;
 	
 	private Long question;
-	
+
+	private Long course;
+
 	private String value;
 	
-	private Long course;
 
 	
 	
-	public SurveyAnswer(Long id, Long survey, Long question, String value, Long course) {
-		super();
-		
-		this.setId(id);
+	public SurveyAnswer(Long survey, Long question, String value, Long course) {
 		this.survey = survey;
 		this.question = question;
 		this.value = value;

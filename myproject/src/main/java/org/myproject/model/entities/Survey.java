@@ -45,8 +45,9 @@ public class Survey  extends BaseEntity<Long> {
     @JoinColumn(name = "EXECUTION_YEAR")
 	private ExecutionYear executionYear;
 	
-    @OneToMany(mappedBy = "survey", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<SurveyQuestion> questionList = new LinkedList<SurveyQuestion>();
+//	TODO - Apagar no final    
+//	@OneToMany(mappedBy = "survey", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	private List<SurveyQuestion> questionList = new LinkedList<SurveyQuestion>();
 
     
     
@@ -117,13 +118,13 @@ public class Survey  extends BaseEntity<Long> {
 	}
 
 
-	public List<SurveyQuestion> getQuestionList() {
-		return questionList;
-	}
-
-
-	public void setQuestionList(List<SurveyQuestion> questionList) {
-		this.questionList = questionList;
-	}
+//	public List<SurveyQuestion> getQuestionList() {
+//		return questionList;
+//	}
+//
+//
+//	public void setQuestionList(List<SurveyQuestion> questionList) {
+//		this.questionList = questionList;
+//	}
 
 }

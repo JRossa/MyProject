@@ -13,15 +13,17 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Survey;
-import org.myproject.model.entities.SurveyAnswer;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyAnswerScale;
 import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
+import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.model.utils.Cryptor;
+import org.myproject.model.utils.SurveyAnswer;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursExecutionYearMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
@@ -34,7 +36,7 @@ public class SurveyMBean extends BaseBean {
 
 	private static final long serialVersionUID = 1984764917382818173L;
 	
-	public enum SurveyType {TEACHER, TEACHER_UC, STUDENT, STUDENT_UC}
+	public enum SurveyTypeGroup {TEACHER, TEACHER_UC, STUDENT, STUDENT_UC}
 
 	@Inject
 	private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
@@ -44,6 +46,9 @@ public class SurveyMBean extends BaseBean {
 
 	@Inject
 	private SurveyRepository surveyRepository;
+
+	@Inject
+	private UserRepository userRepository;
 
 	@Inject
 	private TeacherMBean mbTeacherMBean;
@@ -69,16 +74,25 @@ public class SurveyMBean extends BaseBean {
     
     private String title;
 
-    private SurveyType surveyType;
+    private SurveyTypeGroup surveyTypeGroup;
     
     private Survey activeSurvey;
 
     private List<SurveyQuestion> surveyQuestion;
     
+    private String auxGroupQuestion;
+    
     private List<SelectItem> selectOneItemsScale;
 
     private List<SurveyAnswer> surveyAnswer;
     
+    private LogUser user;
+    
+    // listLessonPlan - control buttons
+    private Boolean renderedSurveyDone;
+
+    private Boolean disableButtons;
+
     
     public SurveyMBean () {
     	
@@ -90,15 +104,66 @@ public class SurveyMBean extends BaseBean {
    	    this.surveyAnswer = new ArrayList<SurveyAnswer>();
 
     }
+ 
     
+    public void setupUserData () {
+    	 
+        this.setDisableButtons(false);
+        this.setRenderedSurveyDone(false);
+
+        String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+
+        this.user = this.userRepository.findByUserName(username);
+        
+        // WARN - It happens when the 
+        if (this.user == null) {
+        	return;
+        }
+        
+        if (this.user.getTeacher().getId() != null) {
+        	
+        	if ((this.user.getLogRole().getRolename().equals("ROLE_ADMIN")) || 
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_U")) ||
+        			(this.user.getLogRole().getRolename().equals("ROLE_USER_T"))) {
+        		this.setRenderedSurveyDone(true);
+        	}
+        	else {
+        		this.setRenderedSurveyDone(false);
+        		
+        	}
+         }
+    }
+
     @PostConstruct
     public void init () {
     	
+    	this.setupUserData();
+    	
 //    	this.surveyQuestion = this.surveyQuestionRepository.findAll();
     }
-   
- 
-    public List<SurveyAnswerScale> getSurveyQuestionScale(Long scaleType) {
+
+    
+    public Boolean getRenderedSurveyDone() {
+		return renderedSurveyDone;
+	}
+
+
+	public void setRenderedSurveyDone(Boolean renderedSurveyDone) {
+		this.renderedSurveyDone = renderedSurveyDone;
+	}
+
+
+	public Boolean getDisableButtons() {
+		return disableButtons;
+	}
+
+
+	public void setDisableButtons(Boolean disableButtons) {
+		this.disableButtons = disableButtons;
+	}
+
+
+	public List<SurveyAnswerScale> getSurveyQuestionScale(Long scaleType) {
 
 		return  this.surveyAnswerScaleRepository.findByScaleType(scaleType);
 
@@ -112,12 +177,12 @@ public class SurveyMBean extends BaseBean {
 		this.title = title;
 	}
 
-	public SurveyType getSurveyType() {
-		return surveyType;
+	public SurveyTypeGroup getSurveyTypeGroup() {
+		return surveyTypeGroup;
 	}
 
-	public void setSurveyType(SurveyType surveyType) {
-		this.surveyType = surveyType;
+	public void setSurveyType(SurveyTypeGroup surveyTypeGroup) {
+		this.surveyTypeGroup = surveyTypeGroup;
 	}
 
 	public List<SurveyQuestion> getSurveyQuestion() {
@@ -148,14 +213,14 @@ public class SurveyMBean extends BaseBean {
             
             Integer i = this.currentQuestion;
             
-            if (this.surveyType.equals(SurveyType.TEACHER_UC)) {
-            	this.surveyAnswer.add(new SurveyAnswer(this.answerId, this.activeSurvey.getId(),  i.longValue(), 
+            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
+            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(),  i.longValue(), 
                         					answer,
                         					this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
             }
  
-            if (this.surveyType.equals(SurveyType.TEACHER_UC)) {
-            	this.surveyAnswer.add(new SurveyAnswer(this.answerId, this.activeSurvey.getId(),  i.longValue(), 
+            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
+            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(),  i.longValue(), 
                         								answer,	null));
             }
 
@@ -210,8 +275,19 @@ public class SurveyMBean extends BaseBean {
     }
 
     
-    public String getGroupQuestion() {
-    	
+    public String getAuxGroupQuestion() {
+		return auxGroupQuestion;
+	}
+
+
+	public void setAuxGroupQuestion(String auxGroupQuestion) {
+		this.auxGroupQuestion = auxGroupQuestion;
+	}
+
+
+	public String getGroupQuestion() {
+    	String groupQuestion;
+ 		
         System.out.println("Get Group Question   : " + this.openQuestion);
         
 
@@ -220,7 +296,16 @@ public class SurveyMBean extends BaseBean {
     			return "---------------------";
     		}
     		
-            return this.surveyQuestion.get(this.currentQuestion).getQuestionGroup().getDescription();
+    	       String[] group = this.surveyQuestion.get(this.currentQuestion).getQuestionGroup().getDescription().split(";");
+    		
+    	       groupQuestion = group[0];
+    	       
+    	       if (group.length > 1) {
+    	    	   this.setAuxGroupQuestion(group[1]);
+    	       } else
+    	    	   this.setAuxGroupQuestion(""); 
+    	       
+            return groupQuestion;
         }
         else {
             return  "";
@@ -245,12 +330,14 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("Teacher :" + 
     	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
     	
-    	this.setSurveyType(SurveyType.TEACHER_UC);
+    	this.setSurveyType(SurveyTypeGroup.TEACHER_UC);
     	
-    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER_UC.toString());
+    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
     	
     	if (this.activeSurvey != null) {
-	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+    		
+//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+    		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
 	    	
 	    	if (this.surveyQuestion != null) {
 
@@ -279,14 +366,15 @@ public class SurveyMBean extends BaseBean {
     	
     	System.out.println("Title :" + this.title);
 
-    	this.setSurveyType(SurveyType.TEACHER);
+    	this.setSurveyType(SurveyTypeGroup.TEACHER);
     	
-		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER.toString());
 		
     	if (this.activeSurvey != null) {
 
-	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
-	
+//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+    		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
+
 	    	if (this.surveyQuestion != null) {
 	    		
 		        this.currentQuestion = 0;
@@ -314,14 +402,15 @@ public class SurveyMBean extends BaseBean {
     	
     	System.out.println("Title :" + this.title);
 
-    	this.setSurveyType(SurveyType.TEACHER);
+    	this.setSurveyType(SurveyTypeGroup.TEACHER);
     	
-		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyType.TEACHER.toString());
+		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER.toString());
 		
     	if (this.activeSurvey != null) {
 
-	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
-	
+//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
+    		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
+    		
 	    	if (this.surveyQuestion != null) {
 	    		
 		        this.currentQuestion = 0;
@@ -398,7 +487,6 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("----------------- Survey N : " + this.getSurveyAnswer().size());
 
     	for (SurveyAnswer sa: this.getSurveyAnswer()) {
-    		System.out.println("Id              : " + sa.getId());
     		System.out.println("Survey          : " + sa.getSurvey());
     		System.out.println("Survey Question : " + sa.getQuestion());
     		System.out.println("Survey Answer   : " + sa.getValue());

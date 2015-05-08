@@ -90,6 +90,18 @@
 				</p:tooltip>
 			</h:panelGroup>
 
+			<h:outputLabel for="surveydone" value="#{labels.teacherhours_survey_done}" 
+			               rendered="#{!surveyMBean.renderedSurveyDone}" />
+			<h:panelGroup rendered="#{!surveyMBean.renderedSurveyDone}" >
+				<p:selectOneMenu id="surveydone" value="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear.surveyDone}"
+							      maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.teacherhours_survey_done_yes}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.teacherhours_survey_done_no}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="surveydone" styleClass="formUserError"/>
+			</h:panelGroup>
 
  			<f:facet name="footer">
 				<p:separator />
@@ -97,6 +109,7 @@
 				
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
 				                 value="#{labels.user_save}"
+				                 update="formTeacherHoursExecutionYearList"
     							 action="#{teacherHoursExecutionYearMBean.save}" />
     			
  				<p:commandButton icon="ui-icon-myClose" 

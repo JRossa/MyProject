@@ -20,10 +20,15 @@ public class SurveyQuestion extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -4806043306042713447L;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "SURVEY_ID")
-	private Survey survey;
+//	TODO - No final apagar o atributo na tabela	
+//  @ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "SURVEY_ID")
+//	private Survey survey;
 	
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "SURVEY_TYPE")
+	private SurveyType surveyType;
+
     @OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "GROUP_ID")
 	private SurveyQuestionGroup questionGroup;
@@ -41,14 +46,25 @@ public class SurveyQuestion extends BaseEntity<Long> {
 	}
 
 
-	public Survey getSurvey() {
-		return survey;
+	
+	public SurveyType getSurveyType() {
+		return surveyType;
 	}
 
 
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
+	public void setSurveyType(SurveyType surveyType) {
+		this.surveyType = surveyType;
 	}
+
+
+//	public Survey getSurvey() {
+//		return survey;
+//	}
+//
+//
+//	public void setSurvey(Survey survey) {
+//		this.survey = survey;
+//	}
 
 
 	public SurveyQuestionGroup getQuestionGroup() {

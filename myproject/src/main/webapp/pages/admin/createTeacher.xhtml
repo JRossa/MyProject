@@ -47,6 +47,31 @@
 				</p:tooltip>
 			</h:panelGroup>
 						 
+			<f:facet name="footer">
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+				                 value="#{labels.user_save}"
+    							 action="#{teacherCRUDMBean.save}" />
+ 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+ 				                 value="#{labels.user_send_email}"
+    							 action="#{teacherCRUDMBean.sendEMail}" />
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.user_close}" 
+ 								 action="#{teacherCRUDMBean.disableButtons}"
+    							 onclick="PF('teacherCreateDialog').hide()"
+        					     process="@this" 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 150px" />
+    			
+    			</h:panelGroup>
+			</f:facet>		 
 
     			
  		</h:panelGrid>

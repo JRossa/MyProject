@@ -18,6 +18,10 @@
 		<class>org.myproject.model.entities.PersistentLogin</class>
 				
 		<class>org.myproject.model.entities.Teacher</class>
+		<class>org.myproject.model.entities.CategoryGroup</class>
+		<class>org.myproject.model.entities.CategoryLookupTable</class>
+		<class>org.myproject.model.entities.MasterDegreeType</class>
+		<class>org.myproject.model.entities.ScientificField</class>
 		<class>org.myproject.model.entities.TeacherHours</class>
 		<class>org.myproject.model.entities.TeacherHoursExecutionYear</class>
 
@@ -33,13 +37,10 @@
 		<class>org.myproject.model.entities.SurveyTeacherAnswer</class>
 		
 		<class>org.myproject.model.entities.Professorship</class>
-		<class>org.myproject.model.entities.CategoryGroup</class>
-		<class>org.myproject.model.entities.CategoryLookupTable</class>
 		<class>org.myproject.model.entities.Course</class>
 		<class>org.myproject.model.entities.LessonPlan</class>
 		<class>org.myproject.model.entities.Degree</class>
 		<class>org.myproject.model.entities.ExecutionYear</class>
-		<class>org.myproject.model.entities.ScientificField</class>
 		<class>org.myproject.model.entities.DegreeCurricularPlansData</class>
 			
 		<properties>

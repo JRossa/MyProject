@@ -25,23 +25,29 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-@Entity
-@Table(name = "tbl_TEACHER", uniqueConstraints = @UniqueConstraint(columnNames = { "FULL_NAME" /*
-                                                                                                * ,
-                                                                                                * "COURSE_CODE"
-                                                                                                * ,
-                                                                                                * "DEGREE_CODE"
-                                                                                                * ,
-                                                                                                * "EXECUTION_YEAR"
-                                                                                                * ,
-                                                                                                * "SEMESTER"
-                                                                                                */}))
-@AttributeOverride(name = "id", column = @Column(name = "ID"))
+//@Table(name = "tbl_TEACHER", uniqueConstraints = @UniqueConstraint(columnNames = { "FULL_NAME" /*
+//                                                                                                * ,
+//                                                                                                * "COURSE_CODE"
+//                                                                                                * ,
+//                                                                                                * "DEGREE_CODE"
+//                                                                                                * ,
+//                                                                                                * "EXECUTION_YEAR"
+//                                                                                                * ,
+//                                                                                                * "SEMESTER"
+//                                                                                                */}))
+
+/*
 @NamedQueries(value = {
-// VER - Não funciona só com t, é preciso ter pelo menos 2 itens
-@NamedQuery(name = "Teacher.findAllTeachers", query = "select t.fullName, t.idNumber from Teacher t"),
-@NamedQuery(name = "Teacher.findCatNameTeachers", query = "select t.category, t.fullName from Teacher t"),
-@NamedQuery(name = "Teacher.CategoryName", query = "select t.category, t.fullName, t.contract, t.id  from Teacher t") })
+		// VER - Não funciona só com t, é preciso ter pelo menos 2 itens
+		@NamedQuery(name = "Teacher.findAllTeachers", query = "select t.fullName, t.idNumber from Teacher t"),
+		@NamedQuery(name = "Teacher.findCatNameTeachers", query = "select t.category, t.fullName from Teacher t"),
+		@NamedQuery(name = "Teacher.CategoryName", query = "select t.category, t.fullName, t.contract, t.id  from Teacher t") })
+*/
+
+
+@Entity
+@Table(name = "tbl_TEACHER")
+@AttributeOverride(name = "id", column = @Column(name = "ID"))
 public class Teacher extends BaseEntity<Long> {
 
     private static final long serialVersionUID = -7982274754762694904L;
@@ -50,16 +56,6 @@ public class Teacher extends BaseEntity<Long> {
     @OrderBy("COURSE_CODE ASC")
     private List<Professorship> professorship = new LinkedList<Professorship>();
 
-/*   
- *  
- *  @PostConstruct
-    public void init() {
-        System.out.println("A new backing bean has been created");
-        this.professorship = new ArrayList<Professorship>();
-    }
-*
-*/
-    
     public List<Professorship> getProfessorship() {
         return professorship;
     }
@@ -97,7 +93,7 @@ public class Teacher extends BaseEntity<Long> {
     @Column(name = "MOBILE_PHONE")
     private String mobilePhone;
 
-    @JoinColumn(name = "SCIENTIFIC_FIELD")
+    @Column(name = "SCIENTIFIC_FIELD")
     private String scientificField;
 
     @Column(name = "ACADEMIC_DEGREE")
@@ -114,10 +110,14 @@ public class Teacher extends BaseEntity<Long> {
     @JoinColumn(name = "CATEGORY_GROUP_ID")
     private CategoryGroup categoryGroup;
 
-    @Column(name = "MASTER_DEGREE_ID")
-    private Integer masterDegreeId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "MASTER_DEGREE_ID")
+    private MasterDegreeType masterDegree;
 
-    
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SCIENTIFIC_FIELD_ID")
+    private ScientificField scientificFieldId;
+   
     
     public Teacher() {
         
@@ -251,12 +251,21 @@ public class Teacher extends BaseEntity<Long> {
         this.categoryGroup = categoryGroup;
     }
 
-    public Integer getMasterDegreeId() {
-        return masterDegreeId;
-    }
+	public MasterDegreeType getMasterDegree() {
+		return masterDegree;
+	}
 
-    public void setMasterDegreeId(Integer masterDegreeId) {
-        this.masterDegreeId = masterDegreeId;
-    }
+	public void setMasterDegree(MasterDegreeType masterDegree) {
+		this.masterDegree = masterDegree;
+	}
 
+	public ScientificField getScientificFieldId() {
+		return scientificFieldId;
+	}
+
+	public void setScientificFieldId(ScientificField scientificFieldId) {
+		this.scientificFieldId = scientificFieldId;
+	}
+
+    
 }

@@ -14,7 +14,6 @@ import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.ProfessorshipRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.utils.BaseBean;
-import org.myproject.model.utils.ProfessorshipCourseHours;
 import org.myproject.support.teacher.TeacherMBean;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;

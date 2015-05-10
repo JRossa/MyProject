@@ -1,9 +1,11 @@
-package org.myproject.model.utils;
+package org.myproject.support.survey;
 
 
 public class SurveyAnswer {
 
 	private Long survey;
+	
+	private Integer index;
 	
 	private Long question;
 
@@ -14,8 +16,10 @@ public class SurveyAnswer {
 
 	
 	
-	public SurveyAnswer(Long survey, Long question, String value, Long course) {
+	public SurveyAnswer(Long survey, Integer index, Long question, String value, Long course) {
+		
 		this.survey = survey;
+		this.index = index;
 		this.question = question;
 		this.value = value;
 		this.course = course;
@@ -29,6 +33,15 @@ public class SurveyAnswer {
 	public void setSurvey(Long survey) {
 		this.survey = survey;
 	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
 
 	public Long getQuestion() {
 		return question;

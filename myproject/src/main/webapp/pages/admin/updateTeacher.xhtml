@@ -185,7 +185,7 @@
 			<h:panelGroup>
 				<p:inputText id="scientificfield" value="#{teacherCRUDMBean.teacher.scientificField}"
 							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
-							 maxlength="255" size="30"/>
+							 maxlength="255" size="60"/>
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
 				<h:message for="scientificfield" styleClass="formUserError"/>
@@ -194,11 +194,31 @@
 				           hideEffect="explode" trackMouse="true">
 				</p:tooltip>
 			</h:panelGroup>
-			
+
+			<h:outputLabel for="scientificfieldid" value="#{labels.teacher_scientific_field}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="scientificfieldid" value="#{teacherCRUDMBean.teacher.scientificFieldId.id}"
+				             filter="true" filterMatchMode="contains"
+				             effect="fade"
+				             valueChangeListener="#{teacherCRUDMBean.valueChangedScientificField}"
+				             panelStyle="background-color: lightblue"
+							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
+							 maxlength="255" size="60" >
+					<p:ajax event="change"  update="scientificfield" />		 
+					<f:selectItems value="#{scientificFieldMBean.selectOneItemsScientificField}" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="scientificfieldid" styleClass="formUserError"/>
+				<p:tooltip for="scientificfieldid" value="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
 
 			<h:outputLabel for="academicdegree" value="#{labels.teacher_academic_degree}" />
 			<h:panelGroup>
-				<p:inputText id="academicdegree" value="#{teacherCRUDMBean.teacher.scientificField}"
+				<p:inputText id="academicdegree" value="#{teacherCRUDMBean.teacher.academicDegree}"
 							 title="#{labels.teacher_insert} #{labels.teacher_academic_degree} !!"
 							 maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
@@ -281,7 +301,7 @@
     									 background: #0080c0;
    										 position: relative; 
    										 top: 0px; 
-  										 left: 150px" />
+  										 left: 220px" />
     			
     			</h:panelGroup>
 			</f:facet>		 
@@ -306,6 +326,13 @@
 </h:body>
 
 </html>
+
+
+<!-- 					<f:selectItem itemLabel="#{labels.user_select}" itemValue="" /> -->
+
+<!-- 					<f:converter converterId="scientificFieldConverter" /> -->
+
+
 
 <!--            		<p:fileUpload fileUploadListener="#{fileUploadController.upload}"   -->
 <!--                     		  mode="advanced"    -->

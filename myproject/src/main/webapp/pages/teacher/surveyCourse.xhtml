@@ -173,13 +173,13 @@
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
 								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey}" 
 				                 value="#{labels.user_save}"
-    							 action="#{surveyMBean.save}" 
+    							 action="#{surveyCRUDMBean.save}" 
     							 onclick="PF('surveyCourseDialog').hide()" />
     							 
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
  								 rendered="false" 
  				                 value="#{labels.user_send_email}"
-    							 action="#{surveyMBean.sendEMail}" />
+    							 action="#{surveyCRUDMBean.sendEMail}" />
  
  				<p:spacer width="500" height="10" rendered="#{!surveyMBean.noSurvey}"/>
  				<p:spacer width="600" height="10" rendered="#{surveyMBean.noSurvey}"/>

@@ -41,9 +41,21 @@ public class ReportMBean extends BaseBean {
 	
 	JasperPrint jasperPrint;
 
-    public enum ExportOption {
-        PDF, HTML, EXCEL, RTF
-    	}
+    public enum ExportOption {PDF, HTML, EXCEL, RTF}
+    
+	private final String COMPILE_DIR = "/reports";
+   
+  	private String message;
+
+  	
+  	
+    public ReportMBean () {
+        super();
+        
+        setExportOption(ExportOption.PDF);
+    }
+  	
+    
     private ExportOption exportOption;
     
     public ExportOption getExportOption() {
@@ -53,17 +65,7 @@ public class ReportMBean extends BaseBean {
 	public void setExportOption(ExportOption exportOption) {
 		this.exportOption = exportOption;
 	}
-
-	private final String COMPILE_DIR = "/reports";
-   
-  	private String message;
-
-    public ReportMBean () {
-        super();
-        setExportOption(ExportOption.PDF);
-    }
-  	
-  	
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void init() throws JRException{ 

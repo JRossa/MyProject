@@ -91,8 +91,8 @@
 			</h:panelGroup>
 
 			<h:outputLabel for="surveydone" value="#{labels.teacherhours_survey_done}" 
-			               rendered="#{!surveyMBean.renderedSurveyDone}" />
-			<h:panelGroup rendered="#{!surveyMBean.renderedSurveyDone}" >
+			               rendered="#{surveyMBean.renderedSurveyDone}" />
+			<h:panelGroup rendered="#{surveyMBean.renderedSurveyDone}" >
 				<p:selectOneMenu id="surveydone" value="#{teacherHoursExecutionYearMBean.selectedTeacherHoursExecutionYear.surveyDone}"
 							      maxlength="255" size="30" >
 					<f:selectItem itemLabel="#{labels.teacherhours_survey_done_yes}" itemValue="true" />

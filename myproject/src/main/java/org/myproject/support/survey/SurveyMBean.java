@@ -1,8 +1,6 @@
 package org.myproject.support.survey;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,12 +16,9 @@ import org.myproject.model.entities.Survey;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyAnswerScale;
 import org.myproject.model.repositories.SurveyAnswerScaleRepository;
-import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
-import org.myproject.model.utils.Cryptor;
-import org.myproject.model.utils.SurveyAnswer;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursExecutionYearMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
@@ -38,11 +33,11 @@ public class SurveyMBean extends BaseBean {
 	
 	public enum SurveyTypeGroup {TEACHER, TEACHER_UC, STUDENT, STUDENT_UC}
 
+	public enum SurveyOption {TEACHER, TEACHERHOURS, TEACHERHOURSEXECUTIONYEAR}
+	
+	
 	@Inject
 	private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
-
-	@Inject
-	private SurveyQuestionRepository surveyQuestionRepository;
 
 	@Inject
 	private SurveyRepository surveyRepository;
@@ -75,6 +70,8 @@ public class SurveyMBean extends BaseBean {
     private String title;
 
     private SurveyTypeGroup surveyTypeGroup;
+    
+    private SurveyOption surveyOption;
     
     private Survey activeSurvey;
 
@@ -177,12 +174,29 @@ public class SurveyMBean extends BaseBean {
 		this.title = title;
 	}
 
+	public Survey getActiveSurvey() {
+		return activeSurvey;
+	}
+
+	public void setActiveSurvey(Survey activeSurvey) {
+		this.activeSurvey = activeSurvey;
+	}
+
+
 	public SurveyTypeGroup getSurveyTypeGroup() {
 		return surveyTypeGroup;
 	}
 
-	public void setSurveyType(SurveyTypeGroup surveyTypeGroup) {
+	public void setSurveyTypeGroup(SurveyTypeGroup surveyTypeGroup) {
 		this.surveyTypeGroup = surveyTypeGroup;
+	}
+
+	public SurveyOption getSurveyOption() {
+		return surveyOption;
+	}
+
+	public void setSurveyOption(SurveyOption surveyOption) {
+		this.surveyOption = surveyOption;
 	}
 
 	public List<SurveyQuestion> getSurveyQuestion() {
@@ -207,24 +221,24 @@ public class SurveyMBean extends BaseBean {
         	if (answer != null) {
         		System.out.println(this.openQuestion + "   To the question  \"" + 
             		this.surveyQuestion.get(this.currentQuestion).getText() + "\" your answer is " + answer);
-        	}
         	
-            this.answerId++;
-            
-            Integer i = this.currentQuestion;
-            
-            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
-            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(),  i.longValue(), 
-                        					answer,
-                        					this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
-            }
- 
-            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
-            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(),  i.longValue(), 
-                        								answer,	null));
-            }
+	            this.answerId++;
+	            
+	            Integer i = this.currentQuestion;
+	            Long question = this.surveyQuestion.get(this.currentQuestion).getId();
+	            
+	            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
+	            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(), i, question, answer,
+	                        					this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
+	            }
+	 
+	            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER)) {
+	            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(), i, question, answer, null));
+	            }
 
-            this.currentQuestion++;
+        	}
+
+        	this.currentQuestion++;
            
 
         	if (this.currentQuestion == (this.surveyQuestion.size() - 1)) {
@@ -246,7 +260,6 @@ public class SurveyMBean extends BaseBean {
         	this.processAnswer(answer);
         }
         
-        // TODO - Keep answer value
         this.answer = answer;
     }    
 
@@ -256,7 +269,7 @@ public class SurveyMBean extends BaseBean {
        
     	if (!this.over) {
     		if (this.surveyQuestion == null) {
-    			return "EM COSTRUÇÂO  2";
+    			return "EM COSTRUÇÂO  - No questions !!!";
     		}
     		
         	this.openQuestion = (this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList().size() == 1);
@@ -267,7 +280,7 @@ public class SurveyMBean extends BaseBean {
         }
         else {
         	if (this.noSurvey) {
-        		return "EM COSTRUÇÂO";
+        		return "EM COSTRUÇÂO  - No surveys !!!";
         	}
         	
             return  getResourceProperty("labels", "survey_thanks");
@@ -330,13 +343,15 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("Teacher :" + 
     	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
     	
-    	this.setSurveyType(SurveyTypeGroup.TEACHER_UC);
+    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
+    	
+    	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER_UC);
+    	this.setSurveyOption(SurveyOption.TEACHERHOURS);
     	
     	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
     	
     	if (this.activeSurvey != null) {
     		
-//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
     		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
 	    	
 	    	if (this.surveyQuestion != null) {
@@ -366,13 +381,15 @@ public class SurveyMBean extends BaseBean {
     	
     	System.out.println("Title :" + this.title);
 
-    	this.setSurveyType(SurveyTypeGroup.TEACHER);
+    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
+    	
+    	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER);
+    	this.setSurveyOption(SurveyOption.TEACHER);
     	
 		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER.toString());
 		
     	if (this.activeSurvey != null) {
 
-//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
     		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
 
 	    	if (this.surveyQuestion != null) {
@@ -402,13 +419,15 @@ public class SurveyMBean extends BaseBean {
     	
     	System.out.println("Title :" + this.title);
 
-    	this.setSurveyType(SurveyTypeGroup.TEACHER);
+    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
+    	
+    	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER);
+    	this.setSurveyOption(SurveyOption.TEACHERHOURSEXECUTIONYEAR);
     	
 		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER.toString());
 		
     	if (this.activeSurvey != null) {
 
-//	    	this.surveyQuestion = this.surveyQuestionRepository.findBySurvey(this.activeSurvey.getId());
     		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
     		
 	    	if (this.surveyQuestion != null) {
@@ -476,48 +495,8 @@ public class SurveyMBean extends BaseBean {
 	}
 
 
-	public void listAnswers () throws Exception {
-    	Date date = new Date();
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	
-    	
-    	System.out.println("Date    : " + sdf.format(date));
-    	String stamp = Cryptor.EncryptString(sdf.format(date));
-
-    	System.out.println("----------------- Survey N : " + this.getSurveyAnswer().size());
-
-    	for (SurveyAnswer sa: this.getSurveyAnswer()) {
-    		System.out.println("Survey          : " + sa.getSurvey());
-    		System.out.println("Survey Question : " + sa.getQuestion());
-    		System.out.println("Survey Answer   : " + sa.getValue());
-    		System.out.println("Survey Course   : " + sa.getCourse());
-    		System.out.println("Stamp           : " + stamp);
-    	}
-
-	}
-	
-	
-	public void save () {
-    	this.reset();
-    	
-    	try {
-			this.listAnswers();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
-    
-    
-    public void sendEMail () {
-    	
-    }
-    
-    
     public void disableButtons () {
     }
-    
     
     
     public Integer getAnswerValue() {
@@ -534,8 +513,6 @@ public class SurveyMBean extends BaseBean {
 			this.processAnswer(answerValue.toString());
 		}
 		
-        // TODO - Keep answer value
-
 		this.answerValue = answerValue;
 	}
 

@@ -1,4 +1,6 @@
-package org.myproject.model.utils;
+package org.myproject.support.professorship;
+
+import org.myproject.model.utils.BaseEntity;
 
 /*
  *  TODO - 

@@ -21,9 +21,11 @@ import javax.inject.Named;
 import org.myproject.model.entities.CategoryGroup;
 import org.myproject.model.entities.LogRole;
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.ScientificField;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CategoryLookupTableRepository;
 import org.myproject.model.repositories.RoleRepository;
+import org.myproject.model.repositories.ScientificFieldRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
@@ -36,15 +38,18 @@ import org.primefaces.event.FileUploadEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
-@Scope(value = WebApplicationContext.SCOPE_REQUEST)
 @Named(value = "teacherCRUDMBean")
+@Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class TeacherCRUDMBean extends BaseBean {
 
     private static final long serialVersionUID = -3905598887376751619L;
 
     @Inject
     private TeacherRepository teacherRepository;
-    
+ 
+    @Inject
+    private ScientificFieldRepository scientificFieldRepository;
+
     @Inject
     private CategoryLookupTableRepository  categoryLookupTableRepository;
     
@@ -61,7 +66,9 @@ public class TeacherCRUDMBean extends BaseBean {
     
     public TeacherCRUDMBean() {
         this.teacher = new Teacher();
+        
         this.teacher.setCategoryGroup(new CategoryGroup());
+        this.teacher.setScientificFieldId(new ScientificField());
     }
 
     
@@ -262,6 +269,21 @@ public class TeacherCRUDMBean extends BaseBean {
        // System.out.printf("Log ID is %d and for returned account ID is %d\n", this.user.getId(), insertUser.getId());
         
     }
+
+    
+    public void valueChangedScientificField (ValueChangeEvent e) {
+        String msg = e.getNewValue().toString();
+        Long  scientificFieldId =  Long.parseLong(msg);
+  
+        ScientificField scientificField = this.scientificFieldRepository.findOne(scientificFieldId);
+        
+        if (scientificField != null) {
+        	this.teacher.setScientificField(scientificField.getDescription());
+        }
+        
+        System.out.println("valueChangedScientificField : " + msg + "  " + scientificField.getDescription());
+        
+     }
 
     
     public void valueChanged (ValueChangeEvent e) {

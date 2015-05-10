@@ -171,11 +171,19 @@
             					 
 				
 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
-								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey}" 
+								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey and surveyMBean.renderedTeacherHoursExecutionYear}" 
 				                 value="#{labels.user_save}"
     							 action="#{surveyCRUDMBean.save}" 
+    							 update="formTeacherHoursExecutionYearList"
     							 onclick="PF('surveyCourseDialog').hide()" />
     							 
+ 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
+								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey and surveyMBean.renderedTeacherHours}" 
+				                 value="#{labels.user_save}"
+    							 action="#{surveyCRUDMBean.save}" 
+    							 update="formTeacherHoursList"
+    							 onclick="PF('surveyCourseDialog').hide()" />
+ 
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
  								 rendered="false" 
  				                 value="#{labels.user_send_email}"

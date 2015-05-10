@@ -271,17 +271,23 @@ public class TeacherCRUDMBean extends BaseBean {
     }
 
     
-    public void valueChangedScientificField (ValueChangeEvent e) {
-        String msg = e.getNewValue().toString();
-        Long  scientificFieldId =  Long.parseLong(msg);
-  
+    public void sicronizeScientificField (String scientificFieldNumber) {
+        Long  scientificFieldId =  Long.parseLong(scientificFieldNumber);
+        
         ScientificField scientificField = this.scientificFieldRepository.findOne(scientificFieldId);
         
         if (scientificField != null) {
         	this.teacher.setScientificField(scientificField.getDescription());
         }
         
-        System.out.println("valueChangedScientificField : " + msg + "  " + scientificField.getDescription());
+        System.out.println("valueChangedScientificField : " + scientificFieldNumber + "  " + scientificField.getDescription());
+    	
+    }
+    
+    public void valueChangedScientificField (ValueChangeEvent e) {
+        String msg = e.getNewValue().toString();
+        
+        this.sicronizeScientificField(msg);
         
      }
 

@@ -51,7 +51,6 @@ public class TeacherHoursMBean extends BaseBean {
 
     private Boolean renderedSurvey;
 
-
     
     public TeacherHoursMBean() {
 		super();
@@ -60,7 +59,7 @@ public class TeacherHoursMBean extends BaseBean {
 
 
 	public void onLoadTeacherHours() {
-        System.out.println("onLoadTeacherHours  :  ");
+        System.out.println("onLoadTeacherHours (TeacherHoursMBean) :  ");
 
         if (this.mbTeacherMBean.getSelectedTeacher() != null) {
             System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
@@ -72,7 +71,7 @@ public class TeacherHoursMBean extends BaseBean {
             
             setRenderedListTeacherButtons (rolename);
             
-            this.teacherHours = 
+           	this.teacherHours = 
             		this.teacherHoursRepository.findByTeacherAndExecutionYear(this.mbTeacherMBean.getSelectedTeacher().getId(),
                                                                               this.mbTeacherMBean.getSelectedExecutionYear());
         }

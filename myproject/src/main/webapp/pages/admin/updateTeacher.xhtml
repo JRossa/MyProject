@@ -200,11 +200,13 @@
 				<p:selectOneMenu id="scientificfieldid" value="#{teacherCRUDMBean.teacher.scientificFieldId.id}"
 				             filter="true" filterMatchMode="contains"
 				             effect="fade"
+				             update="scientificfield"
 				             valueChangeListener="#{teacherCRUDMBean.valueChangedScientificField}"
+				             converter="scientificFieldConverter" 
 				             panelStyle="background-color: lightblue"
 							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
 							 maxlength="255" size="60" >
-					<p:ajax event="change"  update="scientificfield" />		 
+					<p:ajax event="change" update="scientificfield"  />		 
 					<f:selectItems value="#{scientificFieldMBean.selectOneItemsScientificField}" />
 				</p:selectOneMenu>
 				<f:verbatim><br/></f:verbatim>

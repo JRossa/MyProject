@@ -58,7 +58,7 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
 
 
 	public void onLoadTeacherHours(String executionYear) {
-        System.out.println("onLoadTeacherHours  :  " + executionYear);
+        System.out.println("onLoadTeacherHours  (TeacherHoursExecutionYear)  :  " + executionYear);
 
         if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
         	executionYear = this.selectedExecutionYear;

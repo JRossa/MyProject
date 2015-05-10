@@ -85,8 +85,12 @@ public class SurveyMBean extends BaseBean {
     
     private LogUser user;
     
-    // listLessonPlan - control buttons
+    // listTeacherHours... - control buttons
     private Boolean renderedSurveyDone;
+
+    private Boolean renderedTeacherHours;
+    
+    private Boolean renderedTeacherHoursExecutionYear;
 
     private Boolean disableButtons;
 
@@ -157,6 +161,27 @@ public class SurveyMBean extends BaseBean {
 
 	public void setDisableButtons(Boolean disableButtons) {
 		this.disableButtons = disableButtons;
+	}
+
+
+	public Boolean getRenderedTeacherHours() {
+		return renderedTeacherHours;
+	}
+
+
+	public void setRenderedTeacherHours(Boolean renderedTeacherHours) {
+		this.renderedTeacherHours = renderedTeacherHours;
+	}
+
+
+	public Boolean getRenderedTeacherHoursExecutionYear() {
+		return renderedTeacherHoursExecutionYear;
+	}
+
+
+	public void setRenderedTeacherHoursExecutionYear(
+			Boolean renderedTeacherHoursExecutionYear) {
+		this.renderedTeacherHoursExecutionYear = renderedTeacherHoursExecutionYear;
 	}
 
 
@@ -235,6 +260,8 @@ public class SurveyMBean extends BaseBean {
 	            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER)) {
 	            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(), i, question, answer, null));
 	            }
+	            
+	            System.out.println("Question #" + this.currentQuestion + " -  Stored ");
 
         	}
 
@@ -338,6 +365,7 @@ public class SurveyMBean extends BaseBean {
                 + this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getCode()
                 + ")";
     	
+    	
     	System.out.println("Title :" + this.title);
     	
     	System.out.println("Teacher :" + 
@@ -345,6 +373,9 @@ public class SurveyMBean extends BaseBean {
     	
     	this.surveyAnswer = new ArrayList<SurveyAnswer>();
     	
+    	this.renderedTeacherHours = true;
+       	this.renderedTeacherHoursExecutionYear = false;
+
     	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER_UC);
     	this.setSurveyOption(SurveyOption.TEACHERHOURS);
     	
@@ -382,7 +413,10 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("Title :" + this.title);
 
     	this.surveyAnswer = new ArrayList<SurveyAnswer>();
-    	
+
+    	this.renderedTeacherHours = false;
+       	this.renderedTeacherHoursExecutionYear = false;
+
     	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER);
     	this.setSurveyOption(SurveyOption.TEACHER);
     	
@@ -420,7 +454,10 @@ public class SurveyMBean extends BaseBean {
     	System.out.println("Title :" + this.title);
 
     	this.surveyAnswer = new ArrayList<SurveyAnswer>();
-    	
+ 
+    	this.renderedTeacherHours = false;
+       	this.renderedTeacherHoursExecutionYear = true;
+
     	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER);
     	this.setSurveyOption(SurveyOption.TEACHERHOURSEXECUTIONYEAR);
     	

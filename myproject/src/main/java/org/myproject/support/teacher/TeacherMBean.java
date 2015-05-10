@@ -72,10 +72,11 @@ public class TeacherMBean extends BaseBean {
 
     private Boolean renderedTeacherHours;
    
-     
+   
     
     public TeacherMBean() {
 		super();
+		
 	}
 
 
@@ -186,7 +187,7 @@ public class TeacherMBean extends BaseBean {
 
     
     public void onLoadTeacherHours(String executionYear) {
-        System.out.println("onLoadTeacherHours  :  " + executionYear);
+        System.out.println("onLoadTeacherHours (TeacherMBean)  :  " + executionYear);
 
         if (this.selectedTeacher != null) {
             System.out.println("Select Teacher Id :" + this.selectedTeacher.getId());
@@ -197,7 +198,8 @@ public class TeacherMBean extends BaseBean {
             setRenderedListTeacherButtons (rolename);
             
             this.teacherHours = this.teacherHoursRepository.findByTeacherAndExecutionYear(this.selectedTeacher.getId(),
-                    executionYear.replace("_", "/"));
+            															executionYear.replace("_", "/"));
+            
         }
     }
 

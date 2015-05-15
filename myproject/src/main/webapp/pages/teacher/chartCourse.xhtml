@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:pe="http://primefaces.org/ui/extensions"
 		xmlns:c="http://java.sun.com/jsp/jstl/core"
 		xmlns:p="http://primefaces.org/ui">
 
@@ -36,32 +37,35 @@
   			background-image: url("#{resource['images/icons/OK.png']}") !important;
 		}
 	</style>
-	
+
+
+ 
 </h:head>
 
 <h:body>
 
 		<f:view>
-			<f:event listener="#{surveyMBean.init}" type="preRenderView" />
+			<f:event listener="#{chartMBean.init}" type="preRenderView" />
 		</f:view>
 
-	<p:dialog id="surveyCourseDlg" widgetVar="surveyCourseDialog"
+	<p:dialog id="chartCourseDlg" widgetVar="chartCourseDialog"
 			  width="750" 
-		      header="#{labels.survey}  #{surveyMBean.title}" 
-		      visible="#{formSurveyCourse.submitted and facesContext.validationFailed}"
+		      header="#{labels.chart}  #{chartMBean.title}" 
+		      visible="#{formChartCourse.submitted and facesContext.validationFailed}"
 			  modal="true" 
 			  resizable="false" closable="false"
 			  showEffect="fade" hideEffect="explode" >
+			  
 						  
-	<h:form id="formSurveyCourse" enctype="multipart/form-data" 
+	<h:form id="formChartCourse" enctype="multipart/form-data" 
 	         style="width: 715px; 
-	                height: 400px;
+	                height: 500px;
 	                background-color: lightblue; " >
 
         <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
 							
      
-        Over: <h:outputText value="#{surveyMBean.over}" id="testover"/><br/>
+        Over: <h:outputText value="#{chartMBean.over}" id="testover"/><br/>
 									
 		<h:panelGrid id="display" columns="1"  columnClasses="colStyle1,colStyle2"
 					 width="700" height="350"
@@ -74,7 +78,7 @@
 				<br/>
 				<p:spacer width="20" height="10" />
 	            <h:outputText id="groupquestion" 
-	                          value="#{surveyMBean.getGroupQuestion()}"
+	                          value="#{chartMBean.getGroupQuestion()}"
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
@@ -85,7 +89,7 @@
 				<br/>
 				<p:spacer width="50" height="10" />
 	            <h:outputText id="auxgroupquestion" 
-	                          value="#{surveyMBean.getAuxGroupQuestion()}"
+	                          value="#{chartMBean.getAuxGroupQuestion()}"
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
@@ -100,7 +104,7 @@
 				<br/>
 				<p:spacer width="40" height="10" />
 	            <h:outputText id="question" 
-	                          value="#{surveyMBean.getQuestion()}"
+	                          value="#{chartMBean.getQuestion()}"
 	                          style="width: 615px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
 							  		 color: black;
@@ -112,36 +116,18 @@
             </h:panelGroup>
             
             <h:panelGroup>
- 				<p:inputTextarea id="answer" value="#{surveyMBean.answer}"
-							     rendered="#{!surveyMBean.over and surveyMBean.openQuestion}" 
-							     style="width: 680px; 
-							            height: 150px;
-							            max-height: 150px !important;
-                                        overflow:auto !important;" 
-                                 rows="10" cols="50"
-                                 queryDelay="750" minQueryLength="4" 
-                                 required="true" 
-						         requiredMessage="#{labels.survey_answer_null}" 
-						         validatorMessage="#{labels.survey_answer_min} !!" >
- 					<f:validateLength minimum="6" maximum="256"/>	
- 				</p:inputTextarea>
- 					
- 		    	<p:selectOneRadio value="#{surveyMBean.answerValue}" 
- 		    	                  rendered="#{!surveyMBean.over and !surveyMBean.openQuestion}"
- 		    	                  style="width: 415px; height: 150px;
- 		    	                         padding-left: 10%;
-							             max-height: 150px !important;
-                                         overflow:auto !important;" 
- 		    	                  layout="pageDirection" 
- 		    	                  required="true" 
-						          requiredMessage="#{labels.survey_answer_select}" 
-						          validatorMessage="#{labels.survey_answer_select} !!" >
- 		    	                  >
-		             <f:selectItems value="#{surveyMBean.selectOneItemsScale}" />
-		       	</p:selectOneRadio>
-		       	
- 				<h:outputText id="finish" value="#{labels.survey_finished}" 
- 				              rendered="#{surveyMBean.over and !surveyMBean.noSurvey}"
+ 				<p:chart id="piechart" type="pie" model="#{chartMBean.pieModel}"
+ 				         style="width:400px;
+ 				                height:300px;
+ 				                left: 150px;" 
+ 				                showDatatip="true"
+ 				                extender="true"
+ 				                animate="true"
+ 				                rendered="#{!chartMBean.over and !chartMBean.openQuestion}"
+ 				         />	
+					       	
+ 				<h:outputText id="finish" value="#{labels.chart_finished}" 
+ 				              rendered="#{chartMBean.over and !chartMBean.noChart}"
                               style="width: 615px; height: 250px; 
                                      min-height: 250px !important;
 						  		     font-family: Verdana,sans-serif;
@@ -157,45 +143,25 @@
 				<p:separator />
 				<h:panelGroup style="white-space: nowrap">
 				
-	            <p:commandButton id="submit" value="#{labels.survey_next_answer}"  
+	            <p:commandButton id="submit" value="#{labels.chart_next_answer}"  
 	                             icon="ui-icon-myNext"  style="width: 100px;"
-	                             rendered="#{!surveyMBean.last}" 
-	                             update=":formSurveyCourse" 
-	                             actionListener="#{surveyMBean.next}" />
+	                             rendered="#{!chartMBean.last}" 
+	                             update=":formChartCourse" 
+	                             actionListener="#{chartMBean.next}" />
 	                             
-            	<p:commandButton id="done" value="#{labels.survey_finish}" 
+            	<p:commandButton id="done" value="#{labels.chart_finished}" 
             	                 icon="ui-icon-myFinish" style="width: 100px;"
-            					 rendered="#{surveyMBean.last and !surveyMBean.over}" 
-            					 update=":formSurveyCourse" 
-	                             actionListener="#{surveyMBean.next}" />
+            					 rendered="#{chartMBean.last and !chartMBean.over}" 
+            					 update=":formChartCourse" 
+	                             actionListener="#{chartMBean.next}" />
             					 
-				
-				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
-								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey and surveyMBean.renderedTeacherHoursExecutionYear}" 
-				                 value="#{labels.user_save}"
-    							 action="#{surveyCRUDMBean.save}" 
-    							 update="formTeacherHoursExecutionYearList"
-    							 onclick="PF('surveyCourseDialog').hide()" />
-    							 
- 				<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
-								 rendered="#{surveyMBean.over and !surveyMBean.noSurvey and surveyMBean.renderedTeacherHours}" 
-				                 value="#{labels.user_save}"
-    							 action="#{surveyCRUDMBean.save}" 
-    							 update="formTeacherHoursList"
-    							 onclick="PF('surveyCourseDialog').hide()" />
- 
- 				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
- 								 rendered="false" 
- 				                 value="#{labels.user_send_email}"
-    							 action="#{surveyCRUDMBean.sendEMail}" />
- 
- 				<p:spacer width="500" height="10" rendered="#{!surveyMBean.noSurvey}"/>
- 				<p:spacer width="600" height="10" rendered="#{surveyMBean.noSurvey}"/>
+ 				<p:spacer width="500" height="10" rendered="#{!chartMBean.noChart}"/>
+ 				<p:spacer width="600" height="10" rendered="#{chartMBean.noChart}"/>
     			
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.user_close}" 
- 								 action="#{surveyMBean.disableButtons}"
-    							 onclick="PF('surveyCourseDialog').hide()"
+ 								 action="#{chartMBean.disableButtons}"
+    							 onclick="PF('chartCourseDialog').hide()"
         					     process="@this" 
     							 style=" width: 100px;
     							         color: #ffffff; 
@@ -214,6 +180,7 @@
 	</p:dialog>  
 	
  </h:body>
+
 
 </html>
 

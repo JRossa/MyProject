@@ -1,5 +1,6 @@
 package org.myproject.model.entities;
 
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,15 +12,12 @@ import javax.persistence.Table;
 import org.myproject.model.utils.BaseEntity;
 
 @Entity
-@Table(name = "tbl_SURVEY_TEACHER_ANSWER")
+@Table(name = "tbl_SURVEY_CHART")
 @AttributeOverride(name = "id", column = @Column(name = "ID"))
-public class SurveyTeacherAnswer  extends BaseEntity<Long> {
+public class SurveyChart  extends BaseEntity<Long> {
 
-	private static final long serialVersionUID = -4095720467314693256L;
+	private static final long serialVersionUID = -5006768119458947417L;
 
-	@Column(name = "STAMP")
-	private String stamp;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SURVEY_ID")
 	private Survey survey;
@@ -29,19 +27,17 @@ public class SurveyTeacherAnswer  extends BaseEntity<Long> {
 	private SurveyQuestion question;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "COURSE_ID")
-	private Course course;
-
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ANSWER_ID")
-	private SurveyAnswerScale answer;
+	private SurveyAnswerScale surveyAnswer;
 
 	@Column(name = "ANSWER")
-	private String value;
+	private String answer;
+	
+	@Column(name = "FREQ")
+	private Integer freq;
 
 	
-	
-	public SurveyTeacherAnswer() {
+	public SurveyChart() {
 		super();
 	}
 
@@ -61,38 +57,29 @@ public class SurveyTeacherAnswer  extends BaseEntity<Long> {
 		this.question = question;
 	}
 
-	public Course getCourse() {
-		return course;
+	public SurveyAnswerScale getSurveyAnswer() {
+		return surveyAnswer;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setSurveyAnswer(SurveyAnswerScale surveyAnswer) {
+		this.surveyAnswer = surveyAnswer;
 	}
 
-	public String getStamp() {
-		return stamp;
-	}
-
-	public void setStamp(String stamp) {
-		this.stamp = stamp;
-	}
-
-	public SurveyAnswerScale getAnswer() {
+	public String getAnswer() {
 		return answer;
 	}
 
-	public void setAnswer(SurveyAnswerScale answer) {
+	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
 
-	public String getValue() {
-		return value;
+	public Integer getFreq() {
+		return freq;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setFreq(Integer freq) {
+		this.freq = freq;
 	}
-	
-	
+
 	
 }

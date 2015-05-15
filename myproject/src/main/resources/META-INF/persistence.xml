@@ -32,6 +32,7 @@
 		<class>org.myproject.model.entities.SurveyScaleType</class>
 		<class>org.myproject.model.entities.SurveyQuestion</class>
 		<class>org.myproject.model.entities.SurveyQuestionGroup</class>
+		<class>org.myproject.model.entities.SurveyChart</class>
 
 		<class>org.myproject.model.entities.SurveyTeacher</class>
 		<class>org.myproject.model.entities.SurveyTeacherAnswer</class>

@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Survey;
+import org.myproject.model.entities.SurveyAnswerScale;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyTeacher;
 import org.myproject.model.entities.SurveyTeacherAnswer;
@@ -16,6 +17,7 @@ import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
 import org.myproject.model.entities.TeacherHoursExecutionYear;
 import org.myproject.model.repositories.CourseRepository;
+import org.myproject.model.repositories.SurveyAnswerScaleRepository;
 import org.myproject.model.repositories.SurveyQuestionRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.repositories.SurveyTeacherAnswerRepository;
@@ -46,6 +48,9 @@ public class SurveyCRUDMBean extends BaseBean {
 
     @Inject
     private SurveyQuestionRepository surveyQuestionRepository;
+
+    @Inject
+    private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
 
     @Inject
     private SurveyTeacherRepository surveyTeacherRepository;
@@ -124,6 +129,9 @@ public class SurveyCRUDMBean extends BaseBean {
 	        	SurveyQuestion question = this.surveyQuestionRepository.findOne(sa.getQuestion());
 	        	surveyTeacherAnswer.setQuestion(question);
 	        	
+	        	SurveyAnswerScale answer = this.surveyAnswerScaleRepository.findOne(sa.getAnswer());
+	        	surveyTeacherAnswer.setAnswer(answer);
+	        		
 	        	surveyTeacherAnswer.setValue(sa.getValue());
 	        	
 	        	if (sa.getCourse() != null) {

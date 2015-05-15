@@ -44,6 +44,7 @@
      <mapping class="org.myproject.model.entities.SurveyScaleType" />
      <mapping class="org.myproject.model.entities.SurveyQuestion" />
      <mapping class="org.myproject.model.entities.SurveyQuestionGroup" />
+     <mapping class="org.myproject.model.entities.SurveyChart" />
 
      <mapping class="org.myproject.model.entities.SurveyTeacher" />
      <mapping class="org.myproject.model.entities.SurveyTeacherAnswer" />

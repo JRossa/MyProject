@@ -1,4 +1,4 @@
-package org.myproject.support.survey;
+package org.myproject.support.chart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +13,25 @@ import javax.inject.Named;
 
 import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Survey;
+import org.myproject.model.entities.SurveyChart;
 import org.myproject.model.entities.SurveyQuestion;
 import org.myproject.model.entities.SurveyAnswerScale;
 import org.myproject.model.repositories.SurveyAnswerScaleRepository;
+import org.myproject.model.repositories.SurveyChartRepository;
 import org.myproject.model.repositories.SurveyRepository;
 import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
+import org.myproject.support.survey.SurveyAnswer;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursExecutionYearMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
+import org.primefaces.model.chart.PieChartModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
-@Named(value = "surveyMBean")
+@Named(value = "chartMBean")
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
-public class SurveyMBean extends BaseBean {
+public class ChartMBean extends BaseBean {
 
 	private static final long serialVersionUID = 1984764917382818173L;
 	
@@ -35,7 +39,10 @@ public class SurveyMBean extends BaseBean {
 
 	public enum SurveyOption {TEACHER, TEACHERHOURS, TEACHERHOURSEXECUTIONYEAR}
 	
-	
+
+	@Inject
+	private SurveyChartRepository surveyChartRepository;
+
 	@Inject
 	private SurveyAnswerScaleRepository surveyAnswerScaleRepository;
 
@@ -45,15 +52,8 @@ public class SurveyMBean extends BaseBean {
 	@Inject
 	private UserRepository userRepository;
 
-	@Inject
-	private TeacherMBean mbTeacherMBean;
-
-	@Inject
-	private TeacherHoursMBean mbTeacherHoursMBean;
-
-	@Inject
-	private TeacherHoursExecutionYearMBean mbTeacherHoursExecutionYearMBean;
-
+	private PieChartModel pieModel;
+	
     private String answer;
     private Integer answerValue;
     
@@ -61,11 +61,10 @@ public class SurveyMBean extends BaseBean {
     
     
     private int currentQuestion = 0;
-    private Long answerId = 0L;
     
     private boolean over  = false;
     private boolean last = false;
-    private boolean noSurvey = true;
+    private boolean noChart = true;
     
     private String title;
 
@@ -79,13 +78,10 @@ public class SurveyMBean extends BaseBean {
     
     private String auxGroupQuestion;
     
-    private List<SelectItem> selectOneItemsScale;
-
-    private List<SurveyAnswerScale> surveyAnswerScale;
-
-    private List<SurveyAnswer> surveyAnswer;
-    
     private LogUser user;
+    
+    private List<ChartMap> mapList;
+    
     
     // listTeacherHours... - control buttons
     private Boolean renderedSurveyDone;
@@ -96,17 +92,17 @@ public class SurveyMBean extends BaseBean {
 
     private Boolean disableButtons;
 
+    private Boolean restartButton = true;
     
     
-    public SurveyMBean () {
+    public ChartMBean () {
+    	
+    	pieModel = new PieChartModel();
     	
         this.currentQuestion = 0;
-        this.answerId = 0L;
         this.over  = false;
         this.last = false;
         
-   	    this.surveyAnswer = new ArrayList<SurveyAnswer>();
-
     }
  
     
@@ -241,75 +237,50 @@ public class SurveyMBean extends BaseBean {
     }
 
 	
-	private void processAnswer (String answer) {
-		
-		
-        if(this.currentQuestion < this.surveyQuestion.size()) {
-        	
-        	if (answer != null) {
-        		System.out.println(this.openQuestion + "   To the question  \"" + 
-            		this.surveyQuestion.get(this.currentQuestion).getText() + "\" your answer is " + answer);
-        	
-	            this.answerId--;
-	            
-	            // SurveyId - openQuestion
-	            Long surveyId = this.surveyAnswerScaleRepository.findOpenQuestionId();
-	            
-	            if (this.openQuestion.equals(false)) {
-		            Integer indAnswer = Integer.valueOf(answer);
-		            
-		            indAnswer--;
-		            System.out.println("indAnswer  :  " + indAnswer.toString());
-		            
-		            SurveyAnswerScale surveyAns = this.surveyAnswerScale.get(indAnswer);
-		            surveyId = surveyAns.getId();
-	            }  
-	            
-	            Integer i = this.currentQuestion;
-	            
-	            Long question = this.surveyQuestion.get(this.currentQuestion).getId();
-	            
-	            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER_UC)) {
-	            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(), i, question, 
-	            			                    surveyId, answer,
-	                        					this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getId()));
-	            }
-	 
-	            if (this.surveyTypeGroup.equals(SurveyTypeGroup.TEACHER)) {
-	            	this.surveyAnswer.add(new SurveyAnswer(this.activeSurvey.getId(), i, question, 
-	            			                    surveyId, answer, null));
-	            }
-	            
-	            System.out.println("Question #" + this.currentQuestion + " -  Stored " + surveyId);
-
-        	}
-
-        	this.currentQuestion++;
-           
-
-        	if (this.currentQuestion == (this.surveyQuestion.size() - 1)) {
-                this.last = true;
-            }
-            
-            if (this.currentQuestion == this.surveyQuestion.size()) {
-                this.over = true;
-            }
-        }
-		
+    public List<ChartMap> getMapList() {
+		return mapList;
 	}
-	
-	
-    public void setAnswer(String answer) {       
-        System.out.println("Set Answer\n\n");
+
+
+	public void setMapList(List<ChartMap> mapList) {
+		this.mapList = mapList;
+	}
+
+
+	private void createPieModel(SurveyQuestion question) {
+        pieModel = new PieChartModel();
+        mapList = new ArrayList<ChartMap>();
         
-        if (answer != null) {
-        	this.processAnswer(answer);
+        List<SurveyChart> chart = 
+        		this.surveyChartRepository.findBySurveyIdAndQuestionId(this.activeSurvey.getId(), question.getId());
+        
+        for (SurveyChart c: chart) {
+        	pieModel.set(c.getSurveyAnswer().getText() + " - (" + c.getFreq() + ")", c.getFreq());
+        	mapList.add(new ChartMap(c.getSurveyAnswer().getText(),  c.getFreq().toString()));
         }
         
-        this.answer = answer;
-    }    
+        pieModel.setTitle(this.activeSurvey.getExecutionYear().getExecutionYear());
+        pieModel.setLegendPosition("e");
+        pieModel.setFill(false);
+        pieModel.setShowDataLabels(true);
+        pieModel.setDiameter(150);
+        pieModel.setShowDataLabels(true);
+        pieModel.setMouseoverHighlight(true);
 
-    public String getQuestion() {
+    }
+
+    
+    public PieChartModel getPieModel() {
+		return pieModel;
+	}
+
+
+	public void setPieModel(PieChartModel pieModel) {
+		this.pieModel = pieModel;
+	}
+
+
+	public String getQuestion() {
     	
         System.out.println("Get Question   : " + this.openQuestion);
        
@@ -322,10 +293,14 @@ public class SurveyMBean extends BaseBean {
         	this.answerValue = null;
         	this.answer = null;
         	
+        	if (!this.openQuestion) {
+        		createPieModel(this.surveyQuestion.get(this.currentQuestion));
+        	}
+        	
             return this.surveyQuestion.get(this.currentQuestion).getText();
         }
         else {
-        	if (this.noSurvey) {
+        	if (this.noChart) {
         		return "EM COSTRUÇÂO  - No surveys !!!";
         	}
         	
@@ -374,25 +349,39 @@ public class SurveyMBean extends BaseBean {
 
     public void next() {
         System.out.println("Next");
+
+        System.out.println("Get Question   : " + this.currentQuestion + "  size " + this.surveyQuestion.size());
+		
+        if(this.currentQuestion < this.surveyQuestion.size()) {
+        	
+        	this.currentQuestion++;
+          
+
+        	if (this.currentQuestion == (this.surveyQuestion.size() - 1)) {
+                this.last = true;
+            }
+            
+            if (this.currentQuestion == this.surveyQuestion.size()) {
+                this.over = true;
+            }
+        }
     }
     
 
-    
-    public void startCourse() {
+    public void startChartCourse() {
     	
-    	this.title = "(UC - " 
-                + this.mbTeacherHoursMBean.getSelectedTeacherHours().getCourse().getCode()
-                + ")";
+    	if (!this.restartButton) {
+    		return;
+    	}
+    	
+    	this.restartButton = false;
+    	
+    	this.title = "(UC - )";
     	
     	
     	System.out.println("Title :" + this.title);
     	
-    	System.out.println("Teacher :" + 
-    	         this.mbTeacherHoursMBean.getSelectedTeacherHours().getTeacher().getFullName());
-    	
-    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
-    	
-    	this.mbTeacherHoursMBean.setReloadTeacher(false);
+   	
     	this.renderedTeacherHours = true;
        	this.renderedTeacherHoursExecutionYear = false;
 
@@ -400,18 +389,19 @@ public class SurveyMBean extends BaseBean {
     	this.setSurveyOption(SurveyOption.TEACHERHOURS);
     	
     	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
-    	
+
     	if (this.activeSurvey != null) {
     		
     		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
 	    	
-	    	if (this.surveyQuestion != null) {
+        	System.out.println("Title :" + this.title);
+
+        	if (this.surveyQuestion != null) {
 
 	    		this.currentQuestion = 0;
-		        this.answerId = 0L;
 		        this.over = false;
 		        this.last = false;
-		        this.noSurvey = false;
+		        this.noChart = false;
 		        
 		        return;
 	    	}
@@ -419,62 +409,18 @@ public class SurveyMBean extends BaseBean {
     	
 	    this.over = true;
 	    this.last = true;
-	    this.noSurvey = true;
+	    this.noChart = true;
 	
     }
 
-    
-    public void startTeacher() {
+ 
+    public void startChartTeacher() {
 
-    	this.title = "(Docente - " 
-                + this.mbTeacherMBean.getSelectedTeacher().getFullName()
-                + ")";
+    	this.title = "(Docente - )";
     	
     	System.out.println("Title :" + this.title);
 
-    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
 
-    	this.renderedTeacherHours = false;
-       	this.renderedTeacherHoursExecutionYear = false;
-
-    	this.setSurveyTypeGroup(SurveyTypeGroup.TEACHER);
-    	this.setSurveyOption(SurveyOption.TEACHER);
-    	
-		this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER.toString());
-		
-    	if (this.activeSurvey != null) {
-
-    		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
-
-	    	if (this.surveyQuestion != null) {
-	    		
-		        this.currentQuestion = 0;
-		        this.answerId = 0L;
-		        this.over = false;
-		        this.last = false;
-		        this.noSurvey = false;
-		        
-		        return;
-	    	}
-    	}
-    	
-	    this.over = true;
-	    this.last = true;
-	    this.noSurvey = true;
-	    
-    }
-
- 
-    public void startTeacherExecutionYear() {
-
-    	this.title = "(Docente - " 
-                + this.mbTeacherHoursExecutionYearMBean.getSelectedTeacherHoursExecutionYear().getTeacher().getFullName()
-                + ")";
-    	
-    	System.out.println("Title :" + this.title);
-
-    	this.surveyAnswer = new ArrayList<SurveyAnswer>();
- 
     	this.renderedTeacherHours = false;
        	this.renderedTeacherHoursExecutionYear = true;
 
@@ -490,10 +436,9 @@ public class SurveyMBean extends BaseBean {
 	    	if (this.surveyQuestion != null) {
 	    		
 		        this.currentQuestion = 0;
-		        this.answerId = 0L;
 		        this.over = false;
 		        this.last = false;
-		        this.noSurvey = false;
+		        this.noChart = false;
 		        
 		        return;
 	    	}
@@ -501,7 +446,7 @@ public class SurveyMBean extends BaseBean {
     	
 	    this.over = true;
 	    this.last = true;
-	    this.noSurvey = true;
+	    this.noChart = true;
 	    
     }
 
@@ -510,11 +455,9 @@ public class SurveyMBean extends BaseBean {
         System.out.println("Reset");
         
         this.currentQuestion = 0;
-        this.answerId = 0L;
         this.over = false;
         this.last = false;
-        
-    	this.mbTeacherHoursMBean.setReloadTeacher(true);
+        this.restartButton = true;
         
         return "";
         //return "/pages/survey/questionTeacher.xhtml";
@@ -536,25 +479,18 @@ public class SurveyMBean extends BaseBean {
         this.last = last;
     }
     
-    public boolean isNoSurvey() {
-		return noSurvey;
+    public boolean isNoChart() {
+		return noChart;
 	}
 
-	public void setNoSurvey(boolean noSurvey) {
-		this.noSurvey = noSurvey;
+	public void setNoChart(boolean noChart) {
+		this.noChart = noChart;
 	}
 
-	public List<SurveyAnswer> getSurveyAnswer() {
-		return surveyAnswer;
-	}
-
-
-	public void setSurveyAnswer(List<SurveyAnswer> surveyAnswer) {
-		this.surveyAnswer = surveyAnswer;
-	}
 
 
     public void disableButtons () {
+    	this.reset();
     }
     
     
@@ -563,19 +499,6 @@ public class SurveyMBean extends BaseBean {
 	}
 
 
-	public void setAnswerValue(Integer answerValue) {
-
-		
-		System.out.println("set Answer Value  :  " + answerValue);
-		
-		if (answerValue != null) {
-			this.processAnswer(answerValue.toString());
-		}
-		
-		this.answerValue = answerValue;
-	}
-
-	
 	public Boolean getOpenQuestion() {
 		return openQuestion;
 	}
@@ -586,42 +509,12 @@ public class SurveyMBean extends BaseBean {
 	}
 
 
-	public List<SelectItem> getSelectOneItemsScale() {
-        this.selectOneItemsScale = new ArrayList<SelectItem>();
-   	 	this.surveyAnswerScale = new ArrayList<SurveyAnswerScale>();
-        
-        if (this.surveyQuestion == null) {
-        	SelectItem selectItem = new SelectItem(0, "");
-            this.selectOneItemsScale.add(selectItem);
-            return selectOneItemsScale;
-        }
-
-        List<SurveyAnswerScale> surveyScale = this.surveyQuestion.get(this.currentQuestion).getScaleType().getScaleList();
-
-        if (surveyScale != null) {
-        	
-	        for (SurveyAnswerScale scale : surveyScale) {
-	        	surveyAnswerScale.add(scale);
-	        	
-//	            SelectItem selectItem = new SelectItem(scale.getValue(), scale.getId() + " - " + scale.getText());
-	            SelectItem selectItem = new SelectItem(scale.getValue(), scale.getText());
-	            this.selectOneItemsScale.add(selectItem);
-	        }
-        } else {
-        	
-        	SelectItem selectItem = new SelectItem(0, "");
-            this.selectOneItemsScale.add(selectItem);
-        }
-        
-        return selectOneItemsScale;
-    }
-
-	
-    public String getResourceProperty(String resource, String label) {
+   public String getResourceProperty(String resource, String label) {
         Application application = FacesContext.getCurrentInstance().getApplication();
         ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);
 
         return bundle.getString(label);
     }
 
+    
 }

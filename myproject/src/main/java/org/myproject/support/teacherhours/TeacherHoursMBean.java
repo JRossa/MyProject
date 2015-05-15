@@ -14,6 +14,7 @@ import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
 import org.myproject.model.repositories.TeacherHoursRepository;
 import org.myproject.model.utils.BaseBean;
+import org.myproject.support.survey.SurveyMBean;
 import org.myproject.support.teacher.TeacherMBean;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
@@ -29,7 +30,7 @@ public class TeacherHoursMBean extends BaseBean {
 
     @Inject
     private TeacherMBean mbTeacherMBean;
-    
+
     @Inject
     private TeacherHoursRepository teacherHoursRepository;
 
@@ -51,6 +52,8 @@ public class TeacherHoursMBean extends BaseBean {
 
     private Boolean renderedSurvey;
 
+    private Boolean reloadTeacher = true;
+
     
     public TeacherHoursMBean() {
 		super();
@@ -71,7 +74,7 @@ public class TeacherHoursMBean extends BaseBean {
             
             setRenderedListTeacherButtons (rolename);
             
-           	this.teacherHours = 
+            this.teacherHours = 
             		this.teacherHoursRepository.findByTeacherAndExecutionYear(this.mbTeacherMBean.getSelectedTeacher().getId(),
                                                                               this.mbTeacherMBean.getSelectedExecutionYear());
         }
@@ -85,11 +88,15 @@ public class TeacherHoursMBean extends BaseBean {
             this.renderedSurvey = true;
             this.renderedUpdate = true;
             this.renderedDelete = true;
+    		this.reloadTeacher = true;
+
         } else if (rolename.equals("ROLE_USER_T")) {
             this.disableButtons = true;
             this.renderedSurvey = true;
             this.renderedUpdate = false;
             this.renderedDelete = false;
+    		this.reloadTeacher = true;
+
         }
     }
 
@@ -149,6 +156,16 @@ public class TeacherHoursMBean extends BaseBean {
 
 	public void setRenderedUpdate(Boolean renderedUpdate) {
 		this.renderedUpdate = renderedUpdate;
+	}
+
+
+	public Boolean getReloadTeacher() {
+		return reloadTeacher;
+	}
+
+
+	public void setReloadTeacher(Boolean reloadTeacher) {
+		this.reloadTeacher = reloadTeacher;
 	}
 
 

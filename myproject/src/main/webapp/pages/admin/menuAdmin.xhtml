@@ -13,6 +13,7 @@
    
     <ui:include name="change" src="changePasswordT.xhtml"  />
  	<ui:include name="create" src="createUserT.xhtml"  />
+ 	<ui:include name="chart" src="../teacher/chartCourse.xhtml"  />
  
  	
 	<h:form  >  
@@ -74,7 +75,13 @@
             <p:menuitem value="#{labels.menu_survey_teacher}" 
                         url="/pages/admin/listTeacherHoursExecutionYear.am" >
             </p:menuitem>
-       </p:submenu>
+            <p:menuitem value="#{labels.menu_survey_chart_course}" 
+            			action="#{chartMBean.startChartCourse}"
+            			update=":chartCourseDlg" 
+                        oncomplete="PF('chartCourseDialog').show()" />
+           <p:menuitem value="#{labels.menu_user_list_sessions}"
+                       url="/public/chartTest.am" />
+        </p:submenu>
 
     </p:menubar>
    

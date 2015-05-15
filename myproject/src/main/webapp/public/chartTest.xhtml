@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+ <html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:p="http://primefaces.org/ui" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core"> 
+    
+    
+	<ui:composition template="templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
+    	 	<p:menuitem value="#{labels.menu_professorship_list}" url="/pages/admin/listProfessorship.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="../pages/admin/menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+    
+  <h:head>
+ 
+ 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+    
+ </h:head> 
+    
+ 
+ <h:body> 
+
+		<f:view>
+			<f:event listener="#{chartMBean.startChartCourse}" type="preRenderView" />
+		</f:view>
+
+	<h:form id="formChart" >
+			<h:panelGroup>
+				<p:spacer width="20" height="10" />
+	            <h:outputText id="title" 
+	                          value="#{labels.chart}  #{chartMBean.title}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: black;
+							  		 font-size: 20px;
+		                      		 font-weight: bolder;"
+								 	/>
+				<p:separator />
+				<p:spacer width="20" height="10" />
+	            <h:outputText id="groupquestion" 
+	                          value="#{chartMBean.getGroupQuestion()}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: green;
+							  		 font-size: 20px;
+		                      		 font-weight: bolder;"
+								 	/>
+				<p:separator />
+				<p:spacer width="50" height="10" />
+	            <h:outputText id="auxgroupquestion" 
+	                          value="#{chartMBean.getAuxGroupQuestion()}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: red;
+							  		 font-size: 15px;
+		                      		 font-weight: bolder;"
+								 	/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<p:spacer width="40" height="10" />
+	            <h:outputText id="question" 
+	                          value="#{chartMBean.getQuestion()}"
+	                          style="width: 615px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: black;
+							  		 font-size: 15px;
+		                      		 font-weight: 600;"
+								 	/>
+           </h:panelGroup>
+ 				<div id="piechart_3d" style="width: 500px; height: 350px;"></div> 
+ 				
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+	            <p:commandButton id="submit" value="#{labels.chart_next_answer}"  
+	                             icon="ui-icon-myNext"  style="width: 100px;"
+	                             rendered="#{!chartMBean.last}" 
+	                             update="formChart"
+	                             actionListener="#{chartMBean.next}" />
+	                             
+            	<p:commandButton id="done" value="#{labels.chart_finished}" 
+            	                 icon="ui-icon-myFinish" style="width: 100px;"
+            					 rendered="#{chartMBean.last and !chartMBean.over}" 
+	                             update="formChart"
+	                             actionListener="#{chartMBean.next}" />
+	                             
+  				<p:spacer width="500" height="10" rendered="#{!chartMBean.noChart}"/>
+ 				<p:spacer width="600" height="10" rendered="#{chartMBean.noChart}"/>
+    			
+ 				<p:commandButton icon="ui-icon-myClose" 
+ 				                 value="#{labels.user_close}" 
+ 								 action="#{chartMBean.disableButtons}"
+ 	                             update="formChart"
+        					     process="@this" 
+    							 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 0px" />
+    			
+    			</h:panelGroup>
+ </h:form>
+ </h:body> 
+ 
+       <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        	<c:forEach var="resultAnalysis" items="${chartMBean.mapList}" > 
+           		['${resultAnalysis.name}',${resultAnalysis.value}], 
+            </c:forEach> 
+        ]);
+
+        var options = {
+          title: "'#{chartMBean.title}'",
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+    
+  <script type="text/javascript">
+
+    var sampleSVG = d3.select("#viz")
+        .append("svg")
+        .attr("width", 100)
+        .attr("height", 100);    
+
+    sampleSVG.append("circle")
+        .style("stroke", "gray")
+        .style("fill", "white")
+        .attr("r", 40)
+        .attr("cx", 50)
+        .attr("cy", 50)
+        .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+        .on("mouseout", function(){d3.select(this).style("fill", "white");});
+    
+    </script>
+ 
+ </ui:define>
+ </ui:composition>
+ 
+ </html> 
+ 
+<!--            ['Work',     11], -->
+<!--           ['Eat',      2], -->
+<!--           ['Commute',  2], -->
+<!--           ['Watch TV', 2], -->
+<!--           ['Sleep',    7] -->
+ 

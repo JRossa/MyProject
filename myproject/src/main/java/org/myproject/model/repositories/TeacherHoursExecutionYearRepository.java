@@ -31,19 +31,20 @@ public interface TeacherHoursExecutionYearRepository extends JpaRepository<Teach
     
     @Query(value="SELECT DISTINCT tbl_TEACHER_HOURS_EXECUTION_YEAR.* FROM (tbl_TEACHER_HOURS_EXECUTION_YEAR "
             + "INNER JOIN tbl_SURVEY_TEACHER ON (tbl_TEACHER_HOURS_EXECUTION_YEAR.TEACHER_ID = tbl_SURVEY_TEACHER.TEACHER_ID)) "
-            + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
+            + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS_EXECUTION_YEAR.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
             + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
             + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ", nativeQuery = true)
     public List <TeacherHoursExecutionYear> findByTeacherSurveyDoneInExecutionYear (@Param("surveyId") Long surveyId,
     		                                                                        @Param("executionYear") String executionYear);
  
-	@Query(value="SELECT DISTINCT tbl_TEACHER_HOURS.* FROM tbl_TEACHER_HOURS "
-	 		+ "WHERE tbl_TEACHER_HOURS.ID NOT IN "
-	 		+ "(SELECT DISTINCT tbl_TEACHER_HOURS.ID FROM (tbl_TEACHER_HOURS "
-	        + "INNER JOIN tbl_SURVEY_TEACHER (tbl_TEACHER_HOURS_EXECUTION_YEAR.TEACHER_ID = tbl_SURVEY_TEACHER.TEACHER_ID)) "
-	        + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS_EXECUTION_YEAR.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
-	        + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
-	        + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId ) ", nativeQuery = true)
+	@Query(value="SELECT DISTINCT tbl_TEACHER_HOURS_EXECUTION_YEAR.* FROM tbl_TEACHER_HOURS_EXECUTION_YEAR "
+	 		+ "WHERE tbl_TEACHER_HOURS_EXECUTION_YEAR.ID NOT IN "
+	 		+ "(SELECT DISTINCT tbl_TEACHER_HOURS_EXECUTION_YEAR.ID FROM (tbl_TEACHER_HOURS_EXECUTION_YEAR "
+            + "INNER JOIN tbl_SURVEY_TEACHER ON (tbl_TEACHER_HOURS_EXECUTION_YEAR.TEACHER_ID = tbl_SURVEY_TEACHER.TEACHER_ID)) "
+            + "INNER JOIN tbl_EXECUTION_YEAR ON tbl_TEACHER_HOURS_EXECUTION_YEAR.EXECUTION_YEAR = tbl_EXECUTION_YEAR.ID "
+            + "WHERE tbl_EXECUTION_YEAR.EXECUTION_YEAR = :executionYear "
+            + "AND tbl_SURVEY_TEACHER.SURVEY_ID = :surveyId) ", nativeQuery = true)
 	public List <TeacherHoursExecutionYear> findByTeacherSurveyNOTDoneInExecutionYear (@Param("surveyId") Long surveyId,
 			                                                                           @Param("executionYear") String executionYear);
+
 }

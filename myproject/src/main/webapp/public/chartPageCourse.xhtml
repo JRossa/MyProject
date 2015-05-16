@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+ <html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:p="http://primefaces.org/ui" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core"> 
+    
+    
+	<ui:composition template="templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
+    	 	<p:menuitem value="#{labels.menu_professorship_list}" url="/pages/admin/listProfessorship.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="../pages/admin/menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+    
+    
+    <h:head>
+ 
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        			
+    	google.load("visualization", "1", {packages:["corechart"]});
+      	google.setOnLoadCallback(drawChart);
+      				
+  		var options = {
+  	         		title: "#{chartMBean.title}",
+  	        		is3D: true,
+  	        		pieHole: 0.4,
+  	       		 };
+			 
+  		var chart
+  		var data	
+
+ 					
+     	function drawChart() {
+       		data = google.visualization.arrayToDataTable([
+          					  ['',''],                                              
+        						<c:forEach var="resultAnalysis" items="${chartMBean.mapList}" > 
+       								['${resultAnalysis.name}',${resultAnalysis.value}], 
+           						</c:forEach> 
+        					 ]);
+    					  
+
+       		chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+       		google.visualization.events.addListener(chart, 'select', selectHandler);
+        	chart.draw(data, options);
+      	}
+
+  		function selectHandler() {
+  			var selectedItem = chart.getSelection()[0];
+  			var name = data.getValue(selectedItem.row, 0);
+  			var value = data.getValue(selectedItem.row, 1);
+  		
+  			alert(name+" -  "+value);
+  		}
+  			 					
+  		function redraw() {
+  			chart.draw(data, options);
+  		}
+
+  				  				 
+  		function autoRefresh_page() {
+  	  		window.location = location.href;
+   		}
+
+ 
+  			    
+  	</script>
+   
+   	<style  type="text/css" >
+		.ui-icon-myRefresh{
+  			background-image: url("#{resource['images/icons/Refresh.png']}") !important;
+		}
+		.ui-icon-myRestart{
+  			background-image: url("#{resource['images/icons/Redo.png']}") !important;
+		}
+		.ui-icon-myDelete{
+  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
+		}
+		.ui-icon-myUpdate{
+  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
+		}
+		.ui-icon-myClose{
+  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
+		}
+		.ui-icon-myEmail{
+  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
+		}
+		.ui-icon-myNext{
+  			background-image: url("#{resource['images/icons/Next.png']}") !important;
+		}
+		.ui-icon-myFinish{
+  			background-image: url("#{resource['images/icons/OK.png']}") !important;
+		}
+	</style>
+     
+ </h:head> 
+ 
+ <h:body > 
+
+		<f:view>
+			<f:event listener="#{chartMBean.init('refresh')}" type="preRenderView" />
+		</f:view>
+ 
+ 
+	<h:form id="formChart" >
+			<h:panelGroup>
+			    <br/>
+			    <br/>
+				<p:spacer width="20" height="10" />
+	            <h:outputText id="groupquestion" 
+	                          value="#{chartMBean.getGroupQuestion()}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: green;
+							  		 font-size: 20px;
+		                      		 font-weight: bolder;"
+								 	/>
+				<p:separator />
+				<p:spacer width="50" height="10" />
+	            <h:outputText id="auxgroupquestion" 
+	                          value="#{chartMBean.getAuxGroupQuestion()}"
+	                          escape="false"
+	                          style="width: 415px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: red;
+							  		 font-size: 15px;
+		                      		 font-weight: bolder;"
+								 	/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<p:spacer width="40" height="10" />
+	            <h:outputText id="question" 
+	                          value="#{chartMBean.getQuestion()}"
+	                          style="width: 615px;  height: 250px;
+							  		 font-family: Verdana,sans-serif;
+							  		 color: black;
+							  		 font-size: 15px;
+		                      		 font-weight: 600;"
+								 	/>
+           </h:panelGroup>
+ 				<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 150px;" /> 
+
+				
+				<p:separator />
+				<h:panelGroup style="white-space: nowrap">
+				
+	            <p:commandButton id="submit" value="#{labels.chart_next_answer}"  
+	                             icon="ui-icon-myNext"  style="width: 100px;"
+	                             rendered="#{!chartMBean.last}" 
+	                             actionListener="#{chartMBean.next}"
+	                             onclick="chartTest.am?faces-redirect=true;"
+								 update="@all" />
+	                             
+            	<p:commandButton id="done" value="#{labels.chart_finished}" 
+            	                 icon="ui-icon-myFinish" style="width: 100px;"
+            					 rendered="#{chartMBean.last and !chartMBean.over}" 
+            					 actionListener="#{chartMBean.next}" 
+	                             action="redraw();"
+	                             update="@all"/>
+	                             
+	            <p:commandButton value="#{labels.chart_redraw}"  
+	                             icon="ui-icon-myRefresh"  style="width: 100px;"
+	                             action="redraw()"
+	                             onclick="chartTest.am?faces-redirect=true;"
+	                             update="@all"  />
+	                             
+ 				<p:spacer width="660" height="10" />
+    			
+ 				<p:commandButton icon="ui-icon-myRestart" 
+ 				                 value="#{labels.user_restart}" 
+        					     actionListener="#{chartMBean.reset}"
+	                             onclick="chartTest.am?faces-redirect=true;"
+		                         update="@all"
+   								 style=" width: 100px;
+    							         color: #ffffff; 
+    									 background: #0080c0;
+   										 position: relative; 
+   										 top: 0px; 
+  										 left: 0px" />
+    			
+    			</h:panelGroup>
+ </h:form>
+ </h:body> 
+ 
+ 
+ 
+ </ui:define>
+ </ui:composition>
+ 
+ </html> 
+
+<!-- 				<p:dataTable id="chartMapListDataTable" widgetVar="chartDataTable" -->
+<!-- 				    loadingMessage="#{labels.lessonplan_load}" -->
+<!-- 				    scrollable="true" -->
+<!-- 				    scrollHeight="390" -->
+<!-- 					var="chartdata"  -->
+<!-- 					value="#{chartMBean.mapList}"  -->
+<!-- 					paginator="true"  -->
+<!-- 					paginatorPosition="top" -->
+<!-- 					rows="10" -->
+<!-- 					rowIndexVar="chartMapListIndex" -->
+<!-- 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" -->
+<!-- 					rowsPerPageTemplate="5,10,20" rowKey="#{chartdata.value}" -->
+<!-- 					selectionMode="single" > -->
+
+<!-- 					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" > -->
+<!-- 						<h:outputText value="#{chartdata.name}" /> -->
+<!-- 					</p:column> -->
+					
+<!-- 					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" > -->
+<!-- 						<h:outputText value="#{chartdata.value}" /> -->
+<!-- 					</p:column> -->
+
+<!-- </p:dataTable> -->
+
+<!--     <meta http-equiv="refresh" content="10; url=http://localhost:8080/myproject/public/chartTest.am" /> -->
+		            
+ 
+<!--      <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script> -->
+     
+<!--   <script type="text/javascript"> -->
+ 
+<!--      var sampleSVG = d3.select("#viz") -->
+<!--          .append("svg") -->
+<!--          .attr("width", 100) -->
+<!--          .attr("height", 100);     -->
+
+<!--      sampleSVG.append("circle") -->
+<!--          .style("stroke", "gray") -->
+<!--          .style("fill", "white") -->
+<!--          .attr("r", 40) -->
+<!--          .attr("cx", 50) -->
+<!--          .attr("cy", 50) -->
+<!--          .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");}) -->
+<!--          .on("mouseout", function(){d3.select(this).style("fill", "white");}); -->
+   
+<!--     </script> -->
+
+<!--         	<c:forEach var="resultAnalysis" items="${chartMBean.mapList}" >  -->
+<!--            		['${resultAnalysis.name}',${resultAnalysis.value}],  -->
+<!--             </c:forEach>  -->
+
+
+ 
+<!--            ['Work',     11], -->
+<!--           ['Eat',      2], -->
+<!--           ['Commute',  2], -->
+<!--           ['Watch TV', 2], -->
+<!--           ['Sleep',    7] -->
+ 

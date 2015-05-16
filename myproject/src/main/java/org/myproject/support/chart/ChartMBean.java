@@ -1,11 +1,15 @@
 package org.myproject.support.chart;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -25,6 +29,7 @@ import org.myproject.support.survey.SurveyAnswer;
 import org.myproject.support.teacher.TeacherMBean;
 import org.myproject.support.teacherhours.TeacherHoursExecutionYearMBean;
 import org.myproject.support.teacherhours.TeacherHoursMBean;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -78,10 +83,15 @@ public class ChartMBean extends BaseBean {
     
     private String auxGroupQuestion;
     
+    private String surveyCourse;
+    
     private LogUser user;
     
     private List<ChartMap> mapList;
     
+    private List<List<ChartMap>> mapResults;
+    
+    private Long Id;
     
     // listTeacherHours... - control buttons
     private Boolean renderedSurveyDone;
@@ -94,11 +104,15 @@ public class ChartMBean extends BaseBean {
 
     private Boolean restartButton = true;
     
+    private Boolean initListMode = false;
+    
+    private Boolean refreshMode;
     
     public ChartMBean () {
     	
     	pieModel = new PieChartModel();
     	
+    	this.restartButton = true;
         this.currentQuestion = 0;
         this.over  = false;
         this.last = false;
@@ -134,16 +148,66 @@ public class ChartMBean extends BaseBean {
          }
     }
 
-    @PostConstruct
-    public void init () {
+//    @PostConstruct
+    public void init (String mode) {
     	
+    	if (mode.equals("refresh")) {
+    		this.refreshMode = true;
+    	}
+    	
+    	if (mode.equals("normal")) {
+    		this.refreshMode = false;
+    	}
+    	
+   	
     	this.setupUserData();
-    	
+    	startChartCourse();
+
+       	if (this.initListMode) {
+	    	this.mapResults = new ArrayList<List<ChartMap>>();
+	    	
+	    	if (this.activeSurvey != null) {
+	    		
+	    		this.surveyQuestion = this.activeSurvey.getSurveyType().getQuestionList();
+	    		
+	    		for (SurveyQuestion sq: this.surveyQuestion) {
+	    			
+	            	this.openQuestion = (sq.getScaleType().getScaleList().size() == 1);
+	            	
+	            	if (!this.openQuestion) {
+	            		
+	                    List<SurveyChart> chart = 
+	                    		this.surveyChartRepository.findBySurveyIdAndQuestionId(this.activeSurvey.getId(), sq.getId());
+	                    
+	                    this.mapList = new ArrayList<ChartMap>();  
+	                    
+	                    for (SurveyChart c: chart) {
+	                        ChartMap list = new ChartMap(c.getSurveyAnswer().getText(),  c.getFreq().toString());
+	                    	this.mapList.add(list);
+	                    }
+	                    
+	                    this.mapResults.add(mapList);
+	            	}
+	   			
+	    		}
+	    	}
+       	}
+       	
 //    	this.surveyQuestion = this.surveyQuestionRepository.findAll();
     }
 
     
-    public Boolean getRenderedSurveyDone() {
+    public Long getId() {
+		return Id;
+	}
+
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
+
+	public Boolean getRenderedSurveyDone() {
 		return renderedSurveyDone;
 	}
 
@@ -247,16 +311,64 @@ public class ChartMBean extends BaseBean {
 	}
 
 
+	public String getSurveyCourse() {
+		return surveyCourse;
+	}
+
+
+	public void setSurveyCourse(String surveyCourse) {
+		this.surveyCourse = surveyCourse;
+	}
+
+
+	private void createMapListChartMap(Integer currentQuestion) {
+        List<ChartMap> chart = this.mapResults.get(currentQuestion);
+       
+        for (ChartMap c: chart) {
+        	mapList.add(c);
+        }
+	}
+	
+	
+	private void createMapListSurveyChart(SurveyQuestion question) {
+       
+        List<SurveyChart> chart = 
+        		this.surveyChartRepository.findBySurveyIdAndQuestionId(this.activeSurvey.getId(), question.getId());
+        
+        
+        for (SurveyChart c: chart) {
+            ChartMap list = new ChartMap(c.getSurveyAnswer().getText(),  c.getFreq().toString());
+        	mapList.add(list);
+        }
+        
+//        if (chart.size() > 0) {
+//        	this.refreshPage();
+//        }
+
+		  
+//		  mapList.add(new ChartMap("Work", "11"));
+//		  mapList.add(new ChartMap("Eat", "2"));
+//		  mapList.add(new ChartMap("Commute", "2"));
+//		  mapList.add(new ChartMap("Watch TV", "2"));
+//		  mapList.add(new ChartMap("Sleep", "7"));
+		  
+		  
+//        for (ChartMap cm: mapList) {
+//        	System.out.println("Text   " + cm.getName());
+//        	System.out.println("Value  " + cm.getValue());
+//        }
+        
+    }
+	
+
 	private void createPieModel(SurveyQuestion question) {
         pieModel = new PieChartModel();
-        mapList = new ArrayList<ChartMap>();
         
         List<SurveyChart> chart = 
         		this.surveyChartRepository.findBySurveyIdAndQuestionId(this.activeSurvey.getId(), question.getId());
         
         for (SurveyChart c: chart) {
         	pieModel.set(c.getSurveyAnswer().getText() + " - (" + c.getFreq() + ")", c.getFreq());
-        	mapList.add(new ChartMap(c.getSurveyAnswer().getText(),  c.getFreq().toString()));
         }
         
         pieModel.setTitle(this.activeSurvey.getExecutionYear().getExecutionYear());
@@ -279,11 +391,26 @@ public class ChartMBean extends BaseBean {
 		this.pieModel = pieModel;
 	}
 
+	
+    public void gotoURL(String url) {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+        
+        try {
+            System.out.println("Real Path  : " + context.getRequestContextPath());
+            context.redirect(context.getRequestContextPath() + url);
+             
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
+    
 	public String getQuestion() {
     	
         System.out.println("Get Question   : " + this.openQuestion);
-       
+    	this.mapList = new ArrayList<ChartMap>();       
+    	
     	if (!this.over) {
     		if (this.surveyQuestion == null) {
     			return "EM COSTRUÇÂO  - No questions !!!";
@@ -294,6 +421,13 @@ public class ChartMBean extends BaseBean {
         	this.answer = null;
         	
         	if (!this.openQuestion) {
+        		
+        		if (this.initListMode) {
+        			createMapListChartMap(this.currentQuestion);
+        		} else {
+        			createMapListSurveyChart(this.surveyQuestion.get(this.currentQuestion));
+        		} 
+        		
         		createPieModel(this.surveyQuestion.get(this.currentQuestion));
         	}
         	
@@ -304,6 +438,7 @@ public class ChartMBean extends BaseBean {
         		return "EM COSTRUÇÂO  - No surveys !!!";
         	}
         	
+
             return  getResourceProperty("labels", "survey_thanks");
         }
     }
@@ -338,7 +473,7 @@ public class ChartMBean extends BaseBean {
     	    	   this.setAuxGroupQuestion(group[1]);
     	       } else
     	    	   this.setAuxGroupQuestion(""); 
-    	       
+  	       
             return groupQuestion;
         }
         else {
@@ -347,12 +482,26 @@ public class ChartMBean extends BaseBean {
     }
     
 
+	private void refreshPage () {
+        if (this.refreshMode.equals(true) && !this.isOver()) {
+            try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            RequestContext.getCurrentInstance().execute("autoRefresh_page()");
+        }
+		
+	}
+	
     public void next() {
         System.out.println("Next");
 
         System.out.println("Get Question   : " + this.currentQuestion + "  size " + this.surveyQuestion.size());
 		
-        if(this.currentQuestion < this.surveyQuestion.size()) {
+        if (this.currentQuestion < this.surveyQuestion.size()) {
         	
         	this.currentQuestion++;
           
@@ -364,20 +513,21 @@ public class ChartMBean extends BaseBean {
             if (this.currentQuestion == this.surveyQuestion.size()) {
                 this.over = true;
             }
+            
+            this.refreshPage();
         }
+        
     }
     
 
     public void startChartCourse() {
     	
+   	
     	if (!this.restartButton) {
     		return;
     	}
     	
     	this.restartButton = false;
-    	
-    	this.title = "(UC - )";
-    	
     	
     	System.out.println("Title :" + this.title);
     	
@@ -389,6 +539,9 @@ public class ChartMBean extends BaseBean {
     	this.setSurveyOption(SurveyOption.TEACHERHOURS);
     	
     	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
+    	
+    	this.title = this.activeSurvey.getDescription();
+    	
 
     	if (this.activeSurvey != null) {
     		
@@ -402,6 +555,8 @@ public class ChartMBean extends BaseBean {
 		        this.over = false;
 		        this.last = false;
 		        this.noChart = false;
+		        
+		        this.refreshPage();
 		        
 		        return;
 	    	}

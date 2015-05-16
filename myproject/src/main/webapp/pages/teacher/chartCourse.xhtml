@@ -45,7 +45,7 @@
 <h:body>
 
 		<f:view>
-			<f:event listener="#{chartMBean.init}" type="preRenderView" />
+			<f:event listener="#{chartMBean.init('normal')}" type="preRenderView" />
 		</f:view>
 
 	<p:dialog id="chartCourseDlg" widgetVar="chartCourseDialog"

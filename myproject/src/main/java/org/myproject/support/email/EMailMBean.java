@@ -139,6 +139,7 @@ public class EMailMBean extends BaseBean {
     		this.selectAll = true;
     		this.teacher = new Teacher();
     		
+    		this.setText("");
             this.setText(this.insertTxtBody());
             this.setText(this.insertSignature());
    		    this.setText(this.insertAutomaticProcess());

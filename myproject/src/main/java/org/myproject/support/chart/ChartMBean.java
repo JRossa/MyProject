@@ -2,7 +2,9 @@ package org.myproject.support.chart;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
@@ -439,7 +441,8 @@ public class ChartMBean extends BaseBean {
         	}
         	
 
-            return  getResourceProperty("labels", "survey_thanks");
+            return  (this.refreshMode)? getResourceProperty("labels", "chart_thanks")
+            		                  : getResourceProperty("labels", "survey_thanks");
         }
     }
 
@@ -481,7 +484,25 @@ public class ChartMBean extends BaseBean {
         }
     }
     
-
+	
+	public void viewDialog() {
+		// TODO - viewDialog
+		Map<String, Object> options = new HashMap<String, Object>();
+		RequestContext.getCurrentInstance().openDialog("titleEdit", options,
+		        null);
+		options.put("contentHeight", "'100%'");
+		options.put("contentWidth", "'100%'");
+		options.put("height", "170");
+		options.put("width", "500");
+		options.put("modal", true);
+   }
+	
+	
+	public void closeDialogEditTitle(){   
+		// TODO - closeDialog
+	    RequestContext.getCurrentInstance().closeDialog("titleEdit");
+	}	
+	
 	private void refreshPage () {
         if (this.refreshMode.equals(true) && !this.isOver()) {
             try {

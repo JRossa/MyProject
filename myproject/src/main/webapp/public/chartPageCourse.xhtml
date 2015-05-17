@@ -86,23 +86,21 @@
   	</script>
    
    	<style  type="text/css" >
+   	    .column1 {
+                  width: 40%;
+                  align:center;
+                  height:auto
+        }
+        .column2 {
+                  width: 60%;
+                  height:auto
+        }
+  	
 		.ui-icon-myRefresh{
   			background-image: url("#{resource['images/icons/Refresh.png']}") !important;
 		}
 		.ui-icon-myRestart{
   			background-image: url("#{resource['images/icons/Redo.png']}") !important;
-		}
-		.ui-icon-myDelete{
-  			background-image: url("#{resource['images/icons/Erase.png']}") !important;
-		}
-		.ui-icon-myUpdate{
-  			background-image: url("#{resource['images/icons/Calendar.png']}") !important;
-		}
-		.ui-icon-myClose{
-  			background-image: url("#{resource['images/icons/Exit.png']}") !important;
-		}
-		.ui-icon-myEmail{
-  			background-image: url("#{resource['images/icons/Mail.png']}") !important;
 		}
 		.ui-icon-myNext{
   			background-image: url("#{resource['images/icons/Next.png']}") !important;
@@ -116,9 +114,9 @@
  
  <h:body > 
 
-		<f:view>
-			<f:event listener="#{chartMBean.init('refresh')}" type="preRenderView" />
-		</f:view>
+	<f:view>
+		<f:event listener="#{chartMBean.init('refresh')}" type="preRenderView" />
+	</f:view>
  
  
 	<h:form id="formChart" >
@@ -158,13 +156,52 @@
 							  		 font-size: 15px;
 		                      		 font-weight: 600;"
 								 	/>
-           </h:panelGroup>
- 				<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 150px;" /> 
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{chartMBean.over}">
+            	<div id="dummy" style="width: 600px; height: 400px;" />
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{!chartMBean.over}"> 
+               	<p:panelGrid columns="2" 
+	                      	 style="margin-bottom:10px; width: 100%; " 
+	                      	 cellpadding="10" 
+	                         styleClass="noBorderLine"
+	                         columnClasses="column1,column2" >
+	                         
+		            <p:column>
+		            	<p:dataTable id="chartMapListDataTable" widgetVar="chartDataTable"
+						    loadingMessage="#{labels.chart_load}"
+							var="chartdata" 
+							value="#{chartMBean.mapList}" 
+							rows="10"
+							rowIndexVar="chartMapListIndex"	>
 
+							<f:facet name="header">
+							     <h:outputText value="#{labels.chart_list}" />
+							</f:facet>
+	                          
+							<p:column headerText="#{labels.chart_name}"  style="width: 80%;" >
+								<h:outputText value="#{chartdata.name}" />
+							</p:column>
+							
+							<p:column headerText="#{labels.chart_value}"  style="width: 20%; text-align:center; "  >
+								<h:outputText value="#{chartdata.value}" />
+							</p:column>
+		
+						</p:dataTable>
+					</p:column>
+					
+					<p:column>
+ 						<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 50px;" />
+ 					</p:column>
+ 				
+ 				</p:panelGrid> 
+			</h:panelGroup>
 				
-				<p:separator />
-				<h:panelGroup style="white-space: nowrap">
-				
+			<p:separator />
+			<h:panelGroup style="white-space: nowrap">
+			
 	            <p:commandButton id="submit" value="#{labels.chart_next_answer}"  
 	                             icon="ui-icon-myNext"  style="width: 100px;"
 	                             rendered="#{!chartMBean.last}" 
@@ -172,35 +209,37 @@
 	                             onclick="chartTest.am?faces-redirect=true;"
 								 update="@all" />
 	                             
-            	<p:commandButton id="done" value="#{labels.chart_finished}" 
-            	                 icon="ui-icon-myFinish" style="width: 100px;"
-            					 rendered="#{chartMBean.last and !chartMBean.over}" 
-            					 actionListener="#{chartMBean.next}" 
+	           	<p:commandButton id="done" value="#{labels.chart_finished}" 
+	           	                 icon="ui-icon-myFinish" style="width: 100px;"
+	           					 rendered="#{chartMBean.last and !chartMBean.over}" 
+	           					 actionListener="#{chartMBean.next}" 
 	                             action="redraw();"
 	                             update="@all"/>
 	                             
 	            <p:commandButton value="#{labels.chart_redraw}"  
 	                             icon="ui-icon-myRefresh"  style="width: 100px;"
+	                             rendered="#{!chartMBean.over}" 
 	                             action="redraw()"
 	                             onclick="chartTest.am?faces-redirect=true;"
 	                             update="@all"  />
-	                             
- 				<p:spacer width="660" height="10" />
-    			
- 				<p:commandButton icon="ui-icon-myRestart" 
- 				                 value="#{labels.user_restart}" 
-        					     actionListener="#{chartMBean.reset}"
-	                             onclick="chartTest.am?faces-redirect=true;"
-		                         update="@all"
-   								 style=" width: 100px;
-    							         color: #ffffff; 
-    									 background: #0080c0;
-   										 position: relative; 
-   										 top: 0px; 
-  										 left: 0px" />
-    			
-    			</h:panelGroup>
- </h:form>
+                             
+				<p:spacer width="660" height="10" />
+   			
+				<p:commandButton icon="ui-icon-myRestart" 
+				                 value="#{labels.user_restart}" 
+       					     	 actionListener="#{chartMBean.reset}"
+       					     	 action="redraw()"
+                             	 onclick="chartTest.am?faces-redirect=true;"
+	                         	 update="@all"
+  								 style=" width: 100px;
+   							         color: #ffffff; 
+   									 background: #0080c0;
+  										 position: relative; 
+  										 top: 0px; 
+ 										 left: 0px" />
+   			
+   			</h:panelGroup>
+ 	</h:form>
  </h:body> 
  
  
@@ -209,30 +248,10 @@
  </ui:composition>
  
  </html> 
+ 
+ 
+<!--  				<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 150px;" />  -->
 
-<!-- 				<p:dataTable id="chartMapListDataTable" widgetVar="chartDataTable" -->
-<!-- 				    loadingMessage="#{labels.lessonplan_load}" -->
-<!-- 				    scrollable="true" -->
-<!-- 				    scrollHeight="390" -->
-<!-- 					var="chartdata"  -->
-<!-- 					value="#{chartMBean.mapList}"  -->
-<!-- 					paginator="true"  -->
-<!-- 					paginatorPosition="top" -->
-<!-- 					rows="10" -->
-<!-- 					rowIndexVar="chartMapListIndex" -->
-<!-- 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" -->
-<!-- 					rowsPerPageTemplate="5,10,20" rowKey="#{chartdata.value}" -->
-<!-- 					selectionMode="single" > -->
-
-<!-- 					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" > -->
-<!-- 						<h:outputText value="#{chartdata.name}" /> -->
-<!-- 					</p:column> -->
-					
-<!-- 					<p:column headerText="#{labels.lessonplan_id}"  style="width: 4%;" > -->
-<!-- 						<h:outputText value="#{chartdata.value}" /> -->
-<!-- 					</p:column> -->
-
-<!-- </p:dataTable> -->
 
 <!--     <meta http-equiv="refresh" content="10; url=http://localhost:8080/myproject/public/chartTest.am" /> -->
 		            

@@ -24,22 +24,24 @@ public class TeacherHoursExecutionYearRepositoryTest extends AbstractDatabaseTes
 	private Long t_id = 2L;
  
 	@Inject
-	private TeacherHoursExecutionYearRepository teacherRepository;
+	private TeacherHoursExecutionYearRepository teacherHoursExecutionYearRepository;
 
 
 	public void testTeacherRepository() {
 
 		
-		List<TeacherHoursExecutionYear> teacher = this.teacherRepository.findByTeacherAndExecutionYear(1L, "2014/2015");
+		List<TeacherHoursExecutionYear> teacher =
+				this.teacherHoursExecutionYearRepository.findByTeacherAndExecutionYear(1L, "2014/2015");
 		
 		LOGGER.info(teacher);
 	}
 	
-	@Test
+
 	public void testTeacherSurveyDoneRepository() {
 
 		
-		List<TeacherHoursExecutionYear> teacher = this.teacherRepository.findByTeacherSurveyNOTDoneInExecutionYear(3L, "2014/2015");
+		List<TeacherHoursExecutionYear> teacher = 
+				this.teacherHoursExecutionYearRepository.findByTeacherSurveyDoneInExecutionYear(1L, "2013/2014");
 		
 		LOGGER.info(teacher);
 	}

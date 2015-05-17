@@ -175,7 +175,7 @@ public class SurveyCRUDMBean extends BaseBean {
     }
 
     
-	public void listAnswers ()  {
+	public void saveAnswers ()  {
     	Date date = new Date();
    	
     	this.mbSurveyMBean.getSurveyOption();
@@ -232,7 +232,7 @@ public class SurveyCRUDMBean extends BaseBean {
 	public void save () {
     	this.mbSurveyMBean.reset();
     	
-		this.listAnswers();
+		this.saveAnswers();
     	
     }
     

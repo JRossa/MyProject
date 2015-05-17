@@ -13,11 +13,11 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
 	
 	@Query(value="SELECT tbl_SURVEY.* "
-            + "FROM (tbl_SURVEY "
-			+ "INNER JOIN tbl_SURVEY_TYPE ON tbl_SURVEY.SURVEY_TYPE = tbl_SURVEY_TYPE.ID) "
-            + "INNER JOIN tbl_SURVEY_TYPE_GROUP ON tbl_SURVEY_TYPE.GROUP_ID = tbl_SURVEY_TYPE_GROUP.ID "
-			+ "WHERE tbl_SURVEY_TYPE_GROUP.DESCRIPTION = :surveyTypeGroupDescription "
-            + "AND tbl_SURVEY.ACTIVE = true ", nativeQuery = true)
+               + "FROM (tbl_SURVEY "
+               + "INNER JOIN tbl_SURVEY_TYPE ON tbl_SURVEY.SURVEY_TYPE = tbl_SURVEY_TYPE.ID) "
+               + "INNER JOIN tbl_SURVEY_TYPE_GROUP ON tbl_SURVEY_TYPE.GROUP_ID = tbl_SURVEY_TYPE_GROUP.ID "
+               + "WHERE tbl_SURVEY_TYPE_GROUP.DESCRIPTION = :surveyTypeGroupDescription "
+               + "AND tbl_SURVEY.ACTIVE = true ", nativeQuery = true)
 	public Survey findByActiveType(@Param("surveyTypeGroupDescription") String surveyTypeGroupDescription);
 
 }

@@ -99,7 +99,7 @@ public class GeneralController {
         this.over = false;
         this.last = false;
         
-        return "/pages/teacher/surveyCourse.xhtml";
+        return "/survey/question.xhtml";
     }
 
     public boolean isOver() {

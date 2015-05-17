@@ -222,13 +222,20 @@
 	                             action="redraw()"
 	                             onclick="chartTest.am?faces-redirect=true;"
 	                             update="@all"  />
+
+				<p:spacer width="360" height="10" rendered="#{!chartMBean.over}" />
+				
+	            <p:commandButton value="#{labels.chart_survey_update}"  
+	                             icon="ui-icon-myRefresh"  style="width: 150px;"
+	                             rendered="#{!chartMBean.over}" 
+	                             actionListener="#{chartMBean.surveyUpdate}" />
                              
-				<p:spacer width="660" height="10" />
+				<p:spacer width="150" height="10" rendered="#{!chartMBean.over}" />
+				<p:spacer width="660" height="10" rendered="#{chartMBean.over}" />
    			
 				<p:commandButton icon="ui-icon-myRestart" 
 				                 value="#{labels.user_restart}" 
        					     	 actionListener="#{chartMBean.reset}"
-       					     	 action="redraw()"
                              	 onclick="chartTest.am?faces-redirect=true;"
 	                         	 update="@all"
   								 style=" width: 100px;

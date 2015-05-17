@@ -28,6 +28,11 @@ public interface SurveyChartRepository extends JpaRepository<SurveyChart, Long> 
     		                                               @Param("questionId") Long questionId);
 
     
+    @Query(value="DELETE tbl_SURVEY_CHART.* FROM tbl_SURVEY_CHART "
+    		   + "WHERE tbl_SURVEY_CHART.SURVEY_ID = :surveyId ", nativeQuery = true)
+    // ATENÇÃO: Não pode ser void para não dar erro no ResultSet
+    public List <SurveyChart> deleteSurveyId (@Param("surveyId") Long surveyId);
+    
     @Query(value="INSERT INTO tbl_SURVEY_CHART (SURVEY_ID, QUESTION_ID, ANSWER_ID, ANSWER, FREQ) "
     		   + "SELECT tbl_SURVEY_TEACHER_ANSWER.SURVEY_ID, "
     		          + "tbl_SURVEY_TEACHER_ANSWER.QUESTION_ID, "
@@ -40,6 +45,7 @@ public interface SurveyChartRepository extends JpaRepository<SurveyChart, Long> 
     		          + "tbl_SURVEY_TEACHER_ANSWER.QUESTION_ID,  "
     		          + "tbl_SURVEY_TEACHER_ANSWER.ANSWER_ID, "
     		          + "tbl_SURVEY_TEACHER_ANSWER.ANSWER ", nativeQuery = true)
-    public void insertSurveyId (@Param("surveyId") Long surveyId);
+    // ATENÇÃO: Não pode ser void para não dar erro no ResultSet
+    public List <SurveyChart> insertSurveyId (@Param("surveyId") Long surveyId);
 
 }

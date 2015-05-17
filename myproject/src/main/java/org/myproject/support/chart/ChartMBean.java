@@ -636,9 +636,23 @@ public class ChartMBean extends BaseBean {
         this.restartButton = true;
         
         return "";
-        //return "/pages/survey/questionTeacher.xhtml";
+        //return "/survey/question.xhtml";
     }
 
+    
+    public void surveyUpdate () {
+ 
+    	this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
+    	
+    	if (this.activeSurvey != null) {
+    		this.surveyChartRepository.deleteSurveyId(this.activeSurvey.getId());
+    		this.surveyChartRepository.flush();
+    		this.surveyChartRepository.insertSurveyId(this.activeSurvey.getId());
+    		this.surveyChartRepository.flush();
+    	}
+    }
+    
+    
     public boolean isOver() {
         return over;
     }

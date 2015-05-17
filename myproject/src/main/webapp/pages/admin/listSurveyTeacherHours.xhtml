@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="../../public/templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="../../public/header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
+    	 	<p:menuitem value="#{labels.menu_teacher_course_list_all}" url="/pages/admin/listSurveyTeacherHours.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:view>
+			<f:event listener="#{surveyTeacherHoursMBean.onLoadSurveyTeacherHours('2014/2015')}" type="preRenderView" />
+		</f:view>
+		
+    <h:head>
+
+   	<style  type="text/css" >
+   	    .column1 {
+                  width: 50%;
+                  align:center;
+                  height:auto
+        }
+        .column2 {
+                  width: 15%;
+                  height:auto
+        }
+        .column3 {
+                  width: 35%;
+                  height:auto
+        }
+        .column4 {
+                  width: 30%;
+                  height:auto
+        }
+ 	
+		.ui-icon-myRefresh{
+  			background-image: url("#{resource['images/icons/Refresh.png']}") !important;
+		}
+		.ui-icon-myRestart{
+  			background-image: url("#{resource['images/icons/Redo.png']}") !important;
+		}
+		.ui-icon-myNext{
+  			background-image: url("#{resource['images/icons/Next.png']}") !important;
+		}
+		.ui-icon-myFinish{
+  			background-image: url("#{resource['images/icons/OK.png']}") !important;
+		}
+		
+	</style>
+
+
+
+	</h:head>
+	
+	<h:body>		
+		<p:panel id="surveyTeacherHoursPanel" style="border: 0px;" >
+		
+			<h:form id="formSurveyTeacherHoursList" >
+			
+				<p:panelGrid id="panelExecutionYear" columns="4"
+				             style="margin-bottom:10px; 
+				                    width: 80%;
+				                    position: relative;
+				                    left: 100px; " 
+                             cellpadding="10" 
+                             styleClass="noBorderLine"
+                             columnClasses="column1,column2,column3,column4" >	
+                <p:column>             
+                <p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
+					value="#{labels.button_send_list_email}" 
+					disabled="#{!surveyTeacherHoursMBean.renderedEMail}"
+					action="#{emailSurveyMBean.email('list')}"
+					update="surveyTeacherHoursDataTable, :formSurveyTeacherEMail"
+					oncomplete="PF('surveyTeacherEMailDialog').show();"  />
+                </p:column>
+               
+                <p:column>             
+		        <h:outputText value="#{labels.professorship_execution_year}" /> 
+		        </p:column>
+		          
+		        <p:column>  
+ 				<p:selectOneMenu id="year" value="#{surveyTeacherHoursMBean.selectedExecutionYear}"
+							     title="#{labels.professorship_execution_year}"
+							     maxlength="255" size="40" >
+					<f:selectItem itemLabel="2012/2013" itemValue="2012/2013" />
+					<f:selectItem itemLabel="2013/2014" itemValue="2013/2014" />
+					<f:selectItem itemLabel="2014/2015" itemValue="2014/2015" />
+					<f:selectItem itemLabel="2015/2016" itemValue="2015/2016" />
+					<f:ajax execute="year"  render="surveyTeacherHoursDataTable"  />
+				</p:selectOneMenu>
+                </p:column>
+                
+                <p:column>
+				<p:commandButton id="updateInput" widgetVar="inputButton" value="#{labels.teacher_update}"
+				    			 rendered="true"
+				   				 oncomplete="dataTable.filter();"
+				  				 update="surveyTeacherHoursDataTable" >
+					<f:ajax execute="year" render="surveyTeacherHoursDataTable" />
+				</p:commandButton>
+				</p:column>
+
+                </p:panelGrid>
+			
+				<p:dataTable id="surveyTeacherHoursDataTable" widgetVar="dataTable"
+				    loadingMessage="#{labels.teacherhours_load}"
+				    scrollable="true"
+				    scrollHeight="390"
+					var="surveyteacherhours" 
+					value="#{surveyTeacherHoursMBean.surveyTeacherHours}" 
+					paginator="true" 
+					paginatorPosition="top"
+					rows="10"
+					rowIndexVar="surveyteacherhoursIndex"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{surveyteacherhours.id}"
+					selectionMode="single" >
+
+					<p:ajax event="rowSelect" listener="#{surveyTeacherHoursMBean.selectSurveyTeacherHours}" 
+					                          update=":formSurveyTeacherHoursList, surveyTeacherHoursDataTable" />
+					<p:ajax event="page" listener="#{surveyTeacherHoursMBean.unselectSurveyTeacherHours}"  />
+					<p:ajax event="rowUnselect" listener="#{surveyTeacherHoursMBean.unselectSurveyTeacherHours}"  />
+
+					<f:facet name="header">
+					     <h:outputText value="#{labels.teacherhours_list}" />
+					</f:facet>
+					
+					<p:column headerText="#{labels.teacherhours_id}"  style="width: 5%;" >
+						<h:outputText value="#{surveyteacherhours.id}" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 45%;"
+					          filterBy="#{surveyteacherhours.teacher.fullName}" filterMatchMode="contains" filterStyle="width: 200px;" >
+						<h:outputText value="#{surveyteacherhours.teacher.fullName}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacherhours_course_code}" footerText="" style="width: 12%;"
+					          filterBy="#{surveyteacherhours.course.code}" filterMatchMode="contains" filterStyle="width: 38px;" >
+						<h:outputText value="#{surveyteacherhours.course.code}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacherhours_name}" footerText="" style="width: 35%;"
+					          filterBy="#{surveyteacherhours.course.code}" filterMatchMode="contains" >
+						<h:outputText value="#{surveyteacherhours.course.name}" /> <br/>
+						<h:outputText value="#{surveyteacherhours.year.executionYear}" />
+						<h:outputText value=" - #{surveyteacherhours.semester}º Sem" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
+					          filterBy="#{surveyteacherhours.hours}" filterMatchMode="contains" filterStyle="width: 40px;" >
+						<h:outputText value="#{surveyteacherhours.hours}" />
+					</p:column>
+
+					<p:column headerText="#{labels.teacherhours_survey_done}" style="width: 12%;" >
+					    <p:graphicImage name="images/icons/Green pin.png"  
+					                    style="border:none; position: relative; left: 20px;" 
+					                    rendered="#{surveyteacherhours.surveyDone}" />     
+					    <p:graphicImage name="images/icons/Red pin.png" 
+					                    style="border:none; position: relative; left: 20px;"
+					                    rendered="#{!surveyteacherhours.surveyDone}" />     
+						<h:outputText value="#{surveyteacherhours.surveyDone}" rendered="false" />
+					</p:column>
+
+					
+					<p:column style="width: 6%;">
+						<p:commandButton widgetVar="emailSurveyTeacherHoursButton"
+										 icon="ui-icon-mail-closed"
+						                 rendered="#{surveyTeacherHoursMBean.renderedEMail}"
+										 title="#{labels.teacher_email}"
+										 action="#{emailSurveyMBean.email('teacher')}"
+										 update="formSurveyTeacherHoursList"
+										 oncomplete="PF('surveyTeacherEMailDialog').show()"
+										  >
+							<f:setPropertyActionListener value="#{surveyteacherhours}"  target="#{surveyTeacherHoursMBean.selectedSurveyTeacherHours}" />
+ 						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+			<ui:include name="update" src="emailSurveyTeacher.xhtml"  />
+ 				
+		</p:panel>
+		
+	</h:body>
+	
+	</ui:define>
+	
+	</ui:composition>
+
+</html>
+

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.myproject.model.entities.Survey;
 import org.myproject.model.entities.SurveyChart;
 import org.myproject.model.entities.SurveyQuestion;
@@ -24,7 +25,6 @@ import org.myproject.model.repositories.SurveyTypeGroupRepository;
 import org.myproject.model.utils.Cryptor;
 import org.myproject.support.survey.SurveyMBean;
 import org.myproject.test.conndb.AbstractDatabaseTest;
-
 
 public class SurveyChartRepositoryTest extends AbstractDatabaseTest {
 //	public class SurveyQuestionText extends AbstractDatabaseTest {
@@ -43,22 +43,37 @@ public class SurveyChartRepositoryTest extends AbstractDatabaseTest {
 
     }
 
-    @Test 
     public void SurveyChartQuestionTest () {
     	List<SurveyChart> chart = this.surveyChartRepository.findBySurveyIdAndQuestionId(3L, 8L);
     	logger.info(chart);
   
     }
+ 
+    public void A1_DeleteTest () {
+    	this.surveyChartRepository.deleteSurveyId(3L);
+    	this.surveyChartRepository.flush();
+    }
     
+    
+    public void listChartTest () {
+    	List<SurveyChart> chart = this.surveyChartRepository.findAll();
 
-    public void SurveyInsertTest () {
+		logger.info(chart);
+    }
+    
+    @Test 
+    public void A2_SurveyInsertTest () {
+    	this.surveyChartRepository.deleteSurveyId(3L);
+    	this.surveyChartRepository.flush();
+    	
     	this.surveyChartRepository.insertSurveyId(3L);
-
+    	this.surveyChartRepository.flush();
+    	
     	List<SurveyChart> chart = this.surveyChartRepository.findAll();
 
 		logger.info(chart);
 		
     }
     
-     
+ 
 }

@@ -919,15 +919,21 @@ public class LessonPlanMBean extends BaseBean {
     	Boolean seventh = false;
   	
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
-        Boolean dayLight = timezone.inDaylightTime(this.lessonPlan.getStartDate());
+        Boolean daylight = timezone.inDaylightTime(this.lessonPlan.getStartDate());
         
-        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+        if (daylight) {
+        	this.lessonPlan.setDaylight(1);
+        } else {
+        	this.lessonPlan.setDaylight(0);
+        }
+        	
+        Long timeOffset = daylight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
         
         Calendar calendar = Calendar.getInstance();
         
         System.out.println("Start Date :" + this.lessonPlan.getStartDate().getDate());
         System.out.println("Start Day  :" + this.lessonPlan.getStartDate().getDay());
-        System.out.println("Day Light  :" + dayLight + "   Offset  " + timeOffset);
+        System.out.println("Day Light  :" + daylight + "   Offset  " + timeOffset);
        
         calendar.setTime(this.lessonPlan.getStartDate());
         

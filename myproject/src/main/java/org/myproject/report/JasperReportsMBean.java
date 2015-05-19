@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
@@ -31,7 +32,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 
 @Named(value = "jasperReportsMBean")
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
+@Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class JasperReportsMBean extends AbstractBaseReportBean {
 
 	@Inject
@@ -182,6 +183,23 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
     }
     
     
+    public Date correctDayLight (Date date) {
+    	
+        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+        Boolean dayLight = timezone.inDaylightTime(date);
+        
+        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+
+        Calendar calendar = Calendar.getInstance();
+        
+        calendar.setTime(date);
+        
+        calendar.setTimeZone(timezone);
+
+        return calendar.getTime();
+    }
+    
+    
     public String executeLessonPlan (String compileFileName) {
     	
     	
@@ -210,7 +228,7 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
             }
  
             if (this.endDate != null) {
-            	String strEndDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getEndDate());
+           	String strEndDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getEndDate());
             	reportParameters.put("STR_END_DATE", strEndDate);
             }
 

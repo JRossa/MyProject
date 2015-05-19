@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 import org.myproject.model.entities.Survey;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
+import org.myproject.model.entities.TeacherHoursExecutionYear;
 import org.myproject.model.repositories.SurveyRepository;
+import org.myproject.model.repositories.TeacherHoursExecutionYearRepository;
 import org.myproject.model.repositories.TeacherHoursRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.support.survey.SurveyMBean;
@@ -24,22 +26,22 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
-@Named(value = "surveyTeacherHoursMBean")
-public class SurveyTeacherHoursMBean extends BaseBean {
+@Named(value = "surveyTeacherHoursExecutionYearMBean")
+public class SurveyTeacherHoursExecutionYearMBean extends BaseBean {
 
-	private static final long serialVersionUID = -5543562700693434487L;
+	private static final long serialVersionUID = -712004714005574455L;
 
-	private static final Logger logger = Logger.getLogger(SurveyTeacherHoursMBean.class);
+	private static final Logger logger = Logger.getLogger(SurveyTeacherHoursExecutionYearMBean.class);
 
     @Inject
-    private TeacherHoursRepository teacherHoursRepository;
+    private TeacherHoursExecutionYearRepository teacherHoursExecutionYearRepository;
 
 	@Inject
 	private SurveyRepository surveyRepository;
 
-    private List<TeacherHours> surveyTeacherHours;
+    private List<TeacherHoursExecutionYear> surveyTeacherHoursExecutionYear;
 
-    private TeacherHours selectedSurveyTeacherHours;
+    private TeacherHoursExecutionYear selectedSurveyTeacherHoursExecutionYear;
 
     private Long id;
 
@@ -58,14 +60,14 @@ public class SurveyTeacherHoursMBean extends BaseBean {
     private Boolean reloadTeacher = true;
 
     
-    public SurveyTeacherHoursMBean() {
+    public SurveyTeacherHoursExecutionYearMBean() {
 		super();
 		
 	}
 
 
-	public void onLoadSurveyTeacherHours(String executionYear) {
-        System.out.println("onLoadSurveyTeacherHours (SurveyTeacherHoursMBean) :  ");
+	public void onLoadSurveyTeacherHoursExecutionYear(String executionYear) {
+        System.out.println("onLoadSurveyTeacherHoursExecutionYear (SurveyTeacherHoursExecutionYearMBean) :  ");
         
         if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
         	executionYear = this.selectedExecutionYear;
@@ -84,11 +86,11 @@ public class SurveyTeacherHoursMBean extends BaseBean {
         this.activeSurvey = this.surveyRepository.findByActiveType(SurveyTypeGroup.TEACHER_UC.toString());
         
         if (this.activeSurvey != null) {
-        	this.surveyTeacherHours = 
-                   this.teacherHoursRepository.findByCourseSurveyNOTDoneInExecutionYear(this.activeSurvey.getId(), 
+        	this.surveyTeacherHoursExecutionYear = 
+                   this.teacherHoursExecutionYearRepository.findByTeacherSurveyNOTDoneInExecutionYear(this.activeSurvey.getId(), 
             																         executionYear.replace("_", "/"));
         } else {
-        	this.surveyTeacherHours = new ArrayList<TeacherHours>();
+        	this.surveyTeacherHoursExecutionYear = new ArrayList<TeacherHoursExecutionYear>();
         }
         	
     }
@@ -130,13 +132,13 @@ public class SurveyTeacherHoursMBean extends BaseBean {
 	}
 
 
-	public List<TeacherHours> getSurveyTeacherHours() {
-		return surveyTeacherHours;
+	public List<TeacherHoursExecutionYear> getSurveyTeacherHoursExecutionYear() {
+		return surveyTeacherHoursExecutionYear;
 	}
 
 
-	public void setSurveyTeacherHours(List<TeacherHours> surveyTeacherHours) {
-		this.surveyTeacherHours = surveyTeacherHours;
+	public void setSurveyTeacherHoursExecutionYear(List<TeacherHoursExecutionYear> surveyTeacherHoursExecutionYear) {
+		this.surveyTeacherHoursExecutionYear = surveyTeacherHoursExecutionYear;
 	}
 
 
@@ -190,43 +192,43 @@ public class SurveyTeacherHoursMBean extends BaseBean {
 	}
 
 
-	public TeacherHours getSelectedSurveyTeacherHours() {
-		return selectedSurveyTeacherHours;
+	public TeacherHoursExecutionYear getSelectedSurveyTeacherHoursExecutionYear() {
+		return selectedSurveyTeacherHoursExecutionYear;
 	}
 
 
-	public void setSelectedSurveyTeacherHours(TeacherHours selectedSurveyTeacherHours) {
-		this.selectedSurveyTeacherHours = selectedSurveyTeacherHours;
+	public void setSelectedSurveyTeacherHoursExecutionYear(TeacherHoursExecutionYear selectedSurveyTeacherHoursExecutionYear) {
+		this.selectedSurveyTeacherHoursExecutionYear = selectedSurveyTeacherHoursExecutionYear;
 	}
 
 
 	public void delete() {
-        if (this.selectedSurveyTeacherHours != null) {
-            this.teacherHoursRepository.delete(this.selectedSurveyTeacherHours.getId());
+        if (this.selectedSurveyTeacherHoursExecutionYear != null) {
+            this.teacherHoursExecutionYearRepository.delete(this.selectedSurveyTeacherHoursExecutionYear.getId());
         }
     }
 
-    public void selectSurveyTeacherHours(SelectEvent ev) {
+    public void selectSurveyTeacherHoursExecutionYear(SelectEvent ev) {
         try {
             if (ev.getObject() != null) {
-                this.selectedSurveyTeacherHours = (TeacherHours) ev.getObject();
+                this.selectedSurveyTeacherHoursExecutionYear = (TeacherHoursExecutionYear) ev.getObject();
                 System.out.println("Passou");
             } else {
-                this.selectedSurveyTeacherHours = null;
+                this.selectedSurveyTeacherHoursExecutionYear = null;
             }
         } catch (Exception e) {
-            this.selectedSurveyTeacherHours = null;
+            this.selectedSurveyTeacherHoursExecutionYear = null;
 
             logger.error(e.getMessage(), e);
         }
     }
 
-    public void unselectSurveyTeacherHours() {
-        this.selectedSurveyTeacherHours = null;
+    public void unselectSurveyTeacherHoursExecutionYear() {
+        this.selectedSurveyTeacherHoursExecutionYear = null;
     }
 
-    public TeacherHours getSelectedTeacherHours() {
-        return selectedSurveyTeacherHours;
+    public TeacherHoursExecutionYear getSelectedTeacherHoursExecutionYear() {
+        return selectedSurveyTeacherHoursExecutionYear;
     }
 
 

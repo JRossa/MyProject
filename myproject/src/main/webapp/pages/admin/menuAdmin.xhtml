@@ -75,14 +75,26 @@
             <p:menuitem value="#{labels.menu_survey_teacher}" 
                         url="/pages/admin/listTeacherHoursExecutionYear.am" >
             </p:menuitem>
+            
+            <p:separator style="width: 100%; background-color: red; border-color: red; height:5px;" />
+            
             <p:menuitem value="#{labels.menu_survey_teacher_report_missing}" 
+                        url="/pages/admin/listSurveyTeacherHoursExecutionYear.am" >
+            </p:menuitem>
+            <p:menuitem value="#{labels.menu_survey_course_report_missing}" 
                         url="/pages/admin/listSurveyTeacherHours.am" >
             </p:menuitem>
+            
+            <p:separator style="width: 100%; background-color: red; border-color: red; height:5px;" />
+            
             <p:menuitem value="#{labels.menu_survey_chart_course}" 
             			action="#{chartMBean.startChartCourse}"
             			update=":chartCourseDlg" 
                         oncomplete="PF('chartCourseDialog').show()" />
-           <p:menuitem value="#{labels.menu_survey_google_test}"
+                        
+            <p:separator style="width: 100%; background-color: red; border-color: red; height:5px;" />
+            
+            <p:menuitem value="#{labels.menu_survey_google_test}"
                        url="/public/chartPageCourse.am" />
         </p:submenu>
 

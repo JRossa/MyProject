@@ -18,7 +18,7 @@
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
    		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
-    	 	<p:menuitem value="#{labels.menu_teacher_course_list_all}" url="/pages/admin/listSurveyTeacherHours.am" />
+    	 	<p:menuitem value="#{labels.menu_teacher_list_all}" url="/pages/admin/listSurveyTeacherHoursExecutionYear.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -30,7 +30,7 @@
 	<ui:define name="content">
 
 		<f:view>
-			<f:event listener="#{surveyTeacherHoursMBean.onLoadSurveyTeacherHours('2014/2015')}" type="preRenderView" />
+			<f:event listener="#{surveyTeacherHoursExecutionYearMBean.onLoadSurveyTeacherHoursExecutionYear('2014/2015')}" type="preRenderView" />
 		</f:view>
 		
     <h:head>
@@ -74,9 +74,9 @@
 	</h:head>
 	
 	<h:body>		
-		<p:panel id="surveyTeacherHoursPanel" style="border: 0px;" >
+		<p:panel id="surveyTeacherHoursExecutionYearPanel" style="border: 0px;" >
 		
-			<h:form id="formSurveyTeacherHoursList" >
+			<h:form id="formSurveyTeacherHoursExecutionYearList" >
 			
 				<p:panelGrid id="panelExecutionYear" columns="4"
 				             style="margin-bottom:10px; 
@@ -89,25 +89,25 @@
                 <p:column>             
                 <p:commandButton id="sendEmailButton" widgetVar="sendEmailButton"
 					value="#{labels.button_send_list_email}" 
-					disabled="#{!surveyTeacherHoursMBean.renderedEMail}"
-					action="#{emailSurveyCourseMBean.email('list')}"
-					update="surveyTeacherHoursDataTable, :formSurveyCourseEMail"
-					oncomplete="PF('surveyCourseEMailDialog').show();"  />
+					disabled="#{!surveyTeacherHoursExecutionYearMBean.renderedEMail}"
+					action="#{emailSurveyTeacherMBean.email('list')}"
+					update="surveyTeacherHoursExecutionYearDataTable, :formSurveyTeacherEMail"
+					oncomplete="PF('surveyTeacherEMailDialog').show();"  />
                 </p:column>
                
                 <p:column>             
-		        <h:outputText value="#{labels.professorship_execution_year}" /> 
+		        	<h:outputText value="#{labels.professorship_execution_year}" /> 
 		        </p:column>
 		          
 		        <p:column>  
- 				<p:selectOneMenu id="year" value="#{surveyTeacherHoursMBean.selectedExecutionYear}"
+ 				<p:selectOneMenu id="year" value="#{surveyTeacherHoursExecutionYearMBean.selectedExecutionYear}"
 							     title="#{labels.professorship_execution_year}"
 							     maxlength="255" size="40" >
 					<f:selectItem itemLabel="2012/2013" itemValue="2012/2013" />
 					<f:selectItem itemLabel="2013/2014" itemValue="2013/2014" />
 					<f:selectItem itemLabel="2014/2015" itemValue="2014/2015" />
 					<f:selectItem itemLabel="2015/2016" itemValue="2015/2016" />
-					<f:ajax execute="year"  render="surveyTeacherHoursDataTable"  />
+					<f:ajax execute="year"  render="surveyTeacherHoursExecutionYearDataTable"  />
 				</p:selectOneMenu>
                 </p:column>
                 
@@ -115,19 +115,19 @@
 				<p:commandButton id="updateInput" widgetVar="inputButton" value="#{labels.teacher_update}"
 				    			 rendered="true"
 				   				 oncomplete="dataTable.filter();"
-				  				 update="surveyTeacherHoursDataTable" >
-					<f:ajax execute="year" render="surveyTeacherHoursDataTable" />
+				  				 update="surveyTeacherHoursExecutionYearDataTable" >
+					<f:ajax execute="year" render="surveyTeacherHoursExecutionYearDataTable" />
 				</p:commandButton>
 				</p:column>
 
                 </p:panelGrid>
 			
-				<p:dataTable id="surveyTeacherHoursDataTable" widgetVar="dataTable"
+				<p:dataTable id="surveyTeacherHoursExecutionYearDataTable" widgetVar="dataTable"
 				    loadingMessage="#{labels.teacherhours_load}"
 				    scrollable="true"
 				    scrollHeight="390"
 					var="surveyteacher" 
-					value="#{surveyTeacherHoursMBean.surveyTeacherHours}" 
+					value="#{surveyTeacherHoursExecutionYearMBean.surveyTeacherHoursExecutionYear}" 
 					paginator="true" 
 					paginatorPosition="top"
 					rows="10"
@@ -136,36 +136,24 @@
 					rowsPerPageTemplate="5,10,20" rowKey="#{surveyteacher.id}"
 					selectionMode="single" >
 
-					<p:ajax event="rowSelect" listener="#{surveyTeacherHoursMBean.selectSurveyTeacherHours}" 
-					                          update=":formSurveyTeacherHoursList, surveyTeacherHoursDataTable" />
-					<p:ajax event="page" listener="#{surveyTeacherHoursMBean.unselectSurveyTeacherHours}"  />
-					<p:ajax event="rowUnselect" listener="#{surveyTeacherHoursMBean.unselectSurveyTeacherHours}"  />
+					<p:ajax event="rowSelect" listener="#{surveyTeacherHoursExecutionYearMBean.selectSurveyTeacherHoursExecutionYear}" 
+					                          update=":formSurveyTeacherHoursExecutionYearList, surveyTeacherHoursExecutionYearDataTable" />
+					<p:ajax event="page" listener="#{surveyTeacherHoursExecutionYearMBean.unselectSurveyTeacherHoursExecutionYear}"  />
+					<p:ajax event="rowUnselect" listener="#{surveyTeacherHoursExecutionYearMBean.unselectSurveyTeacherHoursExecutionYear}"  />
 
 					<f:facet name="header">
-					     <h:outputText value="#{labels.survey_course_list}" />
+					     <h:outputText value="#{labels.survey_teacher_list}" />
 					</f:facet>
 					
 					<p:column headerText="#{labels.teacherhours_id}"  style="width: 5%;" >
 						<h:outputText value="#{surveyteacher.id}" />
 					</p:column>
 
-					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 45%;"
+					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 65%;"
 					          filterBy="#{surveyteacher.teacher.fullName}" filterMatchMode="contains" filterStyle="width: 200px;" >
 						<h:outputText value="#{surveyteacher.teacher.fullName}" />
 					</p:column>
 					
-					<p:column headerText="#{labels.teacherhours_course_code}" footerText="" style="width: 12%;"
-					          filterBy="#{surveyteacher.course.code}" filterMatchMode="contains" filterStyle="width: 38px;" >
-						<h:outputText value="#{surveyteacher.course.code}" />
-					</p:column>
-					
-					<p:column headerText="#{labels.teacherhours_name}" footerText="" style="width: 35%;"
-					          filterBy="#{surveyteacher.course.code}" filterMatchMode="contains" >
-						<h:outputText value="#{surveyteacher.course.name}" /> <br/>
-						<h:outputText value="#{surveyteacher.year.executionYear}" />
-						<h:outputText value=" - #{surveyteacher.semester}º Sem" />
-					</p:column>
-
 					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
 					          filterBy="#{surveyteacher.hours}" filterMatchMode="contains" filterStyle="width: 40px;" >
 						<h:outputText value="#{surveyteacher.hours}" />
@@ -183,21 +171,21 @@
 
 					
 					<p:column style="width: 6%;">
-						<p:commandButton widgetVar="emailSurveyTeacherHoursButton"
+						<p:commandButton widgetVar="emailSurveyTeacherHoursExecutionYearButton"
 										 icon="ui-icon-mail-closed"
-						                 rendered="#{surveyTeacherHoursMBean.renderedEMail}"
+						                 rendered="#{surveyTeacherHoursExecutionYearMBean.renderedEMail}"
 										 title="#{labels.teacher_email}"
-										 action="#{emailSurveyCourseMBean.email('teacher')}"
-										 update="formSurveyTeacherHoursList, formSurveyCourseEMail"
-										 oncomplete="PF('surveyCourseEMailDialog').show()"
+										 action="#{emailSurveyTeacherMBean.email('teacher')}"
+										 update="formSurveyTeacherHoursExecutionYearList, formSurveyTeacherEMail"
+										 oncomplete="PF('surveyTeacherEMailDialog').show()"
 										  >
-							<f:setPropertyActionListener value="#{surveyteacher}"  target="#{surveyTeacherHoursMBean.selectedSurveyTeacherHours}" />
+							<f:setPropertyActionListener value="#{surveyteacher}"  target="#{surveyTeacherHoursExecutionYearMBean.selectedSurveyTeacherHoursExecutionYear}" />
  						</p:commandButton>
 					</p:column>
 				</p:dataTable>
 			</h:form>
 			
-			<ui:include name="surveycourse" src="emailSurveyCourse.xhtml"  />
+			<ui:include name="surveycourse" src="emailSurveyTeacher.xhtml"  />
  				
 		</p:panel>
 		

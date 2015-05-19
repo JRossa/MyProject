@@ -30,9 +30,7 @@
 		<![CDATA[SELECT dce.tbl_lesson_plan.`ID`,
 	dce.tbl_lesson_plan.`TITLE`,
 	dce.tbl_lesson_plan.`PLACE`,
-	DATE_ADD(dce.tbl_lesson_plan.`START_DATE`, INTERVAL -dce.tbl_lesson_plan.`DAYLIGHT` hour) AS DL_START_DATE,
-	DATE_ADD(dce.tbl_lesson_plan.`END_DATE`, INTERVAL -dce.tbl_lesson_plan.`DAYLIGHT` hour) AS DL_END_DATE,
-	dce.tbl_lesson_plan.`START_DATE`, 
+	dce.tbl_lesson_plan.`START_DATE`,
 	dce.tbl_lesson_plan.`END_DATE`,
 	dce.tbl_lesson_plan.`DESCRIPTION`,
 	dce.tbl_lesson_plan.`LOCKED`,
@@ -56,8 +54,7 @@ WHERE
 	 dce.tbl_degree.`CODE` =  $P{DEGREE_CODE}  AND
 	 dce.tbl_course.`CODE` =  $P{COURSE_CODE}  AND
 	 dce.tbl_lesson_plan.`START_DATE` >  $P{START_DATE}  AND
-	 dce.tbl_lesson_plan.`END_DATE` <  $P{END_DATE}
-ORDER BY dce.tbl_lesson_plan.`START_DATE`]]>
+	 dce.tbl_lesson_plan.`END_DATE` <  $P{END_DATE}]]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -66,12 +63,6 @@ ORDER BY dce.tbl_lesson_plan.`START_DATE`]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="PLACE" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="DL_START_DATE" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="DL_END_DATE" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="START_DATE" class="java.sql.Timestamp">
@@ -241,14 +232,14 @@ ORDER BY dce.tbl_lesson_plan.`START_DATE`]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm").format($F{DL_START_DATE})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm").format($F{START_DATE})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="106" y="64" width="80" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="953f8ab7-d9ea-496a-aef0-3a619ccdfa5f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm").format($F{DL_END_DATE})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm").format($F{END_DATE})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="275" y="46" width="100" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="0af315de-44fc-428b-aa4b-e1fc316b314d">

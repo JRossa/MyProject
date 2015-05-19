@@ -33,14 +33,14 @@
 	
 </h:head>
 
-	<p:dialog id="surveyTeacherEMailDlg" widgetVar="surveyTeacherEMailDialog"
+	<p:dialog id="surveyCourseEMailDlg" widgetVar="surveyCourseEMailDialog"
 		      header="#{labels.email_send_message}" 
 		      visible="#{formLessonPlanEMail.submitted and facesContext.validationFailed}"
 			  modal="true" 
 			  resizable="false" closable="false"
 			  showEffect="fade" hideEffect="explode" >
 						  
-	<h:form id="formSurveyTeacherEMail" >
+	<h:form id="formSurveyCourseEMail" >
 
         <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
 							
@@ -53,7 +53,7 @@
 
 			<h:outputLabel for="subject" value="#{labels.email_subject}" />
 			<h:panelGroup>
-				<p:inputText id="subject" value="#{emailSurveyTeacherMBean.subject}"
+				<p:inputText id="subject" value="#{emailSurveyCourseMBean.subject}"
 							 title="#{labels.email_insert} #{labels.email_subject} !!"
 							 maxlength="255" size="50"/>
 				<f:verbatim><br/></f:verbatim>
@@ -67,7 +67,7 @@
 
 			<h:outputLabel for="teacher" value="#{labels.email_teacher}" />
 			<h:panelGroup>
-				<p:inputText id="teacher" value="#{emailSurveyTeacherMBean.teacher.fullName}"
+				<p:inputText id="teacher" value="#{emailSurveyCourseMBean.teacher.fullName}"
 							 title="#{labels.email_insert} #{labels.email_teacher} !!"
 							 maxlength="255" size="70"/>
 				<f:verbatim><br/></f:verbatim>
@@ -81,7 +81,7 @@
 
 			<h:outputLabel for="email" value="#{labels.email_teacher_email}" />
 			<h:panelGroup>
-				<p:inputText id="email" value="#{emailSurveyTeacherMBean.teacher.EMail}"
+				<p:inputText id="email" value="#{emailSurveyCourseMBean.teacher.EMail}"
 							 title="#{labels.email_insert} #{labels.email_teacher} !!"
 							 maxlength="255" size="70"/>
 				<f:verbatim><br/></f:verbatim>
@@ -96,7 +96,7 @@
 
 			<h:outputLabel for="description" value="#{labels.email_text}" />
 			<h:panelGroup>
-				<p:inputTextarea id="description" value="#{emailSurveyTeacherMBean.text}"
+				<p:inputTextarea id="description" value="#{emailSurveyCourseMBean.text}"
 							     title="#{labels.email_insert} #{labels.email_text} !!"
 							     style="width: 415px; height: 150px;
 							            max-height: 150px !important;
@@ -118,19 +118,19 @@
 				<h:panelGroup style="white-space: nowrap">
 				
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
- 								 rendered="#{emailSurveyTeacherMBean.selectAll}"
+ 								 rendered="#{emailSurveyCourseMBean.selectAll}"
  				                 value="#{labels.email_send_email}"
-    							 action="#{emailSurveyTeacherMBean.sendListEMail}" />
+    							 action="#{emailSurveyCourseMBean.sendListEMail}" />
     			
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
- 								 rendered="#{!emailSurveyTeacherMBean.selectAll}"
+ 								 rendered="#{!emailSurveyCourseMBean.selectAll}"
  				                 value="#{labels.email_send_email}"
-    							 action="#{emailSurveyTeacherMBean.sendEMail}" />
+    							 action="#{emailSurveyCourseMBean.sendEMail}" />
     			
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.email_close}" 
- 								 action="#{emailSurveyTeacherMBean.disableButtons}"
-    							 onclick="PF('surveyTeacherEMailDialog').hide()" 
+ 								 action="#{emailSurveyCourseMBean.disableButtons}"
+    							 onclick="PF('surveyCourseEMailDialog').hide()" 
     							 process="@this" 	 
     							 style=" width: 100px;
     							         color: #ffffff; 

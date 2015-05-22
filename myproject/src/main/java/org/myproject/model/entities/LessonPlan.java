@@ -50,6 +50,9 @@ public class LessonPlan extends BaseEntity<Long>{
     @Column(name = "END_DATE")
     private Date endDate;
 
+    @Column(name = "DAYLIGHT")
+    private Integer daylight;
+    
     @Column(name = "DESCRIPTION")
     private String description;
 
@@ -144,6 +147,16 @@ public class LessonPlan extends BaseEntity<Long>{
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+
+	public Integer getDaylight() {
+		return daylight;
+	}
+
+
+	public void setDaylight(Integer daylight) {
+		this.daylight = daylight;
 	}
 
 

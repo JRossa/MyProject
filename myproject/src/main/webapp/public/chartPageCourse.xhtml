@@ -24,11 +24,12 @@
   	</ui:define>
  	
 	<ui:define name="menu" >
-		<ui:include name="menu" src="../pages/admin/menuAdmin.xhtml"  />
+		<ui:include name="menu" src="../pages/admin/menuAdmin.xhtml"  >
+			<ui:param name="chart" value="google" />
+		</ui:include>	 
 	</ui:define>
 
 	<ui:define name="content">
-    
     
     <h:head>
  
@@ -229,7 +230,7 @@
 	                             icon="ui-icon-myRefresh"  style="width: 150px;"
 	                             rendered="#{!chartMBean.over}" 
 	                             actionListener="#{chartMBean.surveyUpdate}" />
-                             
+	                             
 				<p:spacer width="150" height="10" rendered="#{!chartMBean.over}" />
 				<p:spacer width="660" height="10" rendered="#{chartMBean.over}" />
    			
@@ -246,6 +247,8 @@
  										 left: 0px" />
    			
    			</h:panelGroup>
+   			
+   			
  	</h:form>
  </h:body> 
  

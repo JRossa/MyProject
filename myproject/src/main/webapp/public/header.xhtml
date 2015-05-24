@@ -45,6 +45,23 @@
 			               rendered="#{sessionMBean.sessionActive()}" />
 		</div>
    
+   		<h:form rendered="#{sessionMBean.sessionActive() and switchThemeMBean.getRenderedThemeSwitch()}">
+      		<h:panelGrid columns="2" cellpadding="10" 
+      		             styleClass="headerThemeButton" >
+      		             
+        		<p:outputLabel for="statefulswitcher" value="Theme:" /> 
+       			<p:themeSwitcher id="statefulswitcher"  
+       			                 style="width:165px; height: 20px;"
+       			                 effect="fade"
+       			                 value="#{guestPreferences.theme}" >
+            		<f:selectItem itemLabel="Choose Theme" itemValue="" />
+            		<f:selectItems value="#{switchThemeMBean.themes}" />
+            		<p:ajax listener="#{switchThemeMBean.saveTheme}" />
+        		</p:themeSwitcher>
+ 
+   			</h:panelGrid>
+   
+  		 </h:form>
    
 		<h:form >
 			<h:commandLink style="color: green;
@@ -106,3 +123,6 @@
 	</ui:composition>
 </h:body>
 </html>
+
+<!--             		<f:selectItems value="[afterdark, afternoon, afterwork, aristo, black-tie, blitzer, bluesky, bootstrap, casablanca, cupertino, cruze, dark-hive, delta, dot-luv, eggplant, excite-bike, flick, glass-x, home, hot-sneaks, humanity, le-frog, midnight, mint-choc, overcast, pepper-grinder, redmond, rocket, sam, smoothness, south-street, start, sunny, swanky-purse, trontastic, ui-darkness, ui-lightness, vader]" var="theme" itemLabel="" itemValue=""/> -->
+

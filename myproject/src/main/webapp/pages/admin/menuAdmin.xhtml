@@ -13,7 +13,7 @@
    
     <ui:include name="change" src="changePasswordT.xhtml"  />
  	<ui:include name="create" src="createUserT.xhtml"  />
- 	<ui:include name="chart" src="../teacher/chartCourse.xhtml"  />
+ 	<ui:include name="chart" src="/pages/teacher/chartCourse.xhtml"  />
  
  	
 	<h:form  >  
@@ -87,15 +87,25 @@
             
             <p:separator style="width: 100%; background-color: red; border-color: red; height:5px;" />
             
-            <p:menuitem value="#{labels.menu_survey_chart_course}" 
-            			action="#{chartMBean.startChartCourse}"
-            			update=":chartCourseDlg" 
-                        oncomplete="PF('chartCourseDialog').show()" />
+            <c:if test="${chart == 'google'}">
+	            <p:menuitem value="#{labels.menu_survey_chart_course}" 
+	            			action="#{chartMBean.startChartCourse}"
+	            			update=":chartCourseDlg" 
+	            			disabled="true"
+	                        oncomplete="PF('chartCourseDialog').show()" />
+            </c:if>
+            <c:if test="${chart != 'google'}">
+	            <p:menuitem value="#{labels.menu_survey_chart_course}" 
+	            			action="#{chartMBean.startChartCourse}"
+	            			update=":chartCourseDlg" 
+	            			disabled="false"
+	                        oncomplete="PF('chartCourseDialog').show()" />
+	            </c:if>
                         
             <p:separator style="width: 100%; background-color: red; border-color: red; height:5px;" />
             
             <p:menuitem value="#{labels.menu_survey_google_test}"
-                       url="/public/chartPageCourse.am" />
+                        url="/public/chartPageCourse.am" />
         </p:submenu>
 
     </p:menubar>

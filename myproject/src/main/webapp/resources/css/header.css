@@ -108,6 +108,13 @@
 	
 }
 
+.headerThemeButton {
+	position: absolute;
+	left: 63%;
+	top: -7px; 
+	
+}
+
 .headerMapButton {
 	position: absolute;
 	left: 75%;

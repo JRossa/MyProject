@@ -61,11 +61,27 @@
     					  
 
        		chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+       		
        		google.visualization.events.addListener(chart, 'select', selectHandler);
+
+       		google.visualization.events.addListener(chart, 'ready', function() {
+				document.getElementById('png').outerHTML='<a href="' + chart.getImageURI() + '"> #{labels.chart_print} </a>';
+				
+       		});
+       		
         	chart.draw(data, options);
       	}
 
-  		function selectHandler() {
+        function saveAsImg(chartContainer) {
+            var imgData = getImgData(chartContainer);
+            
+            // Replacing the mime-type will force the browser to trigger a download
+            // rather than displaying the image in the browser window.
+            window.location = imgData.replace("image/png", "image/octet-stream");
+          }
+      		
+
+        function selectHandler() {
   			var selectedItem = chart.getSelection()[0];
   			var name = data.getValue(selectedItem.row, 0);
   			var value = data.getValue(selectedItem.row, 1);
@@ -194,12 +210,13 @@
 					</p:column>
 					
 					<p:column>
- 						<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 50px;" />
- 					</p:column>
+ 						<div id="piechart_3d" style="width: 600px; height: 390px; padding-left: 50px;" />
+	    				<div id="png" />			
+					</p:column>
  				
  				</p:panelGrid> 
 			</h:panelGroup>
-				
+
 			<p:separator />
 			<h:panelGroup style="white-space: nowrap">
 			
@@ -225,7 +242,8 @@
 	                             update="@all"  />
 
 				<p:spacer width="360" height="10" rendered="#{!chartMBean.over}" />
-				
+
+ 				
 	            <p:commandButton value="#{labels.chart_survey_update}"  
 	                             icon="ui-icon-myRefresh"  style="width: 150px;"
 	                             rendered="#{!chartMBean.over}" 
@@ -245,9 +263,8 @@
   										 position: relative; 
   										 top: 0px; 
  										 left: 0px" />
-   			
+                 
    			</h:panelGroup>
-   			
    			
  	</h:form>
  </h:body> 
@@ -259,6 +276,12 @@
  
  </html> 
  
+
+<!-- 			<h:panelGroup> -->
+<!-- 	            <h:outputText id="print" value="Teste" />  -->
+	                             
+			
+<!-- 			</h:panelGroup>	 -->
  
 <!--  				<div id="piechart_3d" style="width: 600px; height: 400px; padding-left: 150px;" />  -->
 

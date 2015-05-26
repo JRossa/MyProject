@@ -122,13 +122,19 @@
 	
 }
 
+.headerMenuButton {
+	position: absolute;
+	left: 83%;
+	top: 86px; 
+	
+}
+
 .headerLoginButton {
 	position: absolute;
 	left: 91%;
 	top: 86px; 
 	
 }
-
 
 #headerSeparator {
 	position: absolute;

@@ -44,21 +44,21 @@
 			<p:outputLabel value="${lastLogMessage}" 
 			               rendered="#{sessionMBean.sessionActive()}" />
 		</div>
-   
+
    		<h:form rendered="#{sessionMBean.sessionActive() and switchThemeMBean.getRenderedThemeSwitch()}">
       		<h:panelGrid columns="2" cellpadding="10" 
       		             styleClass="headerThemeButton" >
       		             
-        		<p:outputLabel for="statefulswitcher" value="Theme:" /> 
+        		<p:outputLabel for="statefulswitcher" value="#{labels.header_theme} :" /> 
        			<p:themeSwitcher id="statefulswitcher"  
-       			                 style="width:165px; height: 20px;"
+       			                 style="width:150px; height: 20px;"
        			                 effect="fade"
        			                 value="#{guestPreferences.theme}" >
             		<f:selectItem itemLabel="Choose Theme" itemValue="" />
             		<f:selectItems value="#{switchThemeMBean.themes}" />
             		<p:ajax listener="#{switchThemeMBean.saveTheme}" />
         		</p:themeSwitcher>
- 
+ 			
    			</h:panelGrid>
    
   		 </h:form>
@@ -96,6 +96,19 @@
 			               >
     			<f:param name="locale" value="en" />
     		</h:commandLink>	
+    		
+    		<h:commandLink style=" 
+			              	      color: white;
+			                      font-family: Verdana,sans-serif;
+			                      font-size: 15px;
+			                      font-weight: 400;" 
+				           styleClass="headerMenuButton" 
+				           action="/pages/admin/admin.am?faces-redirect=true" 
+				           value="#{labels.header_menu}" 
+				           rendered="#{sessionMBean.sessionActive()}" >
+    			<f:param name="productId" value="10" />
+			</h:commandLink>
+    		
 			<h:commandLink style=" 
 			                      color: white;
 			                      font-family: Verdana,sans-serif;

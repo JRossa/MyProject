@@ -36,23 +36,34 @@
 		<div id="container" >
 			<div id="top" style="border: 0px;"
 						  class="ui-widget-header ui-corner-all"  >
-				<ui:insert name="top">
-					
-				</ui:insert>
-			</div>
-			<div id="breadcrumb" style="min-height: 37px;" >
-				<ui:insert name="breadcrumb" >
+				<ui:insert name="top" >
 					
 				</ui:insert>
 			</div>
 
-			<div id="menu"  >
+			<c:if test="#{guestPreferences.theme == 'bootstrap'}" >
+			<div id="breadcrumb" style="position: relative; top: 0px; min-height: 37px;" >
+				<ui:insert name="breadcrumb"  >
+					
+				</ui:insert>
+			</div>
+            </c:if>
+  
+ 			<c:if test="#{guestPreferences.theme != 'bootstrap'}" >
+			<div id="breadcrumb" style="position: relative; top: 0px; min-height: 55px;" >
+				<ui:insert name="breadcrumb"  >
+					
+				</ui:insert>
+			</div>
+            </c:if>
+            
+			<div id="menu" style="position: relative; top: 0px;" >
 				<ui:insert name="menu" >
 					
 				</ui:insert>
 			</div>
 
-			<div id="content" style="min-height: 520px; border: 0px;"
+			<div id="content" style="position: relative; top: 0px; min-height: 520px; border: 0px;"
 			                  class="center_content ui-widget ui-widget-content ui-corner-all"  >
 				<ui:insert name="content">
 				

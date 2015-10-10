@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.myproject.model.entities.LogSession;
@@ -63,9 +65,8 @@ public class LoginController {
         if (auth != null){    
             new SecurityContextLogoutHandler().logout(request, response, auth);
             
-         }       
-        
-
+         }  
+              
         return new ModelAndView("public/public", "message", message);
     }
 

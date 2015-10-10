@@ -115,7 +115,7 @@
  						</p:commandButton>
 						<p:commandButton widgetVar="surveyTeacherButton"
 										 icon="ui-icon-script"
-						                 rendered="#{!teacherhours.surveyDone}"
+						                 rendered="#{teacherhours.responsible and !teacherhours.surveyDone}"
 										 title="#{labels.teacher_course_survey}"
 										 update="formTeacherHoursList, surveyCourseDlg"
 										 action="#{surveyMBean.startCourse}"

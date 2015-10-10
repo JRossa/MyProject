@@ -75,14 +75,14 @@
 					 rowClasses="tableRowOdd, tableRowEven" >
 
 			<h:panelGroup>
-				<br/>
+				<p:panel style="background-color: #2f8cc4;" >
 				<p:spacer width="20" height="10" />
 	            <h:outputText id="groupquestion" 
 	                          value="#{chartMBean.getGroupQuestion()}"
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: green;
+							  		 color: white;
 							  		 font-size: 20px;
 		                      		 font-weight: bolder;"
 								 	/>
@@ -93,15 +93,15 @@
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: red;
+							  		 color: #ffff11;
 							  		 font-size: 15px;
 		                      		 font-weight: bolder;"
 								 	/>
-				<br/>
+				</p:panel>
  			</h:panelGroup>
 			
 			<h:panelGroup>
-				<br/>
+				<p:panel style="background-color: #37fdf8;" >
 				<p:spacer width="40" height="10" />
 	            <h:outputText id="question" 
 	                          value="#{chartMBean.getQuestion()}"
@@ -112,10 +112,11 @@
 		                      		 font-weight: 600;"
 								 	/>
 				<br/>
-				<br/>
+				</p:panel>
             </h:panelGroup>
             
             <h:panelGroup>
+                <p:panel style="background-color: #a7c7bd;">
  				<p:chart id="piechart" type="pie" model="#{chartMBean.pieModel}"
  				         style="width:400px;
  				                height:300px;
@@ -136,6 +137,7 @@
 						  		     font-size: 35px;
 	                      		     font-weight: bolder;"
                                         />
+            	</p:panel>
 			</h:panelGroup>
 			
 			

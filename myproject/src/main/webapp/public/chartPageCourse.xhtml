@@ -65,7 +65,7 @@
        		google.visualization.events.addListener(chart, 'select', selectHandler);
 
        		google.visualization.events.addListener(chart, 'ready', function() {
-				document.getElementById('png').outerHTML='<a href="' + chart.getImageURI() + '"> #{labels.chart_print} </a>';
+				document.getElementById('png').outerHTML='<button><a href="' + chart.getImageURI() + '"> #{labels.chart_print} </a></button>';
 				
        		});
        		
@@ -98,7 +98,6 @@
   	  		window.location = location.href;
    		}
 
- 
   			    
   	</script>
    
@@ -138,15 +137,14 @@
  
 	<h:form id="formChart" >
 			<h:panelGroup>
-			    <br/>
-			    <br/>
+				<p:panel  style="background-color: #2f8cc4;" > 
 				<p:spacer width="20" height="10" />
 	            <h:outputText id="groupquestion" 
 	                          value="#{chartMBean.getGroupQuestion()}"
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: green;
+							  		 color: white;
 							  		 font-size: 20px;
 		                      		 font-weight: bolder;"
 								 	/>
@@ -157,13 +155,15 @@
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: red;
+							  		 color: #ffff11;
 							  		 font-size: 15px;
 		                      		 font-weight: bolder;"
 								 	/>
+				</p:panel >
 			</h:panelGroup>
 			
 			<h:panelGroup>
+				<p:panel style="background-color: #37fdf8;" >
 				<p:spacer width="40" height="10" />
 	            <h:outputText id="question" 
 	                          value="#{chartMBean.getQuestion()}"
@@ -173,6 +173,7 @@
 							  		 font-size: 15px;
 		                      		 font-weight: 600;"
 								 	/>
+				</p:panel >
             </h:panelGroup>
             
             <h:panelGroup rendered="#{chartMBean.over}">
@@ -210,12 +211,12 @@
 					</p:column>
 					
 					<p:column>
- 						<div id="piechart_3d" style="width: 600px; height: 390px; padding-left: 50px;" />
+ 						<div id="piechart_3d" style="width: 600px; height: 352px; padding-left: 50px;" />
 	    				<div id="png" />			
 					</p:column>
  				
  				</p:panelGrid> 
-			</h:panelGroup>
+ 			</h:panelGroup>
 
 			<p:separator />
 			<h:panelGroup style="white-space: nowrap">

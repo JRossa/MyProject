@@ -71,14 +71,14 @@
 					 rowClasses="tableRowOdd, tableRowEven" >
 
 			<h:panelGroup>
-				<br/>
+				<p:panel style="background-color: #2f8cc4;" >
 				<p:spacer width="20" height="10" />
 	            <h:outputText id="groupquestion" 
 	                          value="#{surveyMBean.getGroupQuestion()}"
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: green;
+							  		 color: white;
 							  		 font-size: 20px;
 		                      		 font-weight: bolder;"
 								 	/>
@@ -89,15 +89,15 @@
 	                          escape="false"
 	                          style="width: 415px;  height: 250px;
 							  		 font-family: Verdana,sans-serif;
-							  		 color: red;
+							  		 color: #ffff11;
 							  		 font-size: 15px;
 		                      		 font-weight: bolder;"
 								 	/>
-				<br/>
+				</p:panel>
  			</h:panelGroup>
 			
 			<h:panelGroup>
-				<br/>
+				<p:panel style="background-color: #37fdf8;" >
 				<p:spacer width="40" height="10" />
 	            <h:outputText id="question" 
 	                          value="#{surveyMBean.getQuestion()}"
@@ -108,10 +108,11 @@
 		                      		 font-weight: 600;"
 								 	/>
 				<br/>
-				<br/>
+				</p:panel>
             </h:panelGroup>
             
             <h:panelGroup>
+                <p:panel style="background-color: #a7c7bd;">
  				<p:inputTextarea id="answer" value="#{surveyMBean.answer}"
 							     rendered="#{!surveyMBean.over and surveyMBean.openQuestion}" 
 							     style="width: 680px; 
@@ -150,6 +151,7 @@
 						  		     font-size: 35px;
 	                      		     font-weight: bolder;"
                                         />
+                </p:panel>                        
 			</h:panelGroup>
 			
 			

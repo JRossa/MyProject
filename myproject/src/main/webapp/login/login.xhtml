@@ -14,8 +14,11 @@
 		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/structure.css" />
 	
 		<style type="text/css" >
-				body{
-				  background-image: url(/paco_am.jpg);
+				body {
+				  background-image: url("#{resource['images/MQ-1_Predator.jpg']}");
+				  background-position: 50% -20%;
+				  background-size: 60%;
+				  background-repeat: no-repeat;
 				}
 		</style>	
 			
@@ -33,13 +36,13 @@
 		<p:dialog class="box login"  
 		          header="#{messages.application_organization}" 
 		          height="450"  width="360" 
-		          modal="true" closable="false" 
+		          modal="false" closable="false" 
 		          position="center"
-				  draggable="true" 
+				  draggable="false" 
 				  resizable="false" 
 				  visible="true" 
-				  style="margin-top: 0%;
-				         margin-left: 0%" >
+				  style="margin-top:  -40px;
+				         margin-left: 18%" >
 		 
 	
 			<form class="box login" 

@@ -82,7 +82,20 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
 
 
     public void setRenderedListTeacherButtons (String rolename) {
-        
+    	System.out.println("setRenderedListTeacherButtons (TeacherHoursExecutionYear)  :  " + rolename);
+
+/*    	
+    	try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+*/
+    	// After delete JSESSIONID cookie it comes null
+    	if (rolename == null)
+    		return;
+    	
         if (rolename.equals("ROLE_ADMIN")) {
             this.disableButtons = true;
             this.renderedSurvey = true;
@@ -94,6 +107,7 @@ public class TeacherHoursExecutionYearMBean extends BaseBean {
             this.renderedUpdate = false;
             this.renderedDelete = false;
         }
+ 
     }
 
     public Long getId() {

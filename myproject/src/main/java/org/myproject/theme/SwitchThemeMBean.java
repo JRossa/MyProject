@@ -1,5 +1,6 @@
 package org.myproject.theme;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import org.myproject.model.utils.BaseBean;
 import org.springframework.context.annotation.Scope;
@@ -145,6 +147,16 @@ public class SwitchThemeMBean extends BaseBean {
      
 //	<p:ajax listener="#{switchThemeMBean.saveTheme}" />
     public void saveTheme() {
+    	
+    	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+    	
+    	try {
+			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     	this.guestPreferences.setTheme(this.theme);
     }
 }

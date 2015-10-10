@@ -29,6 +29,8 @@
 		<intercept-url pattern="/login.am" access="permitAll" />
 		<intercept-url pattern="/public/**" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="permitAll" />
+		<!--  ATENÇÂO: pretty-config altera o caminho das permissões com oview-id -->
+		<intercept-url pattern="/schedule/**" access="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER_T')" />
  		<intercept-url pattern="/pages/**" access="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER_T')" />
 
 <!-- 			authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"  -->
@@ -56,9 +58,11 @@
 		
 	</http>
 
+<!--          <beans:property name="tokenRepository" ref="customTokenRepository" />  -->
+
     <beans:bean id="rememberMeServices"
           class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
-        <beans:property name="tokenRepository" ref="customTokenRepository" />
+        <beans:property name="tokenRepository" ref="jdbcTokenRepository" />
         <beans:property name="key" value="MY_PROJECT_REMEMBER_ME_KEY" />
         <beans:property name="cookieName" value="MY_PROJECT_COOKIE" />
         <beans:property name="useSecureCookie" value="false" />
@@ -67,6 +71,11 @@
         <beans:property name="tokenValiditySeconds" value="14400" />
     </beans:bean>
 
+    <beans:bean id="jdbcTokenRepository"
+          class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+        <beans:property name="createTableOnStartup" value="false" />
+        <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
 
 	<authentication-manager>
 		<authentication-provider ref="customAuthenticationProvider" />

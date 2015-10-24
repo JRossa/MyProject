@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="../../public/templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="../../public/header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/admin/admin.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_list}" url="/pages/admin/listTeacher.am" />
+    	 	<p:menuitem value="#{labels.menu_professorship_list}" url="/pages/admin/listProfessorshipLessonPlan.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="menuAdmin.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+
+    <h:head>
+    	<style type="text/css">
+			.ui-icon-myReport{
+   			background-image: url("#{resource['images/icons/Report.png']}") !important;
+			}
+        </style>
+ 
+    </h:head> 
+	
+
+		<f:view>
+			<f:event listener="#{professorshipMBean.onLoadProfessorshipLessonPlanTotHours}" type="preRenderView" />
+		</f:view>
+		
+		<p:panel id="professorshipPanel" style="border: 0px;" >
+		
+			<h:form id="professorshipListlessonplanForm" >
+
+					<p:messages id="messagesGrid" showDetail="false" autoUpdate="true" closable="true" />
+					
+        	 		<p:panelGrid columns="5" 
+        	 		      styleClass="noBorderLine"
+         	              columnClasses="column3,column2" >
+         	    
+         	              
+       					<h:outputLabel for="from" value="#{labels.lessonplan_from} :" />
+						<h:panelGroup>
+       					<p:calendar id="from" 
+       		            			mode="popup" showOn="button"
+      		            			disabled="false" 
+      		            			required="true"
+      		            			requiredMessage="#{labels.lessonplan_value_null}"
+                   					pattern="yyyy-MM-dd" 
+                   					locale="#{languageMBean.locale}"
+                   					value="#{professorshipMBean.startDate}" 
+                   					readonlyInput="true" >
+           					<p:ajax event="dateSelect" listener="#{professorshipMBean.valueChangedDate}" />
+       						<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+       					</p:calendar>
+       					<h:message for="from" />
+						</h:panelGroup>			
+			
+       					<h:outputLabel for="to" value="#{labels.lessonplan_to} :" />
+						<h:panelGroup>
+      					<p:calendar id="to" 
+      			       				mode="popup" showOn="button"
+      		          				disabled="false" 
+			      		            required="true"
+			      		            requiredMessage="#{labels.lessonplan_value_null}"
+			                   		pattern="yyyy-MM-dd" 
+			                   		locale="#{languageMBean.locale}"
+			                   		value="#{professorshipMBean.endDate}" 
+			                   		readonlyInput="true" >
+			           		<p:ajax event="dateSelect" listener="#{professorshipMBean.valueChangedDate}" />
+			       			<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+       					</p:calendar>
+				        <h:message for="to" />
+						</h:panelGroup>
+						
+		           	<p:commandButton  icon="ui-icon-myReport" style="width: 150px;"
+		          	                  value="#{labels.lessonplan_report_execute}"
+		          	                  update=":professorshipListlessonplanForm, professorshipDataTable"
+		          	                  action="#{professorshipMBean.executeLessonPlan('listLessonPlan')}"  ajax="false" />
+				</p:panelGrid>			
+
+					<br />
+           			<p:separator />
+           			
+			
+				<p:dataTable id="professorshipDataTable" widgetVar="dataTable"
+				    loadingMessage="#{labels.professorship_load}"
+				    scrollable="true"
+				    scrollHeight="390"
+					var="professorship" 
+					value="#{professorshipMBean.teacherLessonPlanTotHours}"
+					filteredValue="#{professorshipMBean.filteredTeacherLessonPlanTotHours}" 
+					paginator="true" 
+					paginatorPosition="top"
+					rows="10"
+					rowIndexVar="professorshipIndex"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{professorship.id}"
+					selectionMode="single" >
+
+					<p:ajax event="rowSelect" listener="#{professorshipMBean.selectProfessorshipLessonPlan}" 
+					                          update=":professorshipListlessonplanForm, professorshipDataTable" />
+					<p:ajax event="page" listener="#{professorshipMBean.unselectProfessorshipLessonPlan}"  />
+					<p:ajax event="rowUnselect" listener="#{professorshipMBean.unselectProfessorshipLessonPlan}"  />
+
+					<f:facet name="header">
+					     <h:outputText value="#{labels.professorship_list}" />
+					     <h:outputText value=" - #{professorshipMBean.selectedExecutionYear}"
+					                   rendered="#{professorshipMBean.selectedExecutionYear != ''}" />
+					</f:facet>
+					
+					<p:column headerText="#{labels.professorship_id}"  footerText="" style="width: 8%;"  
+					          filterBy="#{professorship.id}" filterMatchMode="contains" 
+					          filterStyle="width: 40px;">
+						<h:outputText value="#{professorship.id}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.professorship_teacher}" style="width: 50%;"
+					          filterBy="#{professorship.teacher.fullName}" filterMatchMode="contains" 
+					          filterStyle="width: 80px;" >
+						<h:outputText value="#{professorship.teacher.fullName}" />
+					</p:column>
+
+					<p:column headerText="#{labels.professorship_begin_date}" footerText="" style="width: 15%;"
+					          filterStyle="width: 40px;" >
+						<h:outputText value="#{professorship.startDate}" >
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{labels.professorship_end_date}" footerText="" style="width: 15%;"
+					          filterStyle="width: 40px;" >
+						<h:outputText value="#{professorship.endDate}" >
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{labels.professorship_lectured_hours}" footerText="" style="width: 10%;"
+					          filterBy="#{professorship.hours}" filterMatchMode="lte" >
+					    <f:facet name="filter" >
+                			<p:spinner onchange="PF('dataTable').filter()" size="3"   >
+                    			<f:converter converterId="javax.faces.Integer" />
+                			</p:spinner>
+           				</f:facet>
+           				<div align="center">
+							<h:outputText value="#{professorship.hours}"  />
+						</div>
+					</p:column>
+					
+					<p:column style="width: 10%;">
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+ 				
+		</p:panel>
+
+	</ui:define>
+	
+	</ui:composition>
+
+</html>
+
+<!-- 						<p:commandButton widgetVar="deleteTeacherButton" -->
+<!-- 						                 icon="ui-icon-trash" -->
+<!-- 						                 title="#{labels.professorship_delete}" -->
+<!-- 										 update=":professorshipListForm, professorshipDataTable, :formTeacherDelete"  -->
+<!-- 										 action="#{professorshipCRUDMBean.delete(false)}" -->
+<!-- 										 oncomplete="PF('professorshipDeleteDialog').show();"  > -->
+<!-- 							<f:setPropertyActionListener value="#{professorship}"  target="#{professorshipMBean.selectedTeacher}" /> -->
+<!-- 						</p:commandButton>				  -->
+<!-- 						<p:commandButton widgetVar="updateTeacherButton" -->
+<!-- 										 icon="ui-icon-document" -->
+<!-- 										 title="#{labels.professorship_update}" -->
+<!-- 										 update=":professorshipListForm, professorshipDataTable, :formTeacherUpdate" -->
+<!-- 										 action="#{professorshipCRUDMBean.update}" -->
+<!-- 										 oncomplete="PF('professorshipUpdateDialog').show()" -->
+<!-- 										  > -->
+<!-- 							<f:setPropertyActionListener value="#{professorship}"  target="#{professorshipMBean.selectedTeacher}" /> -->
+<!-- 						</p:commandButton> -->
+
+
+<!--  			<ui:include name="create" src="createTeacher.xhtml"  />		 -->
+<!-- 			<ui:include name="update" src="updateTeacher.xhtml"  /> -->
+<!-- 			<ui:include name="delete" src="deleteTeacher.xhtml"  /> -->
+
+<!-- 					<p:column headerText="#{labels.professorship_teacher}" style="width: 50%;" > -->
+<!-- 						<h:outputText value="#{professorship.teacher.fullName}" /> -->
+<!-- 					</p:column> -->
+					
+<!-- 					<p:column headerText="#{labels.professorship_course_code}" footerText="" style="width: 15%;" -->
+<!-- 					          filterBy="#{professorship.course.code}" filterMatchMode="contains"  -->
+<!-- 					          filterStyle="width: 40px;"> -->
+<!-- 						<h:outputText value="#{professorship.course.code}" /> -->
+<!-- 					</p:column> -->
+					
+<!-- 					<p:column headerText="#{labels.professorship_degree_code}" footerText="" style="width: 15%;" -->
+<!-- 					          filterBy="#{professorship.degree.code}" filterMatchMode="contains"  -->
+<!-- 					          filterStyle="width: 60px;" > -->
+<!-- 						<h:outputText value="#{professorship.degree.code}" /> -->
+<!-- 					</p:column> -->
+
+<!-- 					<p:column headerText="#{labels.professorship_execution_year}" footerText="" style="width: 15%;" -->
+<!-- 					          filterBy="#{professorship.year.executionYear}" filterMatchMode="contains"  -->
+<!-- 					          filterStyle="width: 60px;"> -->
+<!-- 						<h:outputText value="#{professorship.year.executionYear}" /> -->
+<!-- 					</p:column> -->
+
+<!-- 					<p:column headerText="#{labels.professorship_responsible_forcourse}" style="width: 10%;" > -->
+<!-- 					    <p:graphicImage name="images/icons/Green pin.png"   -->
+<!-- 					                    style="border:none; position: relative; left: 20px;"  -->
+<!-- 					                    rendered="#{professorship.responsibleForCourse}" />      -->
+<!-- 					    <p:graphicImage name="images/icons/Red pin.png"  -->
+<!-- 					                    style="border:none; position: relative; left: 20px;" -->
+<!-- 					                    rendered="#{!professorship.responsibleForCourse}" />      -->
+<!-- 						<h:outputText value="#{professorship.responsibleForCourse}" rendered="false" /> -->
+<!-- 					</p:column> -->
+
+
+<!--  p:dialog 					selection="#{teacherMBean.selectedTeacher}" -->

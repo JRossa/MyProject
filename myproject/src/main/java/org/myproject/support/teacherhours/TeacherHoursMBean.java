@@ -10,9 +10,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
 import org.myproject.model.repositories.TeacherHoursRepository;
+import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.support.survey.SurveyMBean;
 import org.myproject.support.teacher.TeacherMBean;
@@ -27,6 +29,9 @@ public class TeacherHoursMBean extends BaseBean {
     private static final long serialVersionUID = 3133883459814058016L;
 
     private static final Logger logger = Logger.getLogger(Teacher.class);
+
+    @Inject
+    private UserRepository userRepository;
 
     @Inject
     private TeacherMBean mbTeacherMBean;
@@ -64,20 +69,28 @@ public class TeacherHoursMBean extends BaseBean {
 	public void onLoadTeacherHours() {
         System.out.println("onLoadTeacherHours (TeacherHoursMBean) :  ");
 
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+        String rolename = (String) context.getSessionMap().get("rolename");
+
+        Long userId = Long.parseLong((String) context.getSessionMap().get("userId"));
+
+        setRenderedListTeacherButtons (rolename);
+
         if (this.mbTeacherMBean.getSelectedTeacher() != null) {
             System.out.println("Select Teacher Id :" + this.mbTeacherMBean.getSelectedTeacher().getId());
 
             this.selectedTeacher = this.mbTeacherMBean.getSelectedTeacher();
             
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-            String rolename = (String) context.getSessionMap().get("rolename");
-            
-            setRenderedListTeacherButtons (rolename);
-            
-            this.teacherHours = 
+            LogUser user = userRepository.findOne(userId);
+
+            if (user.getLogRole().getRolename().equals("ROLE_USER_T")) {
+            	this.teacherHours = this.teacherHoursRepository.findByTeacher(user.getTeacher());
+            } else {
+            	this.teacherHours = 
             		this.teacherHoursRepository.findByTeacherAndExecutionYear(this.mbTeacherMBean.getSelectedTeacher().getId(),
                                                                               this.mbTeacherMBean.getSelectedExecutionYear());
-        }
+            }
+        } 
     }
 
 
@@ -93,7 +106,7 @@ public class TeacherHoursMBean extends BaseBean {
         } else if (rolename.equals("ROLE_USER_T")) {
             this.disableButtons = true;
             this.renderedSurvey = true;
-            this.renderedUpdate = false;
+            this.renderedUpdate = true;
             this.renderedDelete = false;
     		this.reloadTeacher = true;
 

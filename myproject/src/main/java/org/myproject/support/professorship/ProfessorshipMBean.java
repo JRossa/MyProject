@@ -1,19 +1,34 @@
 package org.myproject.support.professorship;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.myproject.model.entities.Course;
+import org.myproject.model.entities.Degree;
 import org.myproject.model.entities.Professorship;
 import org.myproject.model.entities.Teacher;
+import org.myproject.model.entities.TeacherLessonPlanHours;
+import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.repositories.ProfessorshipRepository;
+import org.myproject.model.repositories.TeacherLessonPlanHoursRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.utils.BaseBean;
+import org.myproject.report.AbstractBaseReportBean.CompileOption;
 import org.myproject.support.teacher.TeacherMBean;
 import org.primefaces.event.SelectEvent;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +42,15 @@ public class ProfessorshipMBean extends BaseBean {
 
     private static final Logger logger           = Logger.getLogger(ProfessorshipMBean.class);
 
+	@Inject
+	private TeacherLessonPlanHoursRepository teacherLessonPlanHoursRepository;
+
+	@Inject
+	private TeacherRepository teacherRepository;
+	
+	@Inject
+	private CourseRepository courseRepository;
+
     @Inject
     private ProfessorshipRepository professorshipRepository;
 
@@ -38,12 +62,23 @@ public class ProfessorshipMBean extends BaseBean {
     private Professorship selectProfessorship;
 
     private List<ProfessorshipCourseHours> professorshipCourseHours;
+    
+    private List<TeacherLessonPlanTotHours> teacherLessonPlanTotHours;
 
+    private List<TeacherLessonPlanTotHours> filteredTeacherLessonPlanTotHours;
+    
+    private TeacherLessonPlanTotHours selectProfessorshipLessonPlan;
+    
     private Long Id;
     
     private String selectedExecutionYear;
     
-    
+	private Date startDate = new Date();
+	
+	private Date endDate = new Date();
+   
+	
+	
     public ProfessorshipMBean() {
 		super();
 	}
@@ -90,7 +125,26 @@ public class ProfessorshipMBean extends BaseBean {
     }
 
 
-	public Professorship getSelectProfessorship() {
+	public void selectProfessorshipLessonPlan(SelectEvent ev) {
+        try {
+            if (ev.getObject() != null) {
+                this.selectProfessorshipLessonPlan = (TeacherLessonPlanTotHours) ev.getObject();
+                System.out.println("Passou");
+            } else {
+                this.selectProfessorshipLessonPlan = null;
+            }
+        } catch (Exception e) {
+            this.selectProfessorshipLessonPlan = null;
+
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    public void unselectProfessorshipLessonPlan() {
+        this.selectProfessorshipLessonPlan = null;
+    }
+
+    public Professorship getSelectProfessorship() {
 		return selectProfessorship;
 	}
 
@@ -121,11 +175,42 @@ public class ProfessorshipMBean extends BaseBean {
         this.professorshipCourseHours = professorshipCourseHours;
     }
 
+        
+	public List<TeacherLessonPlanTotHours> getTeacherLesssonPlanTotHours() {
+		return teacherLessonPlanTotHours;
+	}
+
+
+	public void setTeacherLessonPlanTotHours(
+			List<TeacherLessonPlanTotHours> teacherLessonPlanHours) {
+		this.teacherLessonPlanTotHours = teacherLessonPlanHours;
+	}
+
+
+	public List<TeacherLessonPlanTotHours> getTeacherLessonPlanTotHours() {
+		return teacherLessonPlanTotHours;
+	}
+
+
+
+	public TeacherLessonPlanTotHours getSelectProfessorshipLessonPlan() {
+		return selectProfessorshipLessonPlan;
+	}
+
+
+	public void setSelectProfessorshipLessonPlan(
+			TeacherLessonPlanTotHours selectProfessorshipLessonPlan) {
+		this.selectProfessorshipLessonPlan = selectProfessorshipLessonPlan;
+	}
+
+
+//	@PostConstruct
 	public void init() {
         System.out.println("A new backing bean has been created");
         this.professorships = new ArrayList<Professorship>();
-        this.selectedExecutionYear = this.mbTeacherMBean.getSelectedExecutionYear();
-    }
+        
+        
+}
 
 
     public void onLoadProfessorshipCourseHours() {
@@ -176,11 +261,162 @@ public class ProfessorshipMBean extends BaseBean {
         }
     }
 
-    
+    public void onLoadProfessorshipLessonPlanTotHours() {
+        System.out.println("onLoadProfessorshipLessonPlanTotHours");
+
+		Teacher teacher = new Teacher();
+		Course course = new Course();
+		
+
+		this.teacherLessonPlanTotHours = new ArrayList<TeacherLessonPlanTotHours>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+/*		
+		try {
+			this.startDate = sdf.parse("01-10-2015 00:00:00");
+			this.endDate = sdf.parse("30-10-2015 00:00:00");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+*/		
+
+        System.out.println("Start Time : " + sdf.format(this.startDate));
+        System.out.println("End Time   : " + sdf.format(this.endDate));
+		
+        
+        List<Object[]> teacherHours = 
+            		this.teacherLessonPlanHoursRepository.findTeacherCoursesHoursBetweenStartDateAndEndDate(this.startDate, this.endDate);
+
+        Long id = 0L;
+        for (Object[] c : teacherHours) {
+            System.out.println("TeacherId    :  " + c[0].toString());
+            System.out.println("CourseId     :  " + c[1].toString());
+            System.out.println("Hours        :  " + c[2].toString());
+
+            teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
+            course = courseRepository.findOne(Long.parseLong(c[1].toString()));
+            
+            id++;
+/*            
+            try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+*/            
+            this.teacherLessonPlanTotHours.add(new TeacherLessonPlanTotHours(id, teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
+        }
+    }
 
 
-    
-    
 
+	public List<TeacherLessonPlanTotHours> getFilteredTeacherLessonPlanTotHours() {
+		return filteredTeacherLessonPlanTotHours;
+	}
+
+
+
+	public void setFilteredTeacherLessonPlanTotHours(
+			List<TeacherLessonPlanTotHours> filteredTeacherLessonPlanTotHours) {
+		this.filteredTeacherLessonPlanTotHours = filteredTeacherLessonPlanTotHours;
+	}
+
+
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
+    public Date correctDayLight (Date date) {
+    	
+        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+        Boolean dayLight = timezone.inDaylightTime(date);
+        
+        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+
+        Calendar calendar = Calendar.getInstance();
+        
+        calendar.setTime(date);
+        
+        calendar.setTimeZone(timezone);
+
+        return calendar.getTime();
+    }
+    
+    
+    public String executeLessonPlan (String compileFileName) {
+    	
+    	
+        try {
+            
+            if (this.startDate != null) {
+            	String strStartDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getStartDate());
+            	
+            }
+ 
+            if (this.endDate != null) {
+           	String strEndDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getEndDate());
+           }
+
+
+        } catch (Exception e) {
+            // make your own exception handling
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    
+    public void valueChangedDate (SelectEvent selectEvent) {
+        Date date = (Date) selectEvent.getObject();
+        
+        System.out.println("Start Time : " + this.getStartDate());
+        System.out.println("End   Time : " + this.getEndDate());
+        System.out.println("Compare : " + (this.getStartDate().getTime() >= 
+                                           this.getEndDate().getTime()));
+        System.out.println("Message : " + date);
+        
+        if (this.getStartDate().getTime() >= this.getEndDate().getTime()) {
+ 
+        	String msg = getResourceProperty("labels", "lessonplan_change_dates");
+            
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+        }
+    }    
+
+    public String getResourceProperty(String resource, String label) {
+        Application application = FacesContext.getCurrentInstance().getApplication();
+        ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);
+
+        return bundle.getString(label);
+    }
+
+    
+    private void addMessage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 }

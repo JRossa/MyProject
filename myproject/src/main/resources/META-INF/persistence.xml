@@ -23,6 +23,7 @@
 		<class>org.myproject.model.entities.MasterDegreeType</class>
 		<class>org.myproject.model.entities.ScientificField</class>
 		<class>org.myproject.model.entities.TeacherHours</class>
+		<class>org.myproject.model.entities.TeacherLessonPlanHours</class>
 		<class>org.myproject.model.entities.TeacherHoursExecutionYear</class>
 
 		<class>org.myproject.model.entities.Survey</class>

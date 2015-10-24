@@ -35,6 +35,7 @@
      <mapping class="org.myproject.model.entities.MasterDegreeType" />
      <mapping class="org.myproject.model.entities.ScientificField" />
      <mapping class="org.myproject.model.entities.TeacherHours" />
+     <mapping class="org.myproject.model.entities.TeacherLessonPlanHours" />
      <mapping class="org.myproject.model.entities.TeacherHoursExecutionYear" />
  
      <mapping class="org.myproject.model.entities.Survey" />

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="../../public/templateMenu.xhtml">
+
+	<ui:define name="top" >
+		<ui:include name="header" src="../../public/header.xhtml"  />
+	</ui:define>
+
+	<ui:define name="breadcrumb" >
+		<h:form>
+		<p:breadCrumb>
+   			<p:menuitem value="" url="/pages/user/userT.am" />
+   		 	<p:menuitem value="#{labels.menu_teacher_data}" url="/pages/user/listTeacherT.am" />
+ 		</p:breadCrumb>
+ 		</h:form>
+  	</ui:define>
+ 	
+	<ui:define name="menu" >
+		<ui:include name="menu" src="menuUserT.xhtml"  />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:view>
+			<c:if test="${param.executionyear == 'all'}">
+				<f:event listener="#{teacherMBean.onLoad('all')}" type="preRenderView" />
+			</c:if>
+			<c:if test="${param.executionyear == 'teacher'}">
+				<f:event listener="#{teacherMBean.onLoad('teacher')}" type="preRenderView" />
+			</c:if>
+			<c:if test="${param.executionyear == 'year'}">
+				<f:event listener="#{teacherMBean.onLoad('2014/2015')}" type="preRenderView" />
+			</c:if>
+		</f:view>
+		
+		<p:growl id="messages"   />
+		
+		
+		<p:panel id="teacherPanel" style="border: 0px;" >
+		
+			<h:form id="teacherListForm" >
+			
+				<p:commandButton widgetVar="updateButton"
+					value="#{labels.button_update}" 
+				    rendered="#{!teacherMBean.renderedInputExecutionYear}" 
+					update="teacherDataTable, :formTeacherUpdate"
+					actionListener="#{teacherCRUDMBean.update}"
+					oncomplete="PF('teacherUpdateDialog').show();"
+					disabled="false" />
+					
+				<p:panelGrid id="panelExecutionYear" columns="2"
+				             style="margin-bottom:10px; 
+				                    width: 30%;
+				                    position: relative;
+				                    left: 400px; " 
+                             cellpadding="10" 
+                             styleClass="noBorderLine" >	
+				<p:commandButton widgetVar="inputButton" value="#{labels.teacher_update}"
+				    rendered="false"
+				    update="teacherDataTable" >
+					<f:ajax execute="year" render="teacherDataTable" />
+				</p:commandButton>
+				
+		        <h:outputText value="#{labels.professorship_execution_year}" 
+		                      rendered="#{teacherMBean.renderedInputExecutionYear}"  />     
+ 				<p:selectOneMenu id="year" value="#{teacherMBean.selectedExecutionYear}"
+							 title="#{labels.professorship_execution_year}"
+							 rendered="#{teacherMBean.renderedInputExecutionYear}" 
+							 maxlength="255" size="40" >
+					<f:selectItem itemLabel="2012/2013" itemValue="2012/2013" />
+					<f:selectItem itemLabel="2013/2014" itemValue="2013/2014" />
+					<f:selectItem itemLabel="2014/2015" itemValue="2014/2015" />
+					<f:selectItem itemLabel="2015/2016" itemValue="2015/2016" />
+					<f:ajax execute="year" render="teacherDataTable" />
+				</p:selectOneMenu>
+                </p:panelGrid>
+                
+				<p:dataTable id="teacherDataTable" widgetVar="dataTable"
+				    loadingMessage="#{labels.teacher_load}"
+				    scrollable="true"
+				    scrollHeight="390"
+					var="teacher" 
+					value="#{teacherMBean.teachers}" 
+					paginator="true" 
+					paginatorPosition="top"
+					rows="10"
+					rowIndexVar="teacherIndex"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,20" rowKey="#{teacher.id}"
+					selectionMode="single" >
+
+					<p:ajax event="rowSelect" listener="#{teacherMBean.selectTeacher}" update=":teacherListForm, teacherDataTable"  />
+					<p:ajax event="page" listener="#{teacherMBean.unselectTeacher}"   />
+					<p:ajax event="rowUnselect" listener="#{teacherMBean.unselectTeacher}"  />
+
+					<f:facet name="header">
+					     <h:outputText value="#{labels.teacher_list}" />
+					     <h:outputText value="   #{teacherMBean.selectedExecutionYear}" />
+					</f:facet>
+					
+					<p:column headerText="#{labels.teacher_id}"  style="width: 4%;" >
+						<h:outputText value="#{teacher.id}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacher_category}" style="width: 12%;" >
+						<h:outputText value="#{teacher.category}" />
+					</p:column>
+					
+					<p:column headerText="#{labels.teacher_name}" footerText="" style="width: 35%;"
+					          filterBy="#{teacher.fullName}" filterMatchMode="contains" >
+						<h:outputText value="#{teacher.fullName}" />
+					</p:column>
+
+					
+					<p:column style="width: 15%;">
+						<p:commandButton widgetVar="deleteTeacherButton"
+						                 icon="ui-icon-trash"
+						                 rendered="#{teacherMBean.renderedDelete}"
+						                 title="#{labels.teacher_delete}"
+										 update=":teacherListForm, teacherDataTable, :formTeacherDelete" 
+										 action="#{teacherCRUDMBean.delete(false)}"
+										 oncomplete="PF('teacherDeleteDialog').show();"  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>				 
+						<p:commandButton widgetVar="updateTeacherButton"
+										 icon="ui-icon-zoomin"
+						                 rendered="#{teacherMBean.renderedUpdate}"
+										 title="#{labels.teacher_update}"
+										 update=":teacherListForm, teacherDataTable, :formTeacherUpdate"
+										 action="#{teacherCRUDMBean.update}"
+										 oncomplete="PF('teacherUpdateDialog').show()"
+										  >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+ 						</p:commandButton>
+						<p:commandButton widgetVar="listTeacherProfessorshipButton"
+										 icon="ui-icon-document"
+						                 rendered="#{teacherMBean.renderedProfessorship}"
+										 title="#{labels.professorship}"
+										 action="/pages/user/listProfessorshipT.am?faces-redirect=true" >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>
+						<p:commandButton widgetVar="listTeacherHoursButton"
+										 icon="ui-icon-note"
+										 rendered="#{teacherMBean.renderedTeacherHours}"
+										 title="#{labels.teacherhours}"
+										 action="/pages/user/listTeacherHoursT.am?faces-redirect=true" >
+							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+			<ui:include name="update" src="/pages/admin/updateTeacher.xhtml"  />
+  			<ui:include name="surveycourse" src="../teacher/surveyCourse.xhtml"  />		
+ 				
+		</p:panel>
+
+	</ui:define>
+	
+	</ui:composition>
+
+</html>
+
+
+
+<!-- 						<p:commandButton widgetVar="surveyTeacherButton" -->
+<!-- 										 icon="ui-icon-script" -->
+<!-- 						                 rendered="#{teacherMBean.renderedProfessorship}" -->
+<!-- 										 title="#{labels.teacher_survey}" -->
+<!-- 										 update="teacherListForm, teacherDataTable, surveyCourseDlg" -->
+<!-- 										 action="#{surveyMBean.startTeacher}" -->
+<!-- 										 oncomplete="PF('surveyCourseDialog').show()" -->
+<!-- 										  > -->
+<!-- 							<f:setPropertyActionListener value="#{teacher}"  target="#{teacherMBean.selectedTeacher}" /> -->
+<!--  						</p:commandButton> -->
+
+
+<!--  p:dialog 					selection="#{teacherMBean.selectedTeacher}" -->

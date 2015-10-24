@@ -10,27 +10,21 @@
 <h:body>
 	<ui:composition>
   
-    <ui:include name="change" src="changePassword.xhtml"  />
-    <ui:include name="update" src="createUser.xhtml"  />
+    <ui:include name="change" src="changePasswordT.xhtml"  />
    
 	<h:form  >  
      <p:menubar>
         <p:submenu label="#{labels.menu_user}" icon="ui-icon-document" >
-            <p:menuitem value="#{labels.menu_change_password}"  oncomplete="PF('changePassDialog').show();" />
-            <p:menuitem value="#{labels.menu_list_users}" oncomplete="PF('userCreateDialog').show();" />
+            <p:menuitem value="#{labels.user_change_password}"  oncomplete="PF('changePassDialog').show();" />
            
             
         </p:submenu>
  
         <p:submenu label="#{labels.menu_teacher}" icon="ui-icon-pencil">
-            <p:menuitem value="Listar Docentes" url="#" icon="ui-icon-arrowreturnthick-1-w" />
-            <p:menuitem value="Listar Docentes 2014/2015" url="#" icon="ui-icon-arrowreturnthick-1-e" />
+            <p:menuitem value="#{labels.teacher_data}" url="/pages/user/listTeacherT.am?executionyear=teacher" icon="ui-icon-arrowreturnthick-1-w" />
         </p:submenu>
  
-        <p:submenu label="#{labels.menu_session}" icon="ui-icon-help">
-            <p:menuitem value="Listar Sessões" url="#" />
-        </p:submenu>
- 
+
     </p:menubar>
    
     

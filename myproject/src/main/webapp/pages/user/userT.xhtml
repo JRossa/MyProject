@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
@@ -11,11 +13,20 @@
                 <ui:include name="header" src="../../public/header.xhtml" />
             </ui:define>
 
+			<ui:define name="breadcrumb" >
+				<h:form>
+				<p:breadCrumb>
+   					<p:menuitem value="" url="/schedule/admin" />
+ 				</p:breadCrumb>
+ 				</h:form>
+			</ui:define>
+
 			<ui:define name="menu" >
-				<ui:include name="menu" src="menuUser.xhtml"  />
+				<ui:include name="menu" src="menuUserT.xhtml"  />
 			</ui:define>
 			
             <ui:define name="content" >
+            	<ui:include name="header" src="../teacher/scheduleLessonPlan.xhtml" />
             </ui:define>
 
         </ui:composition>

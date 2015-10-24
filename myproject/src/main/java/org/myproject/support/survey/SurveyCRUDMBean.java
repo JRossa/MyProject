@@ -100,7 +100,7 @@ public class SurveyCRUDMBean extends BaseBean {
 	
 	
 	private void saveTeacherAnswer (Teacher teacher, Date date) {
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		System.out.println("Date    : " + sdf.format(date));
     	String stamp;

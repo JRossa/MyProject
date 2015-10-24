@@ -16,12 +16,14 @@ import javax.inject.Named;
 
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
+import org.myproject.model.entities.LogUser;
 import org.myproject.model.entities.Professorship;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.entities.TeacherHours;
 import org.myproject.model.repositories.ProfessorshipRepository;
 import org.myproject.model.repositories.TeacherHoursRepository;
 import org.myproject.model.repositories.TeacherRepository;
+import org.myproject.model.repositories.UserRepository;
 import org.myproject.model.utils.BaseBean;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -35,6 +37,9 @@ public class TeacherMBean extends BaseBean {
     private static final long serialVersionUID = 3133883459814058016L;
 
     private static final Logger logger = Logger.getLogger(Teacher.class);
+
+    @Inject
+    private UserRepository userRepository;
 
     @Inject
     private TeacherRepository teacherRepository;
@@ -158,30 +163,55 @@ public class TeacherMBean extends BaseBean {
             this.selectedExecutionYear = "";
             
 	        this.teachers = this.teacherRepository.findAllListOrderByFullName();
+	        
             return;
         } else {
         	
-        	this.renderedInputExecutionYear = true;
-        	this.renderedProfessorship = true;
-            this.renderedTeacherHours = true;
-            this.disableButtons = true;
-            
-	        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
-	        	executionYear = this.selectedExecutionYear;
-	        } else {
-		        executionYear = executionYear.replace("_", "/");
-	        	this.selectedExecutionYear = executionYear;
+        	if (executionYear.equals("teacher")) {
+    	        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+    	        String rolename = (String) context.getSessionMap().get("rolename");
+    	        
+    	        Long userId = Long.parseLong((String) context.getSessionMap().get("userId"));
+    	        
+    	        setRenderedListTeacherButtons (rolename);
+    	        
+            	this.renderedInputExecutionYear = false;
+            	this.renderedProfessorship = true;
+                this.renderedTeacherHours = true;
+                this.disableButtons = true;
+                this.selectedExecutionYear = "";
+              
+                LogUser user = userRepository.findOne(userId);
+
+                if (user.getLogRole().getRolename().equals("ROLE_USER_T")) {
+                	this.teachers = this.teacherRepository.findAllByTeacherId(user.getTeacher().getId());
+                }
+                
+                return;
+        		
+        	} else {
+	        	this.renderedInputExecutionYear = true;
+	        	this.renderedProfessorship = true;
+	            this.renderedTeacherHours = true;
+	            this.disableButtons = true;
+	            
+		        if (this.selectedExecutionYear != null && this.selectedExecutionYear.length() == 9) {
+		        	executionYear = this.selectedExecutionYear;
+		        } else {
+			        executionYear = executionYear.replace("_", "/");
+		        	this.selectedExecutionYear = executionYear;
+		        }
+	 	        	
+		        System.out.println("onLoad  : " + executionYear);
+		        
+	
+		        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+		        String rolename = (String) context.getSessionMap().get("rolename");
+		        
+		        setRenderedListTeacherButtons (rolename);
+	
+		        this.teachers = this.teacherRepository.findByExecutionYear(executionYear.replace("_", "/"));
 	        }
- 	        	
-	        System.out.println("onLoad  : " + executionYear);
-	        
-
-	        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-	        String rolename = (String) context.getSessionMap().get("rolename");
-	        
-	        setRenderedListTeacherButtons (rolename);
-
-	        this.teachers = this.teacherRepository.findByExecutionYear(executionYear.replace("_", "/"));
         }
     }
 
@@ -220,7 +250,7 @@ public class TeacherMBean extends BaseBean {
             this.renderedProfessorship = true;
             this.renderedTeacherHours = true;
             this.renderedRead = true;
-            this.renderedUpdate = false;
+            this.renderedUpdate = true;
             this.renderedDelete = false;
         }
     }

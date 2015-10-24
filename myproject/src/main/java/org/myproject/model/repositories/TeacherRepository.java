@@ -36,4 +36,9 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
             + "ORDER BY tbl_TEACHER.FULL_NAME", nativeQuery = true)
 	public List <Teacher> findAllListOrderByFullName();
 
+	@Query(value="SELECT tbl_TEACHER.* "
+            + "FROM tbl_TEACHER "
+			+ "WHERE (tbl_TEACHER.ID)=:teacherId "
+            + "ORDER BY tbl_TEACHER.FULL_NAME", nativeQuery = true)
+	public List <Teacher> findAllByTeacherId(@Param("teacherId") Long teacherId);
 }

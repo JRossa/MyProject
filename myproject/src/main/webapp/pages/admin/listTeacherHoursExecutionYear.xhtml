@@ -37,7 +37,8 @@
 			<h:form id="formTeacherHoursExecutionYearList" >
 
 				<p:panelGrid id="panelExecutionYear" columns="3"
-				             style="margin-bottom:10px; 
+				             style="margin-top: -8px;
+				                    margin-bottom: -0px; 
 				                    width: 40%;
 				                    position: relative;
 				                    left: 400px; " 
@@ -92,20 +93,24 @@
 						<h:outputText value="#{teacherhours.id}" />
 					</p:column>
 					
-					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 40%;" 
+					<p:column headerText="#{labels.teacherhours_teacher}" footerText="" style="width: 50%;" 
 					          filterBy="#{teacherhours.teacher.fullName}" filterMatchMode="contains" >
 						<h:outputText value="#{teacherhours.teacher.fullName}" />
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
+					          sortBy="#{teacherhours.hours}"
 					          filterBy="#{teacherhours.hours}" filterMatchMode="contains" filterStyle="width: 40px;" >
-						<h:outputText value="#{teacherhours.hours}" />
+						<div align="center">
+							<h:outputText value="#{teacherhours.hours}" />
+						</div>
 					</p:column>
 
 					<p:column headerText="#{labels.professorship_execution_year}" footerText="" style="width: 15%;"
-					          filterBy="#{teacherhours.year.executionYear}" filterMatchMode="contains" 
-					          filterStyle="width: 60px;">
-						<h:outputText value="#{teacherhours.year.executionYear}" />
+					          filterStyle="width: 40px;">
+					    <div align="center">      
+							<h:outputText value="#{teacherhours.year.executionYear}" />
+						</div>
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_survey_done}" style="width: 10%;" >

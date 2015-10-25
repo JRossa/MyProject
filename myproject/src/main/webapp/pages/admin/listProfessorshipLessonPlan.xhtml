@@ -105,6 +105,7 @@
 					var="professorship" 
 					value="#{professorshipMBean.teacherLessonPlanTotHours}"
 					filteredValue="#{professorshipMBean.filteredTeacherLessonPlanTotHours}" 
+					sortMode="multiple"
 					paginator="true" 
 					paginatorPosition="top"
 					rows="10"
@@ -137,20 +138,25 @@
 					</p:column>
 
 					<p:column headerText="#{labels.professorship_begin_date}" footerText="" style="width: 15%;"
-					          filterStyle="width: 40px;" >
-						<h:outputText value="#{professorship.startDate}" >
-							<f:convertDateTime pattern="yyyy-MM-dd" />
-						</h:outputText>
+					          filterStyle="width: 40px;" >´
+					    <div align="center">      
+							<h:outputText value="#{professorship.startDate}" >
+								<f:convertDateTime pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</div>
 					</p:column>
 
 					<p:column headerText="#{labels.professorship_end_date}" footerText="" style="width: 15%;"
 					          filterStyle="width: 40px;" >
-						<h:outputText value="#{professorship.endDate}" >
-							<f:convertDateTime pattern="yyyy-MM-dd" />
-						</h:outputText>
+					    <div align="center"> 
+							<h:outputText value="#{professorship.endDate}" >
+								<f:convertDateTime pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</div>
 					</p:column>
 
 					<p:column headerText="#{labels.professorship_lectured_hours}" footerText="" style="width: 10%;"
+					          sortBy="#{professorship.hours}"
 					          filterBy="#{professorship.hours}" filterMatchMode="lte" >
 					    <f:facet name="filter" >
                 			<p:spinner onchange="PF('dataTable').filter()" size="3"   >

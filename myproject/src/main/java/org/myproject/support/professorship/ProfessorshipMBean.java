@@ -271,16 +271,20 @@ public class ProfessorshipMBean extends BaseBean {
 		this.teacherLessonPlanTotHours = new ArrayList<TeacherLessonPlanTotHours>();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-/*		
+		
 		try {
-			this.startDate = sdf.parse("01-10-2015 00:00:00");
-			this.endDate = sdf.parse("30-10-2015 00:00:00");
+	        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+
+	        // 01:00:00 because of daylight computation
+			this.startDate = sdf.parse("01-10-2015 01:00:00");
+	        Boolean daylight = timezone.inDaylightTime(this.startDate);
+	        
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-*/		
-
+		
+		
         System.out.println("Start Time : " + sdf.format(this.startDate));
         System.out.println("End Time   : " + sdf.format(this.endDate));
 		
@@ -367,7 +371,7 @@ public class ProfessorshipMBean extends BaseBean {
     
     public String executeLessonPlan (String compileFileName) {
     	
-    	
+    	// Call JasperReport method to do it
         try {
             
             if (this.startDate != null) {

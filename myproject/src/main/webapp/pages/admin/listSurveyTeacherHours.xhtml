@@ -79,7 +79,8 @@
 			<h:form id="formSurveyTeacherHoursList" >
 			
 				<p:panelGrid id="panelExecutionYear" columns="4"
-				             style="margin-bottom:10px; 
+				             style="margin-top:-8px;
+				                    margin-bottom:-0px; 
 				                    width: 80%;
 				                    position: relative;
 				                    left: 100px; " 
@@ -128,9 +129,10 @@
 				    scrollHeight="390"
 					var="surveyteacher" 
 					value="#{surveyTeacherHoursMBean.surveyTeacherHours}" 
+					sortMode="multiple"
 					paginator="true" 
 					paginatorPosition="top"
-					rows="10"
+					rows="9"
 					rowIndexVar="surveyteacherIndex"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,20" rowKey="#{surveyteacher.id}"
@@ -155,8 +157,11 @@
 					</p:column>
 					
 					<p:column headerText="#{labels.teacherhours_course_code}" footerText="" style="width: 12%;"
+					          sortBy="#{surveyteacher.course.code}" 
 					          filterBy="#{surveyteacher.course.code}" filterMatchMode="contains" filterStyle="width: 38px;" >
-						<h:outputText value="#{surveyteacher.course.code}" />
+						<div align="center">
+							<h:outputText value="#{surveyteacher.course.code}" />
+						</div>
 					</p:column>
 					
 					<p:column headerText="#{labels.teacherhours_name}" footerText="" style="width: 35%;"
@@ -167,18 +172,23 @@
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_lectured_hours}" footerText="" style="width: 10%;"
+					          sortBy="#{surveyteacher.hours}"
 					          filterBy="#{surveyteacher.hours}" filterMatchMode="contains" filterStyle="width: 40px;" >
-						<h:outputText value="#{surveyteacher.hours}" />
+						<div align="center">
+							<h:outputText value="#{surveyteacher.hours}" />
+						</div>
 					</p:column>
 
 					<p:column headerText="#{labels.teacherhours_survey_done}" style="width: 12%;" >
-					    <p:graphicImage name="images/icons/Green pin.png"  
-					                    style="border:none; position: relative; left: 20px;" 
-					                    rendered="#{surveyteacher.surveyDone}" />     
-					    <p:graphicImage name="images/icons/Red pin.png" 
-					                    style="border:none; position: relative; left: 20px;"
-					                    rendered="#{!surveyteacher.surveyDone}" />     
-						<h:outputText value="#{surveyteacher.surveyDone}" rendered="false" />
+						<div align="center">
+						    <p:graphicImage name="images/icons/Green pin.png"  
+						                    style="border:none; position: relative; left: 0px;" 
+						                    rendered="#{surveyteacher.surveyDone}" />     
+						    <p:graphicImage name="images/icons/Red pin.png" 
+						                    style="border:none; position: relative; left: 0px;"
+						                    rendered="#{!surveyteacher.surveyDone}" />     
+							<h:outputText value="#{surveyteacher.surveyDone}" rendered="false" />
+						</div>
 					</p:column>
 
 					

@@ -63,11 +63,11 @@ public class ProfessorshipMBean extends BaseBean {
 
     private List<ProfessorshipCourseHours> professorshipCourseHours;
     
-    private List<TeacherLessonPlanTotHours> teacherLessonPlanTotHours;
+    private List<ProfessorshipLessonPlanCourseHours> professorshipLessonPlanCourseHours;
 
-    private List<TeacherLessonPlanTotHours> filteredTeacherLessonPlanTotHours;
+    private List<ProfessorshipLessonPlanCourseHours> filteredProfessorshipLessonPlanCourseHours;
     
-    private TeacherLessonPlanTotHours selectProfessorshipLessonPlan;
+    private ProfessorshipLessonPlanCourseHours selectProfessorshipLessonPlan;
     
     private Long Id;
     
@@ -77,6 +77,7 @@ public class ProfessorshipMBean extends BaseBean {
 	
 	private Date endDate = new Date();
    
+	private Boolean correctDate = true;
 	
 	
     public ProfessorshipMBean() {
@@ -128,7 +129,7 @@ public class ProfessorshipMBean extends BaseBean {
 	public void selectProfessorshipLessonPlan(SelectEvent ev) {
         try {
             if (ev.getObject() != null) {
-                this.selectProfessorshipLessonPlan = (TeacherLessonPlanTotHours) ev.getObject();
+                this.selectProfessorshipLessonPlan = (ProfessorshipLessonPlanCourseHours) ev.getObject();
                 System.out.println("Passou");
             } else {
                 this.selectProfessorshipLessonPlan = null;
@@ -176,30 +177,24 @@ public class ProfessorshipMBean extends BaseBean {
     }
 
         
-	public List<TeacherLessonPlanTotHours> getTeacherLesssonPlanTotHours() {
-		return teacherLessonPlanTotHours;
+	public List<ProfessorshipLessonPlanCourseHours> getProfessorshipLessonPlanCourseHours() {
+		return professorshipLessonPlanCourseHours;
 	}
 
 
-	public void setTeacherLessonPlanTotHours(
-			List<TeacherLessonPlanTotHours> teacherLessonPlanHours) {
-		this.teacherLessonPlanTotHours = teacherLessonPlanHours;
+	public void setProfessorshipLessonPlanCourseHours(
+			List<ProfessorshipLessonPlanCourseHours> professorshipLessonPlanCourseHours) {
+		this.professorshipLessonPlanCourseHours = professorshipLessonPlanCourseHours;
 	}
 
 
-	public List<TeacherLessonPlanTotHours> getTeacherLessonPlanTotHours() {
-		return teacherLessonPlanTotHours;
-	}
-
-
-
-	public TeacherLessonPlanTotHours getSelectProfessorshipLessonPlan() {
+	public ProfessorshipLessonPlanCourseHours getSelectProfessorshipLessonPlan() {
 		return selectProfessorshipLessonPlan;
 	}
 
 
 	public void setSelectProfessorshipLessonPlan(
-			TeacherLessonPlanTotHours selectProfessorshipLessonPlan) {
+			ProfessorshipLessonPlanCourseHours selectProfessorshipLessonPlan) {
 		this.selectProfessorshipLessonPlan = selectProfessorshipLessonPlan;
 	}
 
@@ -266,23 +261,36 @@ public class ProfessorshipMBean extends BaseBean {
 
 		Teacher teacher = new Teacher();
 		Course course = new Course();
-		
+		Calendar calendar = Calendar.getInstance();
 
-		this.teacherLessonPlanTotHours = new ArrayList<TeacherLessonPlanTotHours>();
+		this.professorshipLessonPlanCourseHours = new ArrayList<ProfessorshipLessonPlanCourseHours>();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
-		try {
-	        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+        
+        if (this.correctDate.equals(true)) {
+        	this.correctDate = false;
+        	
+			try {
+				this.startDate = sdf.parse("01-10-2015 00:00:00");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        Boolean daylight = timezone.inDaylightTime(this.startDate);
 
-	        // 01:00:00 because of daylight computation
-			this.startDate = sdf.parse("01-10-2015 01:00:00");
-	        Boolean daylight = timezone.inDaylightTime(this.startDate);
-	        
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        Long timeOffset = daylight ? (60 * 60 * 1000) : 0L;
+        
+        calendar.setTime(this.getStartDate());
+        calendar.setTimeZone(timezone);
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
+        		      0, 0, 0);
+       	calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
+       	
+       	this.startDate = calendar.getTime();
 		
 		
         System.out.println("Start Time : " + sdf.format(this.startDate));
@@ -310,21 +318,21 @@ public class ProfessorshipMBean extends BaseBean {
 				e.printStackTrace();
 			}
 */            
-            this.teacherLessonPlanTotHours.add(new TeacherLessonPlanTotHours(id, teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
+            this.professorshipLessonPlanCourseHours.add(new ProfessorshipLessonPlanCourseHours(id, teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
         }
     }
 
 
 
-	public List<TeacherLessonPlanTotHours> getFilteredTeacherLessonPlanTotHours() {
-		return filteredTeacherLessonPlanTotHours;
+	public List<ProfessorshipLessonPlanCourseHours> getFilteredProfessorshipLessonPlanCourseHours() {
+		return filteredProfessorshipLessonPlanCourseHours;
 	}
 
 
 
-	public void setFilteredTeacherLessonPlanTotHours(
-			List<TeacherLessonPlanTotHours> filteredTeacherLessonPlanTotHours) {
-		this.filteredTeacherLessonPlanTotHours = filteredTeacherLessonPlanTotHours;
+	public void setFilteredProfessorshipLessonPlanCourseHours(
+			List<ProfessorshipLessonPlanCourseHours> filteredProfessorshipLessonPlanCourseHours) {
+		this.filteredProfessorshipLessonPlanCourseHours = filteredProfessorshipLessonPlanCourseHours;
 	}
 
 

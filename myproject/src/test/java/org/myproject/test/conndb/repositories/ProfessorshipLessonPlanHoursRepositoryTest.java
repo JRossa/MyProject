@@ -4,10 +4,15 @@ package org.myproject.test.conndb.repositories;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
+
+
+
 
 
 
@@ -35,13 +40,13 @@ import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.repositories.TeacherLessonPlanHoursRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.support.professorship.ProfessorshipCourseHours;
-import org.myproject.support.professorship.TeacherLessonPlanTotHours;
+import org.myproject.support.professorship.ProfessorshipLessonPlanCourseHours;
 import org.myproject.test.conndb.AbstractDatabaseTest;
 
 
-public class TeacherLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
+public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
 
-	private static final Logger LOGGER = Logger.getLogger(TeacherLessonPlanHoursRepositoryTest.class);
+	private static final Logger LOGGER = Logger.getLogger(ProfessorshipLessonPlanHoursRepositoryTest.class);
 
 	private Long t_id = 2L;
  
@@ -63,7 +68,7 @@ public class TeacherLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
 	}
 	
 	
-    @Test
+
 	public void testTeacherCourseHoursRepository() {
 		
 		Teacher teacher = new Teacher();
@@ -72,7 +77,7 @@ public class TeacherLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
 		Date startDate = new Date();
 		Date endDate = new Date();
 
-		List<TeacherLessonPlanTotHours> teacherLesssonPlanTotHours = new ArrayList<TeacherLessonPlanTotHours>();
+		List<ProfessorshipLessonPlanCourseHours> teacherLesssonPlanTotHours = new ArrayList<ProfessorshipLessonPlanCourseHours>();
 		
 		 		
 		
@@ -107,12 +112,12 @@ public class TeacherLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
             teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
             course = courseRepository.findOne(Long.parseLong(c[1].toString()));
             
-            teacherLesssonPlanTotHours.add(new TeacherLessonPlanTotHours(teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
+            teacherLesssonPlanTotHours.add(new ProfessorshipLessonPlanCourseHours(teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
         }
 
         // Verificação
 
-        for (TeacherLessonPlanTotHours th : teacherLesssonPlanTotHours) {
+        for (ProfessorshipLessonPlanCourseHours th : teacherLesssonPlanTotHours) {
             System.out.println("Nome    :  " + th.getTeacher().getFullName());
             System.out.println("Course    :  " + th.getCourse().getName());
             System.out.println("Start_Date    :  " + th.getStartDate());
@@ -124,5 +129,37 @@ public class TeacherLessonPlanHoursRepositoryTest extends AbstractDatabaseTest {
 	
 	}
 
+    @Test
+	public void testHoursRepository() {
+  
+    Date startDate = new Date();
+    Calendar calendar = Calendar.getInstance();	
+    Date endDate = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    
+    TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
+
+ 	try {
+		startDate = sdf.parse("01-10-2015 00:00:00");
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+    Boolean daylight = timezone.inDaylightTime(startDate);
+
+    Long timeOffset = daylight ? (60 * 60 * 1000) : 0L;
+    
+    calendar.setTime(startDate);
+    calendar.setTimeZone(timezone);
+    calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
+    		      0, 0, 0);
+   
+   	calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
+   	
+   	startDate = calendar.getTime();
+   	System.out.println("Date   :  " + startDate + "   " + timeOffset + "   " + daylight);
+    }
+    
 	
 }

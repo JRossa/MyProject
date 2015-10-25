@@ -8,7 +8,7 @@ import org.myproject.model.utils.BaseEntity;
 
 
 
-public class TeacherLessonPlanTotHours extends BaseEntity<Long> {
+public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = 672044499845497410L;
 
@@ -24,12 +24,12 @@ public class TeacherLessonPlanTotHours extends BaseEntity<Long> {
 
     
     
-	public TeacherLessonPlanTotHours() {
+	public ProfessorshipLessonPlanCourseHours() {
 		super();
 	}
 	
 
-	public TeacherLessonPlanTotHours(Long id, Teacher teacher, Course course,
+	public ProfessorshipLessonPlanCourseHours(Long id, Teacher teacher, Course course,
 			Date startDate, Date endDate, Integer hours) {
 		super();
 
@@ -42,7 +42,7 @@ public class TeacherLessonPlanTotHours extends BaseEntity<Long> {
 		this.hours = hours;
 	}
 
-	public TeacherLessonPlanTotHours(Teacher teacher, Course course,
+	public ProfessorshipLessonPlanCourseHours(Teacher teacher, Course course,
 			                           Date startDate, Date endDate, Integer hours) {
 		super();
 		

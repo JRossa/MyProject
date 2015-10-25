@@ -31,6 +31,8 @@ import javax.inject.Inject;
 
 
 
+
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.myproject.model.entities.Course;
@@ -140,7 +142,7 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
     TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
 
  	try {
-		startDate = sdf.parse("01-10-2015 00:00:00");
+		startDate = sdf.parse("01-11-2015 00:00:00");
 	} catch (ParseException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -159,6 +161,8 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
    	
    	startDate = calendar.getTime();
    	System.out.println("Date   :  " + startDate + "   " + timeOffset + "   " + daylight);
+   	System.out.println("Date   :  " + timezone.getOffset(startDate.getTime()));
+   	System.out.println("Date   :  " + startDate.getTimezoneOffset());
     }
     
 	

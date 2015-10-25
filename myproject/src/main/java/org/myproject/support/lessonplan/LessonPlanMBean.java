@@ -927,7 +927,8 @@ public class LessonPlanMBean extends BaseBean {
         	this.lessonPlan.setDaylight(0);
         }
         	
-        Long timeOffset = daylight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+//        Long timeOffset = daylight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+        Long timeOffset = Integer.toUnsignedLong(timezone.getOffset(this.lessonPlan.getStartDate().getTime())); 
         
         Calendar calendar = Calendar.getInstance();
         

@@ -188,7 +188,7 @@ public class JasperReportsMBean extends AbstractBaseReportBean {
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
         Boolean dayLight = timezone.inDaylightTime(date);
         
-        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
+        Long timeOffset = Integer.toUnsignedLong(timezone.getOffset(date.getTime()));
 
         Calendar calendar = Calendar.getInstance();
         

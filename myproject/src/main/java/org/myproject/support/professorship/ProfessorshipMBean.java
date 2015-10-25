@@ -280,9 +280,9 @@ public class ProfessorshipMBean extends BaseBean {
 			}
         }
         
-        Boolean daylight = timezone.inDaylightTime(this.startDate);
+//        Boolean daylight = timezone.inDaylightTime(this.startDate);
 
-        Long timeOffset = daylight ? (60 * 60 * 1000) : 0L;
+        Long timeOffset = Integer.toUnsignedLong(timezone.getOffset(startDate.getTime()));  
         
         calendar.setTime(this.getStartDate());
         calendar.setTimeZone(timezone);
@@ -360,42 +360,9 @@ public class ProfessorshipMBean extends BaseBean {
 	}
 
 
-    public Date correctDayLight (Date date) {
-    	
-        TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
-        Boolean dayLight = timezone.inDaylightTime(date);
-        
-        Long timeOffset = dayLight ? timezone.getOffset(System.currentTimeMillis()) : 0L;
-
-        Calendar calendar = Calendar.getInstance();
-        
-        calendar.setTime(date);
-        
-        calendar.setTimeZone(timezone);
-
-        return calendar.getTime();
-    }
-    
-    
     public String executeLessonPlan (String compileFileName) {
     	
-    	// Call JasperReport method to do it
-        try {
-            
-            if (this.startDate != null) {
-            	String strStartDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getStartDate());
-            	
-            }
- 
-            if (this.endDate != null) {
-           	String strEndDate = new SimpleDateFormat("yyyy-MM-dd").format(this.getEndDate());
-           }
-
-
-        } catch (Exception e) {
-            // make your own exception handling
-            e.printStackTrace();
-        }
+    	// TODO - Call JasperReport method to do it
 
         return null;
     }

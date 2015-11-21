@@ -17,7 +17,7 @@
 		<h:form>
 		<p:breadCrumb>
    			<p:menuitem value="" url="/pages/admin/admin.am" />
-    	 	<p:menuitem value="#{labels.menu_professorship_list}" url="/pages/admin/listProfessorshipLessonPlan.am" />
+    	 	<p:menuitem value="#{labels.menu_professorship_list_course}" url="/pages/admin/listProfessorshipCourseLessonPlan.am" />
  		</p:breadCrumb>
  		</h:form>
   	</ui:define>
@@ -39,12 +39,12 @@
 	
 
 		<f:view>
-			<f:event listener="#{professorshipMBean.onLoadProfessorshipLessonPlanTotHours('false')}" type="preRenderView" />
+			<f:event listener="#{professorshipMBean.onLoadProfessorshipLessonPlanTotHours('true')}" type="preRenderView" />
 		</f:view>
 		
 		<p:panel id="professorshipPanel" style="border: 0px;" >
 		
-			<h:form id="professorshipListlessonplanForm" >
+			<h:form id="professorshipCourseListlessonplanForm" >
 
 					<p:messages id="messagesGrid" showDetail="false" autoUpdate="true" closable="true" />
 					
@@ -81,19 +81,20 @@
 			                   		locale="#{languageMBean.locale}"
 			                   		value="#{professorshipMBean.endDate}" 
 			                   		readonlyInput="true" >
-			           		<p:ajax event="dateSelect" listener="#{professorshipMBean.valueChangedDate}" />
+			           		<p:ajax event="dateSelect" listener="#{professorshipMBean.valueChangedDate}" 
+			           		        update="numweeks" />
 			       			<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
        					</p:calendar>
 				        <h:message for="to" />
 						</h:panelGroup>
-						
+
 	           		<h:outputLabel for="numweeks" value="    #{labels.lessonplan_number_of_weeks} :   " />
 	
 	 	 			<p:selectOneMenu id="numweeks" 
 	 	 							 value="#{professorshipMBean.numberOfWeeks}"
 			 						 required="true"
 			 						 requiredMessage="#{labels.lessonplan_value_null}"
-			 						 valueChangeListener="#{professorshipMBean.valueChangedNumWeeks}"
+			 						 valueChangeListener="#{professorshipMBean.valueChangedCourseNumWeeks}"
 			 						 filter="true" filterMatchMode="contains"
 							         effect="fade"
 									 maxlength="60" size="40"
@@ -106,10 +107,10 @@
 			                                   itemValue="#{weeks.id}" itemLabel="#{weeks.name}"  
 								               style="width: 260px;"/>
 			        </p:selectOneMenu>
-
+						
 		           	<p:commandButton  icon="ui-icon-myReport" style="width: 150px;"
 		          	                  value="#{labels.lessonplan_report_execute}"
-		          	                  update=":professorshipListlessonplanForm, professorshipDataTable"
+		          	                  update=":professorshipCourseListlessonplanForm, professorshipDataTable"
 		          	                  action="#{professorshipMBean.executeLessonPlan('listLessonPlan')}"  ajax="false" />
 				</p:panelGrid>			
 
@@ -134,7 +135,7 @@
 					selectionMode="single" >
 
 					<p:ajax event="rowSelect" listener="#{professorshipMBean.selectProfessorshipLessonPlan}" 
-					                          update=":professorshipListlessonplanForm, professorshipDataTable" />
+					                          update=":professorshipCourseListlessonplanForm, professorshipDataTable" />
 					<p:ajax event="page" listener="#{professorshipMBean.unselectProfessorshipLessonPlan}"  />
 					<p:ajax event="rowUnselect" listener="#{professorshipMBean.unselectProfessorshipLessonPlan}"  />
 
@@ -155,16 +156,16 @@
 					          filterStyle="width: 80px;" >
 						<h:outputText value="#{professorship.teacher.fullName}" />
 					</p:column>
-					
+
 					<p:column headerText="#{labels.professorship_course_code}" style="width: 20%;"
-					          sortBy="#{professorship.course.code}"
+							  sortBy="#{professorship.course.code}"
 					          filterBy="#{professorship.course.code}" filterMatchMode="contains" 
 					          filterStyle="width: 80px;" >
-					    <div align="center" >
+					    <div align="center"> 
 							<h:outputText value="#{professorship.course.code}" />
 						</div>
 					</p:column>
-
+					
 					<p:column headerText="#{labels.professorship_begin_date}" footerText="" style="width: 15%;"
 					          filterStyle="width: 40px;" >
 					    <div align="center">      

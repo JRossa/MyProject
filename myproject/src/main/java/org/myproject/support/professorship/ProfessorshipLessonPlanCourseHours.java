@@ -2,6 +2,10 @@ package org.myproject.support.professorship;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Period;
+import org.joda.time.Weeks;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.utils.BaseEntity;
@@ -21,6 +25,8 @@ public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
     private Date endDate;
 
     private Integer hours;
+    
+    private Double weekHours;
 
     
     
@@ -30,7 +36,7 @@ public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
 	
 
 	public ProfessorshipLessonPlanCourseHours(Long id, Teacher teacher, Course course,
-			Date startDate, Date endDate, Integer hours) {
+			Date startDate, Date endDate, Integer numOfWeeks, Integer hours) {
 		super();
 
 		super.setId(id);
@@ -40,10 +46,17 @@ public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.hours = hours;
+		
+
+       	if (numOfWeeks > 0) {
+       		this.weekHours = (double) this.hours / (double) numOfWeeks;
+       	} else {
+       		this.weekHours = (double) this.hours;
+       	}
 	}
 
 	public ProfessorshipLessonPlanCourseHours(Teacher teacher, Course course,
-			                           Date startDate, Date endDate, Integer hours) {
+			                           Date startDate, Date endDate, Integer numOfWeeks, Integer hours) {
 		super();
 		
 		this.teacher = teacher;
@@ -51,6 +64,13 @@ public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.hours = hours;
+
+       	
+       	if (numOfWeeks > 0) {
+       		this.weekHours = (double) this.hours / (double) numOfWeeks;
+       	} else {
+       		this.weekHours = (double) this.hours;
+       	}
 	}
 
 	public Teacher getTeacher() {
@@ -93,8 +113,13 @@ public class ProfessorshipLessonPlanCourseHours extends BaseEntity<Long> {
 		this.hours = hours;
 	}
 
+	public Double getWeekHours() {
+		return weekHours;
+	}
+
+	public void setWeekHours(Double weekHours) {
+		this.weekHours = weekHours;
+	}
+	
     // Team - add to Index
-    
-    
-    
 }

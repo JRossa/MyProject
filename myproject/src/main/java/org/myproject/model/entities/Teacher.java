@@ -36,13 +36,13 @@ import javax.persistence.UniqueConstraint;
 //                                                                                                * "SEMESTER"
 //                                                                                                */}))
 
-/*
+// VER - Não funciona só com t, é preciso ter pelo menos 2 itens
+
 @NamedQueries(value = {
-		// VER - Não funciona só com t, é preciso ter pelo menos 2 itens
 		@NamedQuery(name = "Teacher.findAllTeachers", query = "select t.fullName, t.idNumber from Teacher t"),
 		@NamedQuery(name = "Teacher.findCatNameTeachers", query = "select t.category, t.fullName from Teacher t"),
 		@NamedQuery(name = "Teacher.CategoryName", query = "select t.category, t.fullName, t.contract, t.id  from Teacher t") })
-*/
+
 
 
 @Entity

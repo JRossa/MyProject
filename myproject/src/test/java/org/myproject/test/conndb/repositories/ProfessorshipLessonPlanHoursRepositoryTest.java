@@ -33,7 +33,11 @@ import javax.inject.Inject;
 
 
 
+
+
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Weeks;
 import org.junit.Test;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Teacher;
@@ -70,7 +74,7 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
 	}
 	
 	
-
+	@Test
 	public void testTeacherCourseHoursRepository() {
 		
 		Teacher teacher = new Teacher();
@@ -86,8 +90,8 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
 		try {
-			startDate = sdf.parse("01-10-2015 00:00:00");
-			endDate = sdf.parse("30-10-2015 00:00:00");
+			startDate = sdf.parse("04-10-2015 00:00:00");
+			endDate = sdf.parse("10-10-2015 00:00:00");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +110,10 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
 */
 		LOGGER.info(teacher);
 
+	   	DateTime dateTime1 = new DateTime(startDate);
+	   	DateTime dateTime2 = new DateTime(endDate);
+	   	int weeks = Weeks.weeksBetween(dateTime1, dateTime2).getWeeks();
+
         for (Object[] c : teacherHours) {
             System.out.println("TeacherId    :  " + c[0].toString());
             System.out.println("CourseId     :  " + c[1].toString());
@@ -114,7 +122,8 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
             teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
             course = courseRepository.findOne(Long.parseLong(c[1].toString()));
             
-            teacherLesssonPlanTotHours.add(new ProfessorshipLessonPlanCourseHours(teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
+            teacherLesssonPlanTotHours.add(new ProfessorshipLessonPlanCourseHours(teacher, course, 
+            		               startDate, endDate, weeks, Integer.parseInt(c[2].toString())));
         }
 
         // Verificação
@@ -125,13 +134,14 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
             System.out.println("Start_Date    :  " + th.getStartDate());
             System.out.println("End_Date    :  " + th.getEndDate());
             System.out.println("Hours    :  " + th.getHours());
-            
+            System.out.println("WeekHours    :  " + th.getWeekHours());
         }
  
 	
 	}
 
-    @Test
+
+
 	public void testHoursRepository() {
   
     Date startDate = new Date();
@@ -142,7 +152,8 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
     TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
 
  	try {
-		startDate = sdf.parse("01-11-2015 00:00:00");
+		startDate = sdf.parse("01-10-2015 00:00:00");
+		endDate = sdf.parse("30-10-2015 00:00:00");
 	} catch (ParseException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -163,6 +174,12 @@ public class ProfessorshipLessonPlanHoursRepositoryTest extends AbstractDatabase
    	System.out.println("Date   :  " + startDate + "   " + timeOffset + "   " + daylight);
    	System.out.println("Date   :  " + timezone.getOffset(startDate.getTime()));
    	System.out.println("Date   :  " + startDate.getTimezoneOffset());
+   	
+   	DateTime dateTime1 = new DateTime(startDate);
+   	DateTime dateTime2 = new DateTime(endDate);
+   	int weeks = Weeks.weeksBetween(dateTime1, dateTime2).getWeeks();
+   	
+   	System.out.println("Date   :  " + weeks);
     }
     
 	

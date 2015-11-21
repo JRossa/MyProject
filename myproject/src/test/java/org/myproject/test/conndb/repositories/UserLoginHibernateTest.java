@@ -1,6 +1,5 @@
 package org.myproject.test.conndb.repositories;
 
-import org.myproject.dao.UserDao;
 import org.myproject.model.entities.LogUser;
 
 import java.util.List;
@@ -17,10 +16,10 @@ import org.myproject.test.conndb.AbstractDatabaseTest;
 //@ContextConfiguration(locations = {"/ctx-myproject-test-conndb.xml"})
 //@Transactional
 //@TransactionConfiguration(defaultRollback=false)
-public class UserLoginHibernateDaoTest extends AbstractDatabaseTest {
+public class UserLoginHibernateTest extends AbstractDatabaseTest {
 	
 
-	private static final Logger LOGGER = Logger.getLogger(UserLoginHibernateDaoTest.class);
+	private static final Logger LOGGER = Logger.getLogger(UserLoginHibernateTest.class);
 	
 	
 	// @Inject    
@@ -29,11 +28,6 @@ public class UserLoginHibernateDaoTest extends AbstractDatabaseTest {
 	// <jpa:repositories base-package="org.myproject.model.repositories" />
 	
 	
-	UserDao userDao;
-	
-	public UserLoginHibernateDaoTest () {
-		
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Test

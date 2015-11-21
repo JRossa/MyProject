@@ -13,11 +13,15 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Weeks;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
 import org.myproject.model.entities.Professorship;
@@ -77,7 +81,10 @@ public class ProfessorshipMBean extends BaseBean {
 	
 	private Date endDate = new Date();
    
+	private Integer numberOfWeeks;
+	
 	private Boolean correctDate = true;
+	
 	
 	
     public ProfessorshipMBean() {
@@ -256,7 +263,8 @@ public class ProfessorshipMBean extends BaseBean {
         }
     }
 
-    public void onLoadProfessorshipLessonPlanTotHours() {
+    
+    public void onLoadProfessorshipLessonPlanTotHours(Boolean showCourse) {
         System.out.println("onLoadProfessorshipLessonPlanTotHours");
 
 		Teacher teacher = new Teacher();
@@ -270,7 +278,6 @@ public class ProfessorshipMBean extends BaseBean {
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
         
         if (this.correctDate.equals(true)) {
-        	this.correctDate = false;
         	
 			try {
 				this.startDate = sdf.parse("01-10-2015 00:00:00");
@@ -290,44 +297,72 @@ public class ProfessorshipMBean extends BaseBean {
         		      0, 0, 0);
        	calendar.setTimeInMillis(calendar.getTimeInMillis() + timeOffset);
        	
-       	this.startDate = calendar.getTime();
+       	this.startDate.setTime(calendar.getTimeInMillis());
 		
 		
         System.out.println("Start Time : " + sdf.format(this.startDate));
         System.out.println("End Time   : " + sdf.format(this.endDate));
-		
+
+        if (this.correctDate.equals(true)) {
+	       	DateTime dateTime1 = new DateTime(this.startDate);
+	       	DateTime dateTime2 = new DateTime(this.endDate);
+	
+	       	this.numberOfWeeks = (int) Math.round(Days.daysBetween(dateTime1, dateTime2).getDays() / 7.0);
+	
+	    	this.correctDate = false;
+        }
         
-        List<Object[]> teacherHours = 
-            		this.teacherLessonPlanHoursRepository.findTeacherCoursesHoursBetweenStartDateAndEndDate(this.startDate, this.endDate);
+        if (showCourse.equals(true)) {
+	        List<Object[]> teacherHours = 
+	            		this.teacherLessonPlanHoursRepository.findTeacherCoursesHoursBetweenStartDateAndEndDate(this.startDate, this.endDate);
+	
+	        Long id = 0L;
+	        for (Object[] c : teacherHours) {
+	            System.out.println("TeacherId    :  " + c[0].toString());
+	            System.out.println("CourseId     :  " + c[1].toString());
+	            System.out.println("Hours        :  " + c[2].toString());
+	            System.out.println("Weeks        :  " + this.numberOfWeeks);
+	            
+	            teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
+	            course = courseRepository.findOne(Long.parseLong(c[1].toString()));
 
-        Long id = 0L;
-        for (Object[] c : teacherHours) {
-            System.out.println("TeacherId    :  " + c[0].toString());
-            System.out.println("CourseId     :  " + c[1].toString());
-            System.out.println("Hours        :  " + c[2].toString());
-
-            teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
-            course = courseRepository.findOne(Long.parseLong(c[1].toString()));
-            
-            id++;
+	            id++;
 /*            
-            try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	            try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 */            
-            this.professorshipLessonPlanCourseHours.add(new ProfessorshipLessonPlanCourseHours(id, teacher, course, startDate, endDate, Integer.parseInt(c[2].toString())));
+	            this.professorshipLessonPlanCourseHours.add(new ProfessorshipLessonPlanCourseHours(id, teacher, course, 
+	            		              this.startDate, this.endDate, this.numberOfWeeks, Integer.parseInt(c[2].toString())));
+	        } 
+	        
+        } else {
+		    List<Object[]> teacherHours = 
+	            		this.teacherLessonPlanHoursRepository.findTeacherHoursBetweenStartDateAndEndDate(this.startDate, this.endDate);
+	
+	        Long id = 0L;
+	        for (Object[] c : teacherHours) {
+	            System.out.println("TeacherId    :  " + c[0].toString());
+	            System.out.println("Hours        :  " + c[1].toString());
+	
+	            teacher = teacherRepository.findOne(Long.parseLong(c[0].toString()));
+	            course = new Course();
+	            
+	            id++;
+
+	            this.professorshipLessonPlanCourseHours.add(new ProfessorshipLessonPlanCourseHours(id, teacher, course, 
+	            					  this.startDate, this.endDate, this.numberOfWeeks, Integer.parseInt(c[1].toString())));
+	        }
         }
     }
-
 
 
 	public List<ProfessorshipLessonPlanCourseHours> getFilteredProfessorshipLessonPlanCourseHours() {
 		return filteredProfessorshipLessonPlanCourseHours;
 	}
-
 
 
 	public void setFilteredProfessorshipLessonPlanCourseHours(
@@ -336,11 +371,9 @@ public class ProfessorshipMBean extends BaseBean {
 	}
 
 
-
 	public Date getStartDate() {
 		return startDate;
 	}
-
 
 
 	public void setStartDate(Date startDate) {
@@ -348,11 +381,9 @@ public class ProfessorshipMBean extends BaseBean {
 	}
 
 
-
 	public Date getEndDate() {
 		return endDate;
 	}
-
 
 
 	public void setEndDate(Date endDate) {
@@ -360,7 +391,17 @@ public class ProfessorshipMBean extends BaseBean {
 	}
 
 
-    public String executeLessonPlan (String compileFileName) {
+    public Integer getNumberOfWeeks() {
+		return numberOfWeeks;
+	}
+
+
+	public void setNumberOfWeeks(Integer numberOfWeeks) {
+		this.numberOfWeeks = numberOfWeeks;
+	}
+
+
+	public String executeLessonPlan (String compileFileName) {
     	
     	// TODO - Call JasperReport method to do it
 
@@ -383,9 +424,16 @@ public class ProfessorshipMBean extends BaseBean {
             
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
             addMessage(message);
+        } else {
+	       	DateTime dateTime1 = new DateTime(this.startDate);
+	       	DateTime dateTime2 = new DateTime(this.endDate);
+	
+	       	this.numberOfWeeks = (int) Math.round(Days.daysBetween(dateTime1, dateTime2).getDays() / 7.0);
+
         }
     }    
 
+    
     public String getResourceProperty(String resource, String label) {
         Application application = FacesContext.getCurrentInstance().getApplication();
         ResourceBundle bundle = application.getResourceBundle(FacesContext.getCurrentInstance(), resource);
@@ -397,5 +445,22 @@ public class ProfessorshipMBean extends BaseBean {
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
 
+    public void valueChangedNumWeeks (ValueChangeEvent valueChangeEvent) {
+    	String msg = valueChangeEvent.getNewValue().toString();
+    	
+    	this.onLoadProfessorshipLessonPlanTotHours(false);
+    	
+    	System.out.println("value changed..." + msg);
+    }
+
+    
+    public void valueChangedCourseNumWeeks (ValueChangeEvent valueChangeEvent) {
+    	String msg = valueChangeEvent.getNewValue().toString();
+    	
+    	this.onLoadProfessorshipLessonPlanTotHours(true);
+    	
+    	System.out.println("value changed..." + msg);
+    }
 }

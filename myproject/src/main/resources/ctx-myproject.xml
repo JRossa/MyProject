@@ -15,7 +15,8 @@
 	<jpa:repositories base-package="org.myproject.model.repositories" />
 
     <bean id="sessionMBean" class="org.myproject.support.logsession.SessionMBean" />
-
+	<bean id="LogUserDao" class="org.myproject.dao.LogUserDao" />
+	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">

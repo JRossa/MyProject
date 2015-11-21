@@ -31,6 +31,7 @@ public class TeacherNameRepositoryTest extends AbstractDatabaseTest {
     @Inject
     ProfessorshipRepository professorshipRepository;
 
+ 
     public void testTeacherByNameRepository1() {
 
         List<Teacher> teachers = em.createNamedQuery("Teacher.findAllTeachers", Teacher.class).getResultList();
@@ -43,6 +44,7 @@ public class TeacherNameRepositoryTest extends AbstractDatabaseTest {
         // LOGGER.info(teachers);
     }
 
+    @Test
     public void testTeacherByNameRepository2() {
 
         List<Object[]> teachers = em.createNamedQuery("Teacher.findCatNameTeachers").getResultList();
@@ -62,7 +64,7 @@ public class TeacherNameRepositoryTest extends AbstractDatabaseTest {
         LOGGER.info(teacher);
     }
 
-    @Test
+
     public void filterTest5() {
         List <Teacher> teacher = teacherRepository.findByExecutionYear("2014/2015");
 

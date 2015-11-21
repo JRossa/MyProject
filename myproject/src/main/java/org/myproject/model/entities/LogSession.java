@@ -41,6 +41,11 @@ public class LogSession extends BaseEntity<Long> {
     @Column(name = "END_DATE")
     private Date endDate;
 
+    @Column(name = "SESSIONID")
+    private String sessionId;
+    
+    @Column(name = "WEBSERVICE")
+    private Boolean webService;
     
     
     public LogSession() {
@@ -83,7 +88,23 @@ public class LogSession extends BaseEntity<Long> {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }   
+    }
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public Boolean getWebService() {
+		return webService;
+	}
+
+	public void setWebService(Boolean webService) {
+		this.webService = webService;
+	}   
     
     
 }

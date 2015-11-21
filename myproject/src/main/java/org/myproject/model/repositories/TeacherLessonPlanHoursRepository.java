@@ -17,9 +17,16 @@ public interface TeacherLessonPlanHoursRepository extends JpaRepository<TeacherL
 	@Query(value="SELECT TEACHER_ID, COURSE_ID, ROUND(SUM(HOURS)) AS TOT_HOURS FROM tbl_TEACHER_LESSON_PLAN_HOURS "
 	           + "WHERE START_DATE >= :startDate AND "
 	           + "END_DATE <= :endDate "
-	           + "GROUP BY TEACHER_ID ", nativeQuery = true)
+	           + "GROUP BY TEACHER_ID, COURSE_ID ", nativeQuery = true)
 	public List <Object[]> findTeacherCoursesHoursBetweenStartDateAndEndDate(@Param("startDate") Date startDate,
 	                                                                         @Param("endDate") Date endDate);
+
+	@Query(value="SELECT TEACHER_ID, ROUND(SUM(HOURS)) AS TOT_HOURS FROM tbl_TEACHER_LESSON_PLAN_HOURS "
+	           + "WHERE START_DATE >= :startDate AND "
+	           + "END_DATE <= :endDate "
+	           + "GROUP BY TEACHER_ID ", nativeQuery = true)
+	public List <Object[]> findTeacherHoursBetweenStartDateAndEndDate(@Param("startDate") Date startDate,
+	                                                                  @Param("endDate") Date endDate);
 
 	@Query(value="SELECT TEACHER_ID, COURSE_ID, ROUND(SUM(HOURS)) AS TOT_HOURS FROM tbl_TEACHER_LESSON_PLAN_HOURS "
 	           + "WHERE TEACHER_ID = :teacherId AND "

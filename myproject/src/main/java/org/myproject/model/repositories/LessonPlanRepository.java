@@ -52,7 +52,7 @@ public interface LessonPlanRepository extends JpaRepository<LessonPlan, Long> {
 
 	
 	@Query(value="SELECT tbl_LESSON_PLAN.* FROM tbl_LESSON_PLAN "
-	           + "WHERE tbl_LESSON_PLAN.DESCRIPTION IS NULL ", nativeQuery = true)
+	           + "WHERE LENGTH(tbl_LESSON_PLAN.DESCRIPTION) < 2 ", nativeQuery = true)
 	public List <LessonPlan> findAllMissing();
 	
 

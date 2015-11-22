@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.jws.HandlerChain;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -28,6 +29,8 @@ import org.jboss.ws.api.annotation.EndpointConfig;
 
 /*
  * https://docs.jboss.org/author/display/WFLY8/WS-Security
+ * http://stackoverflow.com/questions/12319087/ws-security-endpointconfig-not-working?rq=1
+ * http://svn.apache.org/viewvc/cxf/trunk/systests/ws-security-examples/src/test/resources/org/apache/cxf/systest/wssec/examples/ut/DoubleItUt.wsdl?view=markup
  * 
  *
 @WebService
@@ -54,8 +57,10 @@ import org.jboss.ws.api.annotation.EndpointConfig;
 
 @WebService(serviceName="lessonplan/lessonplanws",
             targetNamespace = "http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy")
+// @EndpointConfig - not implemented
 @EndpointConfig(configFile = "WEB-INF/jaxws-endpoint-config.xml", configName = "Custom WS-Security Endpoint")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
+@HandlerChain(file="./jaxws-handler-chain.xml")
 public class LessonPlanManagement implements LessonPlanManagementWS {
 
 	@Resource
@@ -99,7 +104,6 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 
 	
 	@Override
-
 	@WebMethod
 	public ArrayList<LessonPlanUser> getData(String sessionId) {
 		

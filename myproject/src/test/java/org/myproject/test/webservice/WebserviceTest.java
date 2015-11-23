@@ -4,42 +4,23 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.Iterator;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
-import javax.xml.soap.Node;
 import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPConstants;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPHeader;
-import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
-import javax.xml.ws.handler.MessageContext.Scope;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 
 
@@ -172,7 +153,6 @@ public class WebserviceTest {
 		String wsURL = "http://localhost:8080/myproject/lessonplan/lessonplanws";
 		String SOAPAction = "";
 		
-		
 		URL url = new URL(wsURL);
 		URLConnection connection = url.openConnection();
 		HttpURLConnection httpConn = (HttpURLConnection) connection;
@@ -185,7 +165,7 @@ public class WebserviceTest {
 		bout.write(buffer);
 		byte[] b = bout.toByteArray();
 		
-  	    // Set the appropriate HTTP parameters.
+		// Set the appropriate HTTP parameters.
 		httpConn.setRequestProperty("Content-Length", String.valueOf(b.length));
 		httpConn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
 		httpConn.setRequestProperty("SOAPAction", SOAPAction);

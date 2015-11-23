@@ -164,7 +164,7 @@ public class LogUserDao {
 						   + "START_DATE = ? , USER_ID = ?  "
 						   + "WHERE ID = ?";
 			} else {
-				qry = "INSERT INTO tbl_SESSION (ACTIVE, END_DATE, SESSIONID, START_DATE, USER_ID) VALUES (?, ?, ?, ?, ?, ?)";
+				qry = "INSERT INTO tbl_SESSION (ACTIVE, END_DATE, SESSIONID, START_DATE, USER_ID) VALUES (?, ?, ?, ?, ?)";
 			}
 			
 			PreparedStatement ppStt;

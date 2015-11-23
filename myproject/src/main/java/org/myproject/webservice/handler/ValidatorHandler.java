@@ -44,6 +44,24 @@ public class ValidatorHandler implements SOAPHandler<SOAPMessageContext> {
         if ((outbound  != null) && (!outbound .booleanValue())) {
             handleInboundMessage(context);
             
+            if (context.get("USERNAME") == null || context.get("PASSWORD") == null) {
+            	generateSOAPErrMessage(soapMsg, "Access is denied.");
+            	
+     	       //tracking
+     	       try {
+				soapMsg.writeTo(System.out);
+     	       } catch (SOAPException e) {
+				// TODO Auto-generated catch block
+     	    	   e.printStackTrace();
+     	       } catch (IOException e) {
+				// TODO Auto-generated catch block
+     	    	   e.printStackTrace();
+     	       }
+           	
+            	return false;
+            	
+            }
+            
             if (context.get("USERNAME").equals("MyProject") &&
             		context.get("PASSWORD").equals("welcome")) {
             	

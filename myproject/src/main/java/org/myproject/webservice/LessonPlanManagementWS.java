@@ -1,5 +1,6 @@
 package org.myproject.webservice;
 
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.jws.WebMethod;
@@ -23,5 +24,6 @@ public interface LessonPlanManagementWS {
 	
 	@WebMethod
 	Integer setData(@WebParam(name="sessionId") String sessionId, @WebParam(name="title") String title, @WebParam(name="lessonPlan") String lessonPlan);
-	
+
+
 }

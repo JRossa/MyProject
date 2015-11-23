@@ -1,5 +1,9 @@
 package org.myproject.webservice;
 
+import java.awt.Image;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.jws.HandlerChain;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
@@ -55,7 +60,8 @@ import org.jboss.ws.api.annotation.EndpointConfig;
 */
 
 
-@WebService(serviceName="lessonplan/lessonplanws",
+@WebService(name="LessonPlanManagement",
+		    serviceName="lessonplan/lessonplanws",
             targetNamespace = "http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy")
 // @EndpointConfig - not implemented
 @EndpointConfig(configFile = "WEB-INF/jaxws-endpoint-config.xml", configName = "Custom WS-Security Endpoint")
@@ -65,6 +71,8 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 
 	@Resource
 	private LogUserDao user = new LogUserDao();
+	
+	final static String PATH = "D:\\mtomtest\\upload\\";
 	
 	@Resource
     private WebServiceContext ctx;
@@ -88,7 +96,6 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 	public String getAuthentication(String mobilePhone, String passwd) {
 
 		String sessionId = this.getSessionId();
-		System.out.println("SessionId : " + sessionId);
         
 		return user.autenticateUser(mobilePhone, passwd, sessionId);
 	}
@@ -118,5 +125,6 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 		return user.setData(sessionId, title, lessonPlan);
 		
 	}
-	
+
+ 
 }

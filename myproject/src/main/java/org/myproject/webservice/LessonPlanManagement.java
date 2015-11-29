@@ -57,16 +57,25 @@ import org.jboss.ws.api.annotation.EndpointConfig;
 	      }
 	)
 
+	// SOAP 1.2
+		<dependency>
+			<groupId>javax.xml.ws</groupId>
+			<artifactId>jaxws-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 */
 
 
 @WebService(name="LessonPlanManagement",
 		    serviceName="lessonplan/lessonplanws",
+		    portName="LessonPlanManagementPort",
             targetNamespace = "http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy"
            )
-// @EndpointConfig - not implemented
 @EndpointConfig(configFile = "WEB-INF/jaxws-endpoint-config.xml", configName = "Custom WS-Security Endpoint")
-@SOAPBinding(style = SOAPBinding.Style.RPC, parameterStyle = SOAPBinding.ParameterStyle.BARE)
+// http://stackoverflow.com/questions/5324051/webservices-bare-vs-wrapped
+@SOAPBinding(style = SOAPBinding.Style.RPC, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @HandlerChain(file="./jaxws-handler-chain.xml")
 public class LessonPlanManagement implements LessonPlanManagementWS {
 
@@ -103,6 +112,7 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 
 
 	@Override
+	@Oneway
 	@WebMethod
 	public void setFinished(String sessionId) {
 

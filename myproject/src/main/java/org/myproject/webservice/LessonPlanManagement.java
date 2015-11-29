@@ -62,10 +62,11 @@ import org.jboss.ws.api.annotation.EndpointConfig;
 
 @WebService(name="LessonPlanManagement",
 		    serviceName="lessonplan/lessonplanws",
-            targetNamespace = "http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy")
+            targetNamespace = "http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy"
+           )
 // @EndpointConfig - not implemented
 @EndpointConfig(configFile = "WEB-INF/jaxws-endpoint-config.xml", configName = "Custom WS-Security Endpoint")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
+@SOAPBinding(style = SOAPBinding.Style.RPC, parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @HandlerChain(file="./jaxws-handler-chain.xml")
 public class LessonPlanManagement implements LessonPlanManagementWS {
 
@@ -120,9 +121,9 @@ public class LessonPlanManagement implements LessonPlanManagementWS {
 
 	@Override
 	@WebMethod
-	public Integer setData(String sessionId, String title, String lessonPlan) {
+	public Integer setData(String sessionId, String title, String lessonPlan, String lessonDate) {
 		
-		return user.setData(sessionId, title, lessonPlan);
+		return user.setData(sessionId, title, lessonPlan, lessonDate);
 		
 	}
 

@@ -23,24 +23,38 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  
 public class GenerateQRCode {
  
-    // Tutorial: https://github.com/Slackify/zxing
+     // Tutorial: https://github.com/Slackify/zxing
  
-    public static void main(String[] args) {
-        String myCodeText = "N123 - 5ª - 1ºS 2015/2016";
-        
-        // change path as per your laptop/desktop location
-        String filePath = "D:/N123_5F_1S_1516.png";
+	private String codeText = "N123 - 5ª - 1ºS 2015/2016";
+    private String fileName = "D:/N123_5F_1S_1516.png";
+
+    
+	public GenerateQRCode() {
+		super();
+	}
+
+
+	public void generateQRCode(String codeText, String fileName) {
         int size = 125;
         String fileType = "png";
-        File myFile = new File(filePath);
+        
+        if (codeText == null || fileName == null) {
+        	return;
+        }
+
+        File qrCodeFile = new File(fileName);
+        
         try {
             Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText,BarcodeFormat.QR_CODE, size, size, hintMap);
+            
+            BitMatrix byteMatrix = qrCodeWriter.encode(codeText,BarcodeFormat.QR_CODE, size, size, hintMap);
+            
             int CrunchifyWidth = byteMatrix.getWidth();
             BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
                     BufferedImage.TYPE_INT_RGB);
+            
             image.createGraphics();
  
             Graphics2D graphics = (Graphics2D) image.getGraphics();
@@ -55,12 +69,17 @@ public class GenerateQRCode {
                     }
                 }
             }
-            ImageIO.write(image, fileType, myFile);
+            
+            ImageIO.write(image, fileType, qrCodeFile);
+            
         } catch (WriterException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         System.out.println("\n\nYou have successfully created QR Code.");
-    }       
+		
+	}
+	
 }

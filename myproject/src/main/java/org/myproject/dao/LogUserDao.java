@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,9 +14,10 @@ import java.util.TimeZone;
 
 
 
+
+
 import org.myproject.model.entities.LogSession;
 import org.myproject.model.entities.LogUser;
-
 import org.myproject.model.utils.PasswordHash;
 import org.myproject.model.utils.Stamp;
 
@@ -76,7 +78,7 @@ public class LogUserDao {
 		
 			Connection conn = Database.getConnection();
 			
-			String qry = "SELECT * FROM tbl_SESSION WHERE USER_ID = ? AND ACTIVE = TRUE";
+			String qry = "SELECT * FROM tbl_SESSION WHERE USER_ID = ? AND ACTIVE = TRUE ORDER BY START_DATE DESC LIMIT 1";
 			
 			PreparedStatement ppStt;
 		
@@ -221,7 +223,7 @@ public class LogUserDao {
       }
 
     
-    public void sessionEnd(String username) {
+    public void sessionEnd(String username, String userSessionId) {
     	 
     	if (username == null) {
     		return;
@@ -238,7 +240,7 @@ public class LogUserDao {
     	
 		try {
 			session = this.findOne(sessionId);
-	    	System.out.println("endSession username : " + session.getSessionId());
+	    	System.out.println("endSession username : " + session.getSessionId() + "  sessionId : " + userSessionId);
 			
 	    	session.setActive(false);  
 	    	session.setEndDate(new Date());
@@ -355,7 +357,7 @@ public class LogUserDao {
 		
 		user = loadData(sessionId);
 		
-		this.sessionEnd(user.getUsername());
+		this.sessionEnd(user.getUsername(), sessionId);
 		user.setTeacherId(-1L);
 		
 	}
@@ -525,7 +527,8 @@ public class LogUserDao {
 	}
 	
 	
-	public Integer setData(String sessionId, String title, String lessonPlan) {
+
+	public Integer setData(String sessionId, String title, String lessonPlan, String lessonDate) {
 		ArrayList<LessonPlanUser> lstDegrees = new ArrayList<LessonPlanUser>();
 		
 		user = loadData(sessionId);
@@ -533,7 +536,7 @@ public class LogUserDao {
 		if (user.getTeacherId() < 0) {
 			return null;
 		}
-		System.out.println("setData " + sessionId + "   " + title);	
+		System.out.println("setData " + sessionId + "   " + title + "  Date : " + lessonDate);	
 		
         TimeZone timezone = TimeZone.getTimeZone("Europe/Lisbon");
 
@@ -583,7 +586,14 @@ public class LogUserDao {
 				
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTimeZone(timezone);
-				calendar.setTime(new Date());
+				
+				if (lessonDate.equals("")) {
+					calendar.setTime(new Date());
+				} else {
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = formatter.parse(lessonDate);
+					calendar.setTime(date);
+				}
 				
 				lpu.setTeacherId(user.getTeacherId());
 				
@@ -624,6 +634,8 @@ public class LogUserDao {
 		        	lpu.setDaylight(0);
 		        }
 
+		        lpu.setDescription(lessonPlan);
+		        
 		        System.out.println("Title  : " + lpu.getTitle());
 
 		        System.out.println("StartDate  : " + lpu.getStartDate());

@@ -2,10 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-		xmlns:f="http://java.sun.com/jsf/core"
-		xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:p="http://primefaces.org/ui">
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui">
 
 	<ui:composition template="../../public/templateMenu.xhtml">
 
@@ -65,13 +65,21 @@
 					</p:column>
 					
 					<p:column headerText="#{labels.session_username}" footerText=""  style="width: 40%;" 
-					          filterBy="#{logSession.user.teacher.fullName}" filterMatchMode="contains" >
+					          filterBy="#{logSession.user.teacher.fullName}" filterMatchMode="contains"
+					          filterStyle="width: 140px;" >
 						<h:outputText value="#{logSession.user.teacher.fullName}" />
 						<br />
 						<h:outputText value="(#{logSession.user.userName})" />
 					</p:column>
 
-					<p:column headerText="#{labels.session_state}" style="width: 8%;" >
+					<p:column filterBy="#{logSession.active}" headerText="#{labels.session_state}" style="width: 8%;" >
+			            <f:facet name="filter">
+			                <p:selectOneButton onchange="PF('logSessionDataTableWV').filter()">
+			                    <f:converter converterId="javax.faces.Boolean" />
+			                    <f:selectItem itemLabel="#{labels.session_on}" itemValue="true" />
+			                    <f:selectItem itemLabel="#{labels.session_off}" itemValue="false" />
+			                </p:selectOneButton>
+			            </f:facet>
 					    <p:graphicImage name="images/icons/Green pin.png"  
 					                    style="border:none; position: relative; left: 20px;" rendered="#{logSession.active}" />     
 					    <p:graphicImage name="images/icons/Red pin.png" 
@@ -79,7 +87,14 @@
 						<h:outputText value="#{logSession.active}" rendered="false" />
 					</p:column>
 					
-					<p:column headerText="#{labels.session_start_date}" style="width: 15%;" >
+					<p:column filterBy="#{logSession.startDate}" headerText="#{labels.session_start_date}" style="width: 15%;" 
+					          filterFunction="#{logSessionMBean.filterByDate}" >
+				        <f:facet name="filter" >
+				            <p:calendar id="cal1" pattern="yyyy-MM-dd" >
+				               <p:ajax event="dateSelect" oncomplete="PF('logSessionDataTableWV').filter()" update="logSessionDataTableId" />
+				               <p:ajax event="change" execute="@this" oncomplete="PF('logSessionDataTableWV').filter()" update="logSessionDataTableId"/>
+				            </p:calendar>
+				        </f:facet>
 						<h:outputText value="#{logSession.startDate}" >
 							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
 						</h:outputText>	

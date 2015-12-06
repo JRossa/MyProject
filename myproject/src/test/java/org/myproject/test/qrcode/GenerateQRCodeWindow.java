@@ -1,5 +1,7 @@
-package org.myproject.test.webservice;
+package org.myproject.test.qrcode;
 
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -14,10 +16,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
-import org.myproject.test.qrcode.GenerateQRCode;
+
+
 
 public class GenerateQRCodeWindow {
 
@@ -26,6 +31,7 @@ public class GenerateQRCodeWindow {
 	  private Text txtMessage;
 	  private Image image;
 	  private Label lblImage;
+	  private RGB qrColor = new RGB(0,0,0);
 	  
 	  GenerateQRCodeWindow() {
 		  display = new Display();
@@ -40,10 +46,35 @@ public class GenerateQRCodeWindow {
 		  txtMessage.setBounds(31, 31, 302, 84);
 
 		  lblImage = new Label(shell,SWT.NONE);
-		  lblImage.setBounds(120, 157, 125, 125);
+		  lblImage.setBounds(120, 187, 125, 125);
 	    
 		  shell.setText("Generate QRCode Application");
+	
 		  
+		  final Button b = new Button(shell, SWT.PUSH );
+		  b.setBounds(137, 140, 90, 30);
+		  
+		  final Label l = new Label(shell, SWT.BORDER);
+		  l.setBounds(127, 130, 110, 50);
+		  
+		  b.setBackground(new Color(display, qrColor));
+		  l.setBackground(new Color(display, qrColor));
+		  
+		  b.setText("Change Color");
+		  b.addSelectionListener(new SelectionAdapter() {
+		  public void widgetSelected(SelectionEvent e) {
+		    ColorDialog cd = new ColorDialog(shell);
+		    cd.setText("ColorDialog Select");
+		    cd.setRGB(new RGB(255, 255, 255));
+		    qrColor = cd.open();
+		    if (qrColor == null) {
+		    	return;
+		    }
+		    b.setBackground(new Color(display, qrColor));
+		    l.setBackground(new Color(display, qrColor));
+		  }
+		  });
+
 		  //         create the menu system
 		  Menu menu = new Menu(shell, SWT.BAR);
 	    // create a file menu and add an exit item
@@ -97,7 +128,7 @@ public class GenerateQRCodeWindow {
 				  if (selected != null) {
 					  System.out.println(selected);
 					  GenerateQRCode generateQRCode = new GenerateQRCode();
-					  generateQRCode.generateQRCode(txtMessage.getText(), selected);
+					  generateQRCode.generateQRCode(txtMessage.getText(), selected, qrColor);
 					  image = new Image(display, selected);
 					  lblImage.setImage(image);
 				  }

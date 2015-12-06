@@ -34,12 +34,14 @@
 </h:head>
 
 <h:body>
+    <div class="ui-fluid">
 	<p:dialog id="teacherHoursExecutionYearUpdateDlg" widgetVar="updateteacherHoursExecutionYearDialog"
 		      header="#{labels.teacher_update}" 
 		      visible="#{formTeacherUpdate.submitted and facesContext.validationFailed}"
 			  modal="true" 
 			  resizable="false" closable="false"
-			  showEffect="fade" hideEffect="explode" >
+			  showEffect="fade" hideEffect="explode" 
+			  responsive="true" >
 						  
 	<h:form id="formUpdateteacherHoursExecutionYear" enctype="multipart/form-data">
 
@@ -131,6 +133,7 @@
 			 
  	</h:form>	
 	</p:dialog>  
+	</div>
 </h:body>
 </html>
 

@@ -1133,7 +1133,7 @@ public class LessonPlanMBean extends BaseBean {
 
     public void delete() {
         if (this.selectedLessonPlan != null) {
-            this.teacherRepository.delete(this.selectedLessonPlan.getId());
+            this.lessonPlanRepository.delete(this.selectedLessonPlan.getId());
         }
     }
 

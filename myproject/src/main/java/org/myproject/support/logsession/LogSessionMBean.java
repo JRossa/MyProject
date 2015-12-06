@@ -1,10 +1,14 @@
 package org.myproject.support.logsession;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.LogSession;
 import org.myproject.model.repositories.LogSessionRepository;
@@ -112,5 +116,18 @@ public class LogSessionMBean extends BaseBean {
         this.selectedSession = null;
     }
         
+    
+    public boolean filterByDate(Object value, Object filter, Locale locale) {
+
+        if( filter == null ) {
+            return true;
+        }
+
+        if( value == null ) {
+            return false;
+        }
+
+        return DateUtils.truncatedEquals((Date) filter, (Date) value, Calendar.DATE);
+    }
 
 }

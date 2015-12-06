@@ -7,7 +7,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
  
+
 import javax.imageio.ImageIO;
+
+import org.eclipse.swt.graphics.RGB;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -34,7 +38,7 @@ public class GenerateQRCode {
 	}
 
 
-	public void generateQRCode(String codeText, String fileName) {
+	public void generateQRCode(String codeText, String fileName, RGB qrColor) {
         int size = 125;
         String fileType = "png";
         
@@ -60,8 +64,11 @@ public class GenerateQRCode {
             Graphics2D graphics = (Graphics2D) image.getGraphics();
             graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
-            graphics.setColor(Color.BLACK);
- 
+//            graphics.setColor(Color.BLACK);
+            
+            Color rgbColor = new Color(qrColor.red, qrColor.green, qrColor.blue);
+            graphics.setColor(rgbColor);
+           
             for (int i = 0; i < CrunchifyWidth; i++) {
                 for (int j = 0; j < CrunchifyWidth; j++) {
                     if (byteMatrix.get(i, j)) {

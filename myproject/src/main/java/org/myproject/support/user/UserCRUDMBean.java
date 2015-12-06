@@ -1,6 +1,8 @@
 package org.myproject.support.user;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
@@ -18,11 +20,13 @@ import javax.inject.Named;
 
 import org.myproject.model.entities.LogRole;
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.LogUserRequest;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CategoryLookupTableRepository;
 import org.myproject.model.repositories.RoleRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
+import org.myproject.model.repositories.UserRequestRepository;
 import org.myproject.model.utils.BaseBean;
 import org.myproject.model.utils.EncryptHash;
 import org.myproject.model.utils.MailSender;
@@ -42,6 +46,9 @@ public class UserCRUDMBean extends BaseBean {
     private UserRepository userRepository;
 
     @Inject
+    private UserRequestRepository userRequestRepository;
+
+    @Inject
     private TeacherRepository teacherRepository;
     
     @Inject
@@ -54,6 +61,8 @@ public class UserCRUDMBean extends BaseBean {
     private CategoryLookupTableRepository  categoryLookupTableRepository;
 
     private LogUser user;
+    
+    private LogUserRequest userRequest;
 
     private String title;
 
@@ -61,6 +70,8 @@ public class UserCRUDMBean extends BaseBean {
     
     public UserCRUDMBean() {
         this.user = new LogUser();
+        this.userRequest = new LogUserRequest();
+        
     }
 
     
@@ -159,13 +170,14 @@ public class UserCRUDMBean extends BaseBean {
 				+ "GEPAQ";
 	}
 
-	private String insertHeaderForgotPass (String academicName, String fullName, String email,
-            String username, String password) {
+	private String insertHeaderForgotPass (String academicName, String fullName, String email, String activationLink,
+                                           String username, String password) {
 		return "Exmo(a) Senhor(a) \n"
 				+ academicName + "   " + fullName + "\n"
             + "\n\n" 
             + "EMail              : " + email + "\n"
     		+ "\n\n"
+            + "Ativação           : " + activationLink + "\n"
             + "Utilizador         : " + username + "\n"
             + "Nova Palavra Passe : " + password + "\n"
             + "\n\n";
@@ -174,7 +186,7 @@ public class UserCRUDMBean extends BaseBean {
     public void sendEMail () {
     	String subject = "Envio de dados de utilizador";
     	
-    	this.sendUserTEMail(this.getUser(), subject, "initialData");
+    	this.sendUserTEMail(this.getUser(), subject, "", "initialData");
 
     	// TODO - 
     	this.user.setRndPassword("");
@@ -183,7 +195,7 @@ public class UserCRUDMBean extends BaseBean {
     }
     
     
-    public void sendUserTEMail (LogUser user, String subject, String headerType) {
+    public void sendUserTEMail (LogUser user, String subject, String activationLink, String headerType) {
     	String emailMsg = null;
     	Teacher teacher = user.getTeacher();
     	
@@ -214,7 +226,7 @@ public class UserCRUDMBean extends BaseBean {
 
         if (headerType.equals("forgotPass")) {
         	emailMsg = insertHeaderForgotPass (academicName, teacher.getFullName(), 
-        			teacher.getEMail(), user.getUserName(), user.getRndPassword());
+        			teacher.getEMail(), activationLink, user.getUserName(), user.getRndPassword());
         }
 
         emailMsg = this.insertSignature(emailMsg);
@@ -222,9 +234,9 @@ public class UserCRUDMBean extends BaseBean {
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
         // TODO - mudar o endereço de email no final
-        mail.sendEmail("gepaq@academiamilitar.pt", 
-                       "gepaq@academiamilitar.pt", emailSubject, emailMsg,
-                       "gepaq@academiamilitar.pt", "chefegepaq");
+        mail.sendEmail("jose.rossa@academiamilitar.pt", 
+                       "jose.rossa@academiamilitar.pt", emailSubject, emailMsg,
+                       "jose.rossa@academiamilitar.pt", "bridge55");
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -332,7 +344,7 @@ public class UserCRUDMBean extends BaseBean {
     public void changePassword() throws NoSuchAlgorithmException, InvalidKeySpecException {
         String msg =  getResourceProperty("labels", "user_password_changed");
        
- //       this.mbUserBean.changePassword();
+        this.mbUserBean.changePassword();
         
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -355,6 +367,7 @@ public class UserCRUDMBean extends BaseBean {
             this.user = mbUserBean.getSelectedUser();
         }
     }
+    
     
     public void userCreate () {
         String msg = "User Create";
@@ -480,26 +493,63 @@ public class UserCRUDMBean extends BaseBean {
            this.user.setRndPassword(RandomPasswordGenerator.generatePswd(30));
 
            try {
-        	   this.user.setPassword(PasswordHash.createHash(this.user.getRndPassword()));
-        	   this.sendUserTEMail(this.user, subject, "forgotPass");
+        	   Boolean old = false;
         	   
-        	   this.user.setRndPassword(""); 
-        	   this.user.setChangePassword(true);
-               this.user.setEnabled(true);
-               this.user.setAttempts(0);
-               
-               Date date = new Date();
-               // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
-               String strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-               System.out.println("Str Date  :  " + strDate);
-               
-              
-               this.user.setModificationUser("request");
-               this.user.setModificationDate(new Date());
-
-        	   this.userRepository.save(this.user);
-        	   
-        	   
+        	   if (old == true) {
+	        	   this.user.setPassword(PasswordHash.createHash(this.user.getRndPassword()));
+	        	   this.sendUserTEMail(this.user, subject, "", "forgotPass");
+	        	   
+	        	   this.user.setRndPassword(""); 
+	        	   this.user.setChangePassword(true);
+	               this.user.setEnabled(true);
+	               this.user.setAttempts(0);
+	               
+	               Date date = new Date();
+	               // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
+	               String strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+	               System.out.println("Str Date  :  " + strDate);
+	               
+	              
+	               this.user.setModificationUser("request");
+	               this.user.setModificationDate(new Date());
+	
+	        	   this.userRepository.save(this.user);
+        	   } else {
+        		   this.userRequest.setUserId(this.user);
+        	       this.userRequest.setChangePassword(true);
+        	       this.userRequest.setEnabled(true);
+        	       this.userRequest.setRequestName(this.user.getRndPassword());
+        	       this.userRequest.setRequestData(PasswordHash.createHash(this.user.getRndPassword()));
+        	       
+        	       this.userRequest.setRequestTag(RandomPasswordGenerator.generatePswd(30));
+        	       
+	               Date createDate = new Date();
+	               // http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
+	               String strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(createDate);
+	               System.out.println("Str Date  :  " + strDate);
+	               Date expiresDate = new Date(createDate.getTime() + (1000 * 60 * 60 * 24));
+	               
+	               this.userRequest.setCreationDate(createDate);
+	               this.userRequest.setExpiresDate(expiresDate);
+	               
+	               this.userRequestRepository.save(this.userRequest);
+	               
+	        	   this.user.setPassword(this.userRequest.getRequestData());
+	        	   
+  	   
+					try {
+						String link = "localhost:8080/myproject/request/activatepwd/?tag=" + 
+								   URLEncoder.encode(this.userRequest.getRequestTag(), "UTF-8");
+						
+			        	   System.out.println("Link " + link);
+			        	   this.sendUserTEMail(this.user, subject, link, "forgotPass");
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        	   
+	        	   
+        	   }
            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
         	   // TODO Auto-generated catch block
         	   e.printStackTrace();
@@ -510,7 +560,7 @@ public class UserCRUDMBean extends BaseBean {
         
         
         try {
-            System.out.println("Forgot Password  : " + context.getRequestContextPath() + "  username : '" + username + "'");
+            System.out.println("Forgot Password  : " + context.getRequestContextPath() + "  username :   '" + username + "'");
             context.redirect(context.getRequestContextPath() + "/public/logout");
              
         } catch (IOException e) {

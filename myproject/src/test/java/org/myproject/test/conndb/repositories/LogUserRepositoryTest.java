@@ -14,10 +14,12 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.myproject.model.entities.LogRole;
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.LogUserRequest;
 import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.RoleRepository;
 import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
+import org.myproject.model.repositories.UserRequestRepository;
 import org.myproject.model.utils.EncryptHash;
 import org.myproject.model.utils.PasswordHash;
 import org.myproject.model.utils.RandomPasswordGenerator;
@@ -27,6 +29,9 @@ public class LogUserRepositoryTest extends AbstractDatabaseTest {
 
     @Inject
     UserRepository              userRepository;
+
+    @Inject
+    UserRequestRepository       userRequestRepository;
 
     @Inject
     RoleRepository              roleRepository;
@@ -89,7 +94,6 @@ public class LogUserRepositoryTest extends AbstractDatabaseTest {
 
     }
 
-    @Test
     public void generate() throws NoSuchAlgorithmException, InvalidKeySpecException {
         System.out.println("Generate");
         
@@ -151,4 +155,16 @@ public class LogUserRepositoryTest extends AbstractDatabaseTest {
         }
     }
 
+    
+    @Test
+    public void testUserRequestbyTag() {
+    	
+    	LogUserRequest user = new LogUserRequest();
+    	System.out.println("User :  " );
+    	    	
+    	user = this.userRequestRepository.findByUserRequestTag("j5Xv77H+X8");
+   	
+    	System.out.println("User :  " + user.getUserId().getUserName());
+    	
+    }
 }

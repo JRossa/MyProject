@@ -152,14 +152,14 @@
 					
 					<p:column headerText="#{labels.professorship_teacher}" style="width: 50%;"
 					          filterBy="#{professorship.teacher.fullName}" filterMatchMode="contains" 
-					          filterStyle="width: 80px;" >
+					          filterStyle="width: 140px;" >
 						<h:outputText value="#{professorship.teacher.fullName}" />
 					</p:column>
 					
 					<p:column headerText="#{labels.professorship_course_code}" style="width: 20%;"
 					          sortBy="#{professorship.course.code}"
 					          filterBy="#{professorship.course.code}" filterMatchMode="contains" 
-					          filterStyle="width: 80px;" >
+					          filterStyle="width: 20px;" >
 					    <div align="center" >
 							<h:outputText value="#{professorship.course.code}" />
 						</div>
@@ -195,7 +195,7 @@
 							<h:outputText value="#{professorship.hours}"  />
 							<h:outputText value=" - hsem ("  />
 							<h:outputText value="#{professorship.weekHours}"  >
-								 <f:convertNumber pattern="#0.00" locale="pt_BR"/>
+								 <f:convertNumber pattern="#0.00" locale="pt_PT"/>
 							</h:outputText>
 							<h:outputText value=")"  />
 						</div>

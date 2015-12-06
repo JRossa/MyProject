@@ -260,7 +260,7 @@ public class UserMBean extends BaseBean {
 
 
     public Boolean checkUserPassword ()  {
-        // System.out.println("checkUserPassword  :  " + this.checkPassword);
+        System.out.println("checkUserPassword  :  " + this.checkPassword + "  lock :  " + this.lockResponse);
     	
     	if (this.lockResponse == true) {
     		return this.checkPassword;
@@ -360,6 +360,7 @@ public class UserMBean extends BaseBean {
 
     
     public void openChangePass () {
+        System.out.println("changePassword  :  " + this.changePassword);
     	
         if (this.changePassword == false) {
             return;
@@ -369,9 +370,20 @@ public class UserMBean extends BaseBean {
         String username = (String) externalContext.getSessionMap().get("username");
 
     	this.selectedUser = this.userRepository.findByUserName(username);
-    	
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("PF('changeInitPassDialog').show()");
+
+    	if (this.selectedUser != null) {
+	        System.out.println("changePassword  :  " + this.changePassword 
+	        		         + "    username : " + username 
+	        		         + "    role     : " + this.selectedUser.getLogRole().getRolename());
+	        this.userName = this.selectedUser.getUserName();
+	        RequestContext requestContext = RequestContext.getCurrentInstance();
+	
+	        if (this.selectedUser.getLogRole().getRolename().equals("ROLE_ADMIN")) {
+	            requestContext.execute("PF('changePassDialog').show()");
+	        } else {
+	        	requestContext.execute("PF('changeInitPassDialog').show()");
+	        }
+    	}
     }
     
     

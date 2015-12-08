@@ -16,8 +16,8 @@
 					<p:commandButton id="confirm"
 									 value="#{labels.user_delete_yes}" 
 									 action="#{logSessionCRUDMBean.delete}"
-									 update=":logSessionListForm" 
-									 oncomplete="PF('logSessionDeleteDialog').hide();" />
+									 update=":logSessionListForm, :logSessionListForm:logSessionDataTableId" 
+									 oncomplete="PF('logSessionDeleteDialog').hide();  PF('logSessionDataTableWV').filter()" />
 
 					<p:commandButton id="decline"
 									 value="#{labels.user_delete_no}" 

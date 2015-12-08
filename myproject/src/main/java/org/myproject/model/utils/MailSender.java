@@ -4,10 +4,12 @@ import java.util.Properties;
 
 
 
+
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -21,7 +23,10 @@ import org.slf4j.LoggerFactory;
 public class MailSender {
 
     static Logger logger = LoggerFactory.getLogger(MailSender.class);
-     
+   
+    
+//   TODO - http://stackoverflow.com/questions/22777223/connecting-to-user-email-with-oauth2
+    
     public void sendEmail (String fromEmail, String toEmail, String subject, String message,
                            String username, String password) {
         
@@ -45,8 +50,7 @@ public class MailSender {
             mailSession.setDebug(true);
         
             Message mailMessage = new MimeMessage(mailSession);
-        
-        
+            
             mailMessage.setFrom(new InternetAddress(fromEmail));
             mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             mailMessage.setContent(message, "text/html; charset=UTF-8");

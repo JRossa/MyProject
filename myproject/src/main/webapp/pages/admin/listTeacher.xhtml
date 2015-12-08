@@ -120,12 +120,15 @@
 						<h:outputText value="#{teacher.id}" />
 					</p:column>
 					
-					<p:column headerText="#{labels.teacher_category}" style="width: 12%;" >
+					<p:column headerText="#{labels.teacher_category}" style="width: 12%;" 
+					          filterBy="#{teacher.category}" filterMatchMode="contains"
+					          filterStyle="width: 80px;" >
 						<h:outputText value="#{teacher.category}" />
 					</p:column>
 					
 					<p:column headerText="#{labels.teacher_name}" footerText="" style="width: 35%;"
-					          filterBy="#{teacher.fullName}" filterMatchMode="contains" >
+					          filterBy="#{teacher.fullName}" filterMatchMode="contains" 
+					          filterStyle="width: 120px;">
 						<h:outputText value="#{teacher.fullName}" />
 					</p:column>
 

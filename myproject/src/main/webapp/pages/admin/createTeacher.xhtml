@@ -22,16 +22,40 @@
 			  
 	<h:form id="formTeacherCreate" >
 
+        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
 		<h:inputHidden value="#{teacherCRUDMBean.teacher.id}" />
 		
-        <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
-							
 		<h:panelGrid id="display" columns="2"  columnClasses="colStyle1,colStyle2"
 					 styleClass="form" 
 					 headerClass="tableHeader"
 					 footerClass="tableFooter"
 					 rowClasses="tableRowOdd, tableRowEven" >
 						 
+			<p:graphicImage id="photo" 
+			                name="#{teacherCRUDMBean.teacherPhoto}"
+			                cache="false" 
+                            width="120"
+                            height="120"
+                            style="position: relative;
+                                   left: 15px;"/>
+			<h:panelGroup>
+           		<p:fileUpload id="fileuploadPhoto"  
+           					  widgetVar="fileuploadPhotoWidget"
+           					  fileUploadListener="#{teacherCRUDMBean.handleFileUpload}"
+                    		  mode="advanced"   
+                    		  update="messages, photo"  
+                    		  sizeLimit="5000000"   
+                    		  cancelLabel="Cancelar"
+                    		  uploadLabel="Carregar"
+                    		  label="Selec"
+                    		  allowTypes="/(\.|\/)(gif|bmp|jpe?g|png|pdf)$/"
+                    		  auto="true"
+                    		  oncomplete="PF('teacherUpdateDialog').show()"
+                    		  style="position: relative;
+                    		         top: 0px;" />  
+
+			</h:panelGroup>
 
 			<h:outputLabel for="category" value="#{labels.teacher_category}" />
 			<h:panelGroup>
@@ -46,6 +70,194 @@
 				           hideEffect="explode" trackMouse="true">
 				</p:tooltip>
 			</h:panelGroup>
+
+			<h:outputLabel for="fullname" value="#{labels.teacher_fullname}" />
+			<h:panelGroup>
+				<p:inputText id="fullname" value="#{teacherCRUDMBean.teacher.fullName}"
+							 title="#{labels.teacher_insert} #{labels.teacher_fullname} !!"
+							 maxlength="255" size="50"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="fullname" styleClass="formUserError"/>
+				<p:tooltip for="fullname" value="#{labels.teacher_insert} #{labels.teacher_fullname} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="contract" value="#{labels.teacher_contract}" />
+			<h:panelGroup>
+				<p:inputText id="contract" value="#{teacherCRUDMBean.teacher.contract}"
+							 title="#{labels.teacher_insert} #{labels.teacher_contract} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="contract" styleClass="formUserError"/>
+				<p:tooltip for="contract" value="#{labels.teacher_insert} #{labels.teacher_contract} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="startdate" value="#{labels.teacher_start_date}" />
+			<h:panelGroup>
+				<p:inputText id="startdate" value="#{teacherCRUDMBean.teacher.beginDate}"
+							 title="#{labels.teacher_insert} #{labels.teacher_start_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="startdate" styleClass="formUserError"/>
+				<p:tooltip for="startdate" value="#{labels.teacher_insert} #{labels.teacher_start_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="enddate" value="#{labels.teacher_end_date}" />
+			<h:panelGroup>
+				<p:inputText id="enddate" value="#{teacherCRUDMBean.teacher.endDate}"
+							 title="#{labels.teacher_insert} #{labels.teacher_end_date} !!"
+							 maxlength="255" size="30">
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="enddate" styleClass="formUserError"/>
+				<p:tooltip for="enddate" value="#{labels.teacher_insert} #{labels.teacher_start_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="email" value="#{labels.teacher_email}" />
+			<h:panelGroup>
+				<p:inputText id="email" value="#{teacherCRUDMBean.teacher.EMail}"
+							 title="#{labels.teacher_insert} #{labels.teacher_email} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="email" styleClass="formUserError"/>
+				<p:tooltip for="email" value="#{labels.teacher_insert} #{labels.teacher_email} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="mobilephone" value="#{labels.teacher_mobile_phone}" />
+			<h:panelGroup>
+				<p:inputText id="mobilephone" value="#{teacherCRUDMBean.teacher.mobilePhone}"
+							 title="#{labels.teacher_insert} #{labels.teacher_mobile_phone} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="mobilephone" styleClass="formUserError"/>
+				<p:tooltip for="mobilephone" value="#{labels.teacher_insert} #{labels.teacher_mobile_phone} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+			
+			<h:outputLabel for="scientificfield" value="#{labels.teacher_scientific_field}" />
+			<h:panelGroup>
+				<p:inputText id="scientificfield" value="#{teacherCRUDMBean.teacher.scientificField}"
+							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
+							 maxlength="255" size="60"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="scientificfield" styleClass="formUserError"/>
+				<p:tooltip for="scientificfield" value="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="scientificfieldid" value="#{labels.teacher_scientific_field}"/>
+			<h:panelGroup>
+				<p:selectOneMenu id="scientificfieldid" value="#{teacherCRUDMBean.teacher.scientificFieldId.id}"
+				             filter="true" filterMatchMode="contains"
+				             effect="fade"
+				             update="scientificfield"
+				             valueChangeListener="#{teacherCRUDMBean.valueChangedScientificField}"
+				             converter="scientificFieldConverter" 
+				             panelStyle="background-color: lightblue"
+							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
+							 maxlength="255" size="60" >
+					<p:ajax event="change" update="scientificfield"  />		 
+					<f:selectItems value="#{scientificFieldMBean.selectOneItemsScientificField}" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="scientificfieldid" styleClass="formUserError"/>
+				<p:tooltip for="scientificfieldid" value="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="academicdegree" value="#{labels.teacher_academic_degree}" />
+			<h:panelGroup>
+				<p:inputText id="academicdegree" value="#{teacherCRUDMBean.teacher.academicDegree}"
+							 title="#{labels.teacher_insert} #{labels.teacher_academic_degree} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="academicdegree" styleClass="formUserError"/>
+				<p:tooltip for="academicdegree" value="#{labels.teacher_insert} #{labels.teacher_academic_degree} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="categorydate" value="#{labels.teacher_category_date}" />
+			<h:panelGroup>
+				<p:inputText id="categorydate" value="#{teacherCRUDMBean.teacher.categoryDate}"
+							 title="#{labels.teacher_insert} #{labels.teacher_category_date} !!"
+							 maxlength="255" size="30" >
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</p:inputText>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="categorydate" styleClass="formUserError"/>
+				<p:tooltip for="categorydate" value="#{labels.teacher_insert} #{labels.teacher_category_date} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="incharge" value="#{labels.teacher_incharge}" />
+			<h:panelGroup>
+				<p:selectOneMenu id="incharge" value="#{teacherCRUDMBean.teacher.inCharge}"
+							 title="#{labels.teacher_insert} #{labels.teacher_incharge} !!"
+							 maxlength="255" size="30" >
+					<f:selectItem itemLabel="#{labels.teacher_label_incharge}" itemValue="true" />
+					<f:selectItem itemLabel="#{labels.teacher_label_not_incharge}" itemValue="false" />
+				</p:selectOneMenu>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="incharge" styleClass="formUserError"/>
+				<p:tooltip for="incharge" value="#{labels.teacher_insert} #{labels.teacher_incharge} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:panelGroup>
+
+			<h:outputLabel for="categorygroup" value="#{labels.teacher_category_group}" />
+			<h:panelGroup>
+			<h:form>
+				<p:inputText id="categorygroup" value="#{teacherCRUDMBean.teacher.categoryGroup.group}"
+							 title="#{labels.teacher_insert} #{labels.teacher_category_group} !!"
+							 maxlength="255" size="30"/>
+				<f:verbatim><br/></f:verbatim>
+				<h:outputText value=" "/>
+				<h:message for="categorygroup" styleClass="formUserError"/>
+				<p:tooltip for="categorygroup" value="#{labels.teacher_insert} #{labels.teacher_category_group} !!" showEvent="focus" 
+				           hideEvent="blur" showEffect="bounce" 
+				           hideEffect="explode" trackMouse="true">
+				</p:tooltip>
+			</h:form>
+			</h:panelGroup>
 						 
 			<f:facet name="footer">
 				<p:separator />
@@ -55,9 +267,12 @@
 				                 value="#{labels.user_save}"
     							 action="#{teacherCRUDMBean.save}" />
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
- 				                 value="#{labels.user_send_email}"
+  				                 rendered="false"
+  				                 value="#{labels.user_send_email}"
     							 action="#{teacherCRUDMBean.sendEMail}" />
-    			
+ 
+    			<span style="padding-left:170px;"></span>
+
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.user_close}" 
  								 action="#{teacherCRUDMBean.disableButtons}"

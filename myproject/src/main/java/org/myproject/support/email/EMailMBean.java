@@ -90,7 +90,7 @@ public class EMailMBean extends BaseBean {
 	private String insertSignature () {
 		
 		return this.getText() 
-				+ "Coms os melhores cumprimentos, \n\n"
+				+ "Com os melhores cumprimentos, \n\n"
 				+ "X";
 	}
 
@@ -188,9 +188,9 @@ public class EMailMBean extends BaseBean {
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
         // TODO - mudar e verificar se é válido o endereço de email no final
-        mail.sendEmail("gepaq@academiamilitar.pt", 
-                       "gepaq@academiamilitar.pt", emailSubject, emailMsg,
-                       "gepaq@academiamilitar.pt", "chefegepaq");
+        mail.sendEmail("jose.rossa@academiamilitar.pt", 
+                       "jose.rossa@academiamilitar.pt", emailSubject, emailMsg,
+                       "jose.rossa@academiamilitar.pt", "bridge55");
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);

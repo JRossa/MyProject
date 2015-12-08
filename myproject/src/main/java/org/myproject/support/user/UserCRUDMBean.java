@@ -166,8 +166,8 @@ public class UserCRUDMBean extends BaseBean {
 	private String insertSignature (String text) {
 		
 		return text  
-				+ "Coms os melhores cumprimentos, \n\n"
-				+ "GEPAQ";
+				+ "Com os melhores cumprimentos, \n\n"
+				+ "X";
 	}
 
 	private String insertHeaderForgotPass (String academicName, String fullName, String email, String activationLink,
@@ -177,9 +177,10 @@ public class UserCRUDMBean extends BaseBean {
             + "\n\n" 
             + "EMail              : " + email + "\n"
     		+ "\n\n"
-            + "Ativação           : " + activationLink + "\n"
+            + "ATENÇÃO: Deve aceder ao endereço abaixo indicado, nas próximas 24 horas, para ativar a nova senha !!\n"
+            + "Ativação (Val 24h) : " + activationLink + "\n"
             + "Utilizador         : " + username + "\n"
-            + "Nova Palavra Passe : " + password + "\n"
+            + "Nova Senha         : " + password + "\n"
             + "\n\n";
 	}
 	
@@ -483,7 +484,7 @@ public class UserCRUDMBean extends BaseBean {
     	ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
 
         String username = this.mbUserBean.getUserName();
-    	String subject = "Nova Pasword";
+    	String subject = "Envio da Nova Senha";
 
     	this.user = this.userRepository.findByUserName(username);
 
@@ -538,7 +539,7 @@ public class UserCRUDMBean extends BaseBean {
 	        	   
   	   
 					try {
-						String link = "localhost:8080/myproject/request/activatepwd/?tag=" + 
+						String link = "http://localhost:8080/myproject/request/activatepwd/?tag=" + 
 								   URLEncoder.encode(this.userRequest.getRequestTag(), "UTF-8");
 						
 			        	   System.out.println("Link " + link);

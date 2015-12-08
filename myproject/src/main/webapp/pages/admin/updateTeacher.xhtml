@@ -290,9 +290,12 @@
 				                 value="#{labels.user_save}"
     							 action="#{teacherCRUDMBean.save}" />
  				<p:commandButton icon="ui-icon-myEmail" style="width: 100px;"
+  				                 rendered="false"
  				                 value="#{labels.user_send_email}"
     							 action="#{teacherCRUDMBean.sendEMail}" />
     			
+     			<span style="padding-left:170px;"></span>
+
  				<p:commandButton icon="ui-icon-myClose" 
  				                 value="#{labels.user_close}" 
  								 action="#{teacherCRUDMBean.disableButtons}"
@@ -303,7 +306,7 @@
     									 background: #0080c0;
    										 position: relative; 
    										 top: 0px; 
-  										 left: 220px" />
+  										 left: 150px" />
     			
     			</h:panelGroup>
 			</f:facet>		 

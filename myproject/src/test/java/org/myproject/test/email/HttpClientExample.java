@@ -41,9 +41,9 @@ public class HttpClientExample {
 	String page = http.GetPageContent(url);
 	
 //	List<NameValuePair> postParams = 
-//               http.getFormParams(page, "funsoft2015@gmail.com", "");
+//               http.getFormParams(page, "funsoft2015@gmail.com", "bridge5funsoft");
 	List<NameValuePair> postParams = 
-            http.getFormParams(page, "rossa.jmr@gmail.com", "");
+            http.getFormParams(page, "rossa.jmr@gmail.com", "bridgemil");
 	
 	http.sendPost(url, postParams);
 

@@ -266,7 +266,7 @@
 		 							 filter="true" filterMatchMode="contains"
 						             effect="fade"
 									 maxlength="450" size="30" >
-							<p:ajax event="change"  />
+							<p:ajax event="change"  update=":formLessonPlan:formTitle:title" />
 							<f:selectItem itemLabel="#{labels.user_select}" itemValue="-1" /> 
 							<f:selectItems value="#{degreeMBean.selectOneItemsMasterDegree}" 
 							               var="degree"
@@ -355,7 +355,7 @@
             	<p:commandButton icon="ui-icon-mySave" style="width: 100px;"
             	                 value="#{labels.lessonplan_save}"
             	                 rendered="#{!lessonPlanMBean.summaryLock}"
-            	                 update="scheduleLessonPlanId" 
+            	                 onsucess="scheduleLessonPlanId, messages" 
             					 actionListener="#{lessonPlanMBean.addEvent}" />
                 				  
              	<p:commandButton icon="ui-icon-myDelete" style="width: 100px;"

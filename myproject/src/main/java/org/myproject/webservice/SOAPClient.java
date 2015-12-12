@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +30,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.joda.time.DateTime;
+import org.myproject.dao.LessonPlanUser;
 
 
 public class SOAPClient {
@@ -99,7 +101,67 @@ public class SOAPClient {
 	}
 
     
-    public String soapMessageToString(SOAPMessage message) {
+	public ArrayList<LessonPlanUser> handleArrayListInboundMessage(SOAPMessage soapMessage, String tagName) {	
+	    String value = "";
+        Boolean faultString = false;
+        
+        ArrayList<LessonPlanUser> lessonPlanUser = new ArrayList<LessonPlanUser>();
+        
+	    try {
+	    	System.out.print("Inbound SOAP Message:\n");
+//	    	soapMessage.writeTo(System.out);
+	    	System.out.println(prettyPrintXMLAsString(soapMessageToString(soapMessage), 4));
+//	    	System.out.println(prettyPrintXml(soapMessageToString(soapMessage)));
+
+	    	
+	    	SOAPPart soapPart = soapMessage.getSOAPPart();
+	        SOAPEnvelope envelop = soapPart.getEnvelope();
+	        SOAPHeader header = envelop.getHeader();
+	        SOAPBody body = envelop.getBody();
+
+	        System.out.println("\nBody  : " +  body.getElementName().getLocalName());
+	        
+	        Iterator<?> ii = body.getChildElements();
+	        while (ii.hasNext()) {
+                
+	            SOAPElement e = (SOAPElement) ii.next();
+	            System.out.println("Child : " +  e.getElementName().getLocalName());
+	            faultString = e.getElementName().getLocalName().equals("Fault");
+	            
+	            Iterator<?> kk = e.getChildElements();
+
+	            while (kk.hasNext()) {
+
+	                SOAPElement ee = (SOAPElement)kk.next();
+	                String name = ee.getElementName().getLocalName();
+
+	                if (!faultString) {
+		                if (ee.getElementName().getLocalName().equals(tagName)) {
+		                	value = ee.getValue();
+		                }
+	                } else {
+	                	if (ee.getValue().equals("soap:Server")) {
+	                		value = "Fault: " + ee.getValue() + " - ";
+	                	} else {
+	                		value = value + ee.getValue();
+	                	}
+	                }
+	                
+	                if( name != null ) {
+	                    System.out.println("	name = " + name + "    value " + ee.getValue() + "  fault : " + faultString);
+	                }
+	            }
+	        }
+
+	    } catch(Exception e) {
+	        e.printStackTrace(); 
+	    }
+
+	    return lessonPlanUser;
+	}
+
+	
+	public String soapMessageToString(SOAPMessage message) {
         String result = null;
 
         if (message != null) {
@@ -248,6 +310,26 @@ public class SOAPClient {
     }
     
  
+
+    public SOAPMessage createSOAPRequestGetData(String sessionId) throws Exception {
+    	MessageFactory factory=MessageFactory.newInstance();
+    	XMLRequest xmlRequest = new XMLRequest();
+
+    	String msg = xmlRequest.getDataSOAP(sessionId);
+
+    	SOAPMessage soapMessage = factory.createMessage(null,new ByteArrayInputStream(msg.getBytes()));
+
+    	/* Print the request message */
+    	System.out.print("Request SOAP Message:\n");
+    	//soapMessage.writeTo(System.out);
+    	//System.out.println(prettyPrintXMLAsString(soapMessageToString(soapMessage), 4));
+    	System.out.println();
+
+    	return soapMessage;
+    }
+
+
+
     public SOAPMessage createSOAPRequestSetData(String sessionId, String title, 
     		                                    String lessonPlan, String lessonDate) throws Exception {
         MessageFactory factory=MessageFactory.newInstance();
@@ -437,7 +519,23 @@ public class SOAPClient {
        	return "";
     }
     
-    
+  
+	public ArrayList<LessonPlanUser> getData(String sessionId, String title, String lessonPlan, String lessonDate) {
+
+		try {
+			SOAPMessage soapResponse = sendSOAPRequest(createSOAPRequestGetData(sessionId));
+	        System.out.println(prettyPrintXMLAsString(soapMessageToString(soapResponse), 4));
+			
+//			return handleArrayListInboundMessage(soapResponse, "degreeNum");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+       	return null;
+	}
+
+	
 	public String setData(String sessionId, String title, String lessonPlan, String lessonDate) {
 
 		try {

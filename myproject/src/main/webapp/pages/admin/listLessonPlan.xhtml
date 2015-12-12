@@ -44,11 +44,11 @@
 					value="#{labels.button_send_list_email}" 
 					disabled="#{!lessonPlanMBean.renderedEMail}"
 					action="#{emailMBean.email('list')}"
-					update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanEMail"
+					update=":lessonplanListForm, lessonplanDataTableid, :formLessonPlanEMail"
 					oncomplete="PF('lessonplanEMailDialog').show();"  />
 			
 
-				<p:dataTable id="lessonplanDataTable" widgetVar="lessonplanDataTable"
+				<p:dataTable id="lessonplanDataTableid" widgetVar="lessonplanDataTableWV"
 				    loadingMessage="#{labels.lessonplan_load}"
 				    scrollable="true"
 				    scrollHeight="390"
@@ -62,7 +62,7 @@
 					rowsPerPageTemplate="5,10,20" rowKey="#{lessonplan.id}"
 					selectionMode="single" >
 
-					<p:ajax event="rowSelect" listener="#{lessonPlanMBean.selectLessonPlan}" update=":lessonplanListForm, lessonplanDataTable" />
+					<p:ajax event="rowSelect" listener="#{lessonPlanMBean.selectLessonPlan}" update=":lessonplanListForm, lessonplanDataTableid" />
 					<p:ajax event="page" listener="#{lessonPlanMBean.unselectLessonPlan}"   />
 					<p:ajax event="rowUnselect" listener="#{lessonPlanMBean.unselectLessonPlan}"  />
 
@@ -71,7 +71,7 @@
 					     <h:outputText value="   #{lessonPlanMBean.selectedListType}" />
 					</f:facet>
 					
-					<p:column headerText="#{labels.lessonplan_id}"  style="width: 8%;" >
+					<p:column headerText="#{labels.lessonplan_id}"  style="width: 5%;" >
 						<h:outputText value="#{lessonplan.id}" />
 					</p:column>
 					
@@ -90,9 +90,16 @@
 						<h:outputText value="#{lessonplan.teacher.fullName}" />
 					</p:column>
 
-					<p:column headerText="#{labels.lessonplan_date}" footerText=""  style="width: 20%;" 
+					<p:column headerText="#{labels.lessonplan_date}" footerText=""  style="width: 25%;" 
 					          filterBy="#{lessonplan.startDate}" filterMatchMode="contains" 
-					          sortBy="#{lessonplan.startDate}" >
+					          sortBy="#{lessonplan.startDate}"
+					          filterFunction="#{lessonPlanMBean.filterByDate}" >
+				        <f:facet name="filter" >
+				            <p:calendar id="cal1" pattern="yyyy-MM-dd" >
+				               <p:ajax event="dateSelect" oncomplete="PF('lessonplanDataTableWV').filter()" update="lessonplanDataTableid" />
+				               <p:ajax event="change" execute="@this" oncomplete="PF('lessonplanDataTableWV').filter()" update="lessonplanDataTableid"/>
+				            </p:calendar>
+				        </f:facet>
 						<h:outputText value="#{lessonplan.startDate}" >
 							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
 						</h:outputText> <br/>
@@ -115,11 +122,11 @@
 					</p:column>
 					
 					
-					<p:column style="width: 10%;">
+					<p:column style="width: 6%;">
 						<p:commandButton widgetVar="deleteLessonPlanButton"
 						                 icon="ui-icon-trash"
 						                 title="#{labels.lessonplan_delete}"
-										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanDelete" 
+										 update=":lessonplanListForm, lessonplanDataTableid, :formLessonPlanDelete" 
 										 action="#{lessonPlanCRUDMBean.delete(false)}"
 										 oncomplete="PF('lessonplanDeleteDialog').show();"  >
 							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
@@ -127,7 +134,7 @@
 						<p:commandButton widgetVar="updateLessonPlanButton"
 										 icon="ui-icon-document"
 										 title="#{labels.lessonplan_update}"
-										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanUpdate"
+										 update=":lessonplanListForm, lessonplanDataTableid, :formLessonPlanUpdate"
 										 action="#{lessonPlanCRUDMBean.update}"
 										 oncomplete="PF('lessonplanUpdateDialog').show(); " >
 							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />
@@ -136,7 +143,7 @@
 										 icon="ui-icon-mail-closed"
 										 rendered="#{lessonPlanMBean.renderedEMail}"
 										 title="#{labels.lessonplan_email}"
-										 update=":lessonplanListForm, lessonplanDataTable, :formLessonPlanEMail"
+										 update=":lessonplanListForm, lessonplanDataTableid, :formLessonPlanEMail"
 										 action="#{emailMBean.email('teacher')}"
 										 oncomplete="PF('lessonplanEMailDialog').show(); " >
 							<f:setPropertyActionListener value="#{lessonplan}"  target="#{lessonPlanMBean.selectedLessonPlan}" />

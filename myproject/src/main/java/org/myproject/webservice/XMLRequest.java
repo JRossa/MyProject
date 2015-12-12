@@ -131,6 +131,24 @@ public class XMLRequest {
 		return xmlStr;
 	}
 	
+
+	public String getDataSOAP(String sessionId) {
+		
+		String xmlStr = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://webservice.myproject.org/\">\n"
+					  + "	<soapenv:Header>\n" 
+				      + SOAPHeaderSecurity()
+		              + "	</soapenv:Header>\n"
+		              + "	<soapenv:Body>\n"
+		              + "		<web:getData>\n"
+		              + "			<!--Optional:-->\n"
+		              + "			<sessionId>" + sessionId + "</sessionId>\n"
+		              + "		</web:getData>\n"
+		              + "	</soapenv:Body>\n"
+		              + "</soapenv:Envelope>\n";
+		
+		return xmlStr;
+	}
+
 	
 	public String setDataSOAP(String sessionId, String title, String lessonPlan, String lessonDate) {
 		

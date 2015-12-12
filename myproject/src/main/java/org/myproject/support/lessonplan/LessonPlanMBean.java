@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
@@ -21,6 +22,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
 import org.myproject.model.entities.Degree;
@@ -384,8 +386,8 @@ public class LessonPlanMBean extends BaseBean {
         this.setupUser();
         
 //        this.teacherId = 173L;
-//        this.courseId = 261L;
-//        this.degreeId = 1L;
+//        this.courseId = voidCourse;
+//        this.degreeId = voidDegree;
         
         this.lessonPlan.setStartDate(new Date(event.getStartDate().getTime()));
         this.lessonPlan.setEndDate(new Date(event.getEndDate().getTime() + (55 * 60 * 1000)));
@@ -415,7 +417,7 @@ public class LessonPlanMBean extends BaseBean {
             
             if (course == null) {
             	course = new Course();
-            	course.setId(261L);
+            	course.setId(voidCourse);
             }
             
            	System.out.println(course.getName());
@@ -431,7 +433,7 @@ public class LessonPlanMBean extends BaseBean {
             
             if (degree == null) {
             	degree = new Degree();
-            	degree.setId(28L);
+            	degree.setId(voidDegree);
             } 
             
            	System.out.println(degree.getName());
@@ -471,6 +473,23 @@ public class LessonPlanMBean extends BaseBean {
             addMessage(message);
             return;
     	}
+
+    	if (this.getCourseId() < 0L || this.courseId.equals(voidCourse)) {
+            String msg = getResourceProperty("labels", "lessonplan_course_null");
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+            return;
+    	}
+
+    	if (this.getDegreeId() < 0L || this.degreeId.equals(voidDegree)) {
+            String msg = getResourceProperty("labels", "lessonplan_degree_null");
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg );
+            addMessage(message);
+            return;
+    	}
+
 
     	Stamp stamp = new Stamp();
     	
@@ -866,7 +885,7 @@ public class LessonPlanMBean extends BaseBean {
         
         System.out.println("value changed..." + course.getCode() + "   " + courseId);
         
-        if (this.degreeId > 0L && !this.degreeId.equals(28L)) {
+        if (this.degreeId > 0L && courseId > 0L && !this.degreeId.equals(voidDegree)) {
         	this.checkDegreeCurricularPlan (courseId, this.degreeId);
        }
         
@@ -879,9 +898,9 @@ public class LessonPlanMBean extends BaseBean {
     	String msg = valueChangeEvent.getNewValue().toString();
     	Long degreeId = Long.parseLong(msg);
     	
-    	System.out.println("value changed degree..." + msg);
+    	System.out.println("value changed degree..." + msg + "   Id  " + this.degreeId);
     	
-    	if (this.courseId > 0L && !this.courseId.equals(261L)) {
+    	if (this.courseId > 0L && degreeId > 0L && !this.courseId.equals(voidCourse)) {
     		this.checkDegreeCurricularPlan (this.courseId, degreeId);
     	}
     }
@@ -1326,5 +1345,18 @@ public class LessonPlanMBean extends BaseBean {
 	public void setInitialScheduleDate(Date initialScheduleDate) {
 		this.initialScheduleDate = initialScheduleDate;
 	}
+
+    public boolean filterByDate(Object value, Object filter, Locale locale) {
+
+        if( filter == null ) {
+            return true;
+        }
+
+        if( value == null ) {
+            return false;
+        }
+
+        return DateUtils.truncatedEquals((Date) filter, (Date) value, Calendar.DATE);
+    }
 
 }

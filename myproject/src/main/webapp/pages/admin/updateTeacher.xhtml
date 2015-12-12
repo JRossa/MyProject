@@ -65,12 +65,17 @@
            		<p:fileUpload id="fileuploadPhoto"  
            					  widgetVar="fileuploadPhotoWidget"
            					  fileUploadListener="#{teacherCRUDMBean.handleFileUpload}"
+            				  converterMessage="Muit grande"
+           					  validatorMessage="Converter wrong"
                     		  mode="advanced"   
                     		  update="messages, photo"  
                     		  sizeLimit="5000000"   
-                    		  cancelLabel="Cancelar"
-                    		  uploadLabel="Carregar"
-                    		  label="Selec"
+                    		  invalidSizeMessage="#{labels.teacher_fileupload_invalid_file_size}"
+                    		  invalidFileMessage="Invalid msg"
+                    		  fileLimitMessage="file limit"
+                    		  cancelLabel="#{labels.teacher_fileupload_cancel_label}"
+                    		  uploadLabel="#{labels.teacher_fileupload_upload_label}"
+                    		  label="#{labels.teacher_fileupload_label}"
                     		  allowTypes="/(\.|\/)(gif|bmp|jpe?g|png|pdf)$/"
                     		  auto="true"
                     		  oncomplete="PF('teacherUpdateDialog').show()"
@@ -82,12 +87,12 @@
 			<h:outputLabel for="category" value="#{labels.teacher_category}" />
 			<h:panelGroup>
 				<p:inputText id="category" value="#{teacherCRUDMBean.teacher.category}"
-							 title="#{labels.teacher_insert} #{labels.user_category} !!"
+							 title="#{labels.teacher_insert} #{labels.teacher_category} !!"
 							 maxlength="255" size="30"/>
 				<f:verbatim><br/></f:verbatim>
 				<h:outputText value=" "/>
 				<h:message for="category" styleClass="formUserError"/>
-				<p:tooltip for="category" value="#{labels.teacher_insert} #{labels.user_category} !!" showEvent="focus" 
+				<p:tooltip for="category" value="#{labels.teacher_insert} #{labels.teacher_category} !!" showEvent="focus" 
 				           hideEvent="blur" showEffect="bounce" 
 				           hideEffect="explode" trackMouse="true">
 				</p:tooltip>
@@ -181,13 +186,14 @@
 				</p:tooltip>
 			</h:panelGroup>
 			
-			<h:outputLabel for="scientificfield" value="#{labels.teacher_scientific_field}" />
-			<h:panelGroup>
+			<h:outputLabel for="scientificfield" value="#{labels.teacher_scientific_field}"
+                           rendered="false"/>
+			<h:panelGroup  rendered="false">
 				<p:inputText id="scientificfield" value="#{teacherCRUDMBean.teacher.scientificField}"
 							 title="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!"
-							 maxlength="255" size="60"/>
+							 maxlength="255" size="60" />
 				<f:verbatim><br/></f:verbatim>
-				<h:outputText value=" "/>
+				<h:outputText value=" " />
 				<h:message for="scientificfield" styleClass="formUserError"/>
 				<p:tooltip for="scientificfield" value="#{labels.teacher_insert} #{labels.teacher_scientific_field} !!" showEvent="focus" 
 				           hideEvent="blur" showEffect="bounce" 

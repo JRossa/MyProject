@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.Name;
@@ -100,7 +101,11 @@ public class SOAPClient {
 	    return value;
 	}
 
-    
+	private static final QName QNAME_TITLE = new QName("title");
+	private static final QName QNAME_PLACE = new QName("place");
+	private static final QName QNAME_START_TIME = new QName("startTime");
+	private static final QName QNAME_END_TIME = new QName("endTime");
+	
 	public ArrayList<LessonPlanUser> handleArrayListInboundMessage(SOAPMessage soapMessage, String tagName) {	
 	    String value = "";
         Boolean faultString = false;
@@ -136,8 +141,19 @@ public class SOAPClient {
 	                String name = ee.getElementName().getLocalName();
 
 	                if (!faultString) {
-		                if (ee.getElementName().getLocalName().equals(tagName)) {
-		                	value = ee.getValue();
+    	            	if (ee.getElementName().getLocalName().equals(tagName)) {
+    	            	
+    	                    System.out.println("IN child	title = " + getFirstChildElementValue(ee, QNAME_TITLE));
+    	                    System.out.println("IN child	name  = " + getFirstChildElementValue(ee, QNAME_PLACE));
+    	                    System.out.println("IN child	start = " + getFirstChildElementValue(ee, QNAME_START_TIME));
+    	                    System.out.println("IN child	end   = " + getFirstChildElementValue(ee, QNAME_END_TIME));
+	    	            	
+		    	            LessonPlanUser usr = new LessonPlanUser(getFirstChildElementValue(ee, QNAME_TITLE),
+		    	            		                                getFirstChildElementValue(ee, QNAME_PLACE),
+		    	            		                                getFirstChildElementValue(ee, QNAME_START_TIME),
+		    	            		                                getFirstChildElementValue(ee, QNAME_END_TIME));
+		    	            lessonPlanUser.add(usr);
+		    	            
 		                }
 	                } else {
 	                	if (ee.getValue().equals("soap:Server")) {
@@ -159,8 +175,21 @@ public class SOAPClient {
 
 	    return lessonPlanUser;
 	}
-
 	
+
+    private String getFirstChildElementValue(SOAPElement soapElement, QName qNameToFind) {
+        String value = null;
+        Iterator<?> it = soapElement.getChildElements(qNameToFind);
+         
+        while (it.hasNext()) {
+            SOAPElement element = (SOAPElement) it.next(); //use first
+            value = element.getValue();
+         }
+         
+         return value;
+     }
+
+    
 	public String soapMessageToString(SOAPMessage message) {
         String result = null;
 
@@ -520,13 +549,11 @@ public class SOAPClient {
     }
     
   
-	public ArrayList<LessonPlanUser> getData(String sessionId, String title, String lessonPlan, String lessonDate) {
+	public ArrayList<LessonPlanUser> getData(String sessionId) {
 
 		try {
 			SOAPMessage soapResponse = sendSOAPRequest(createSOAPRequestGetData(sessionId));
-	        System.out.println(prettyPrintXMLAsString(soapMessageToString(soapResponse), 4));
-			
-//			return handleArrayListInboundMessage(soapResponse, "degreeNum");
+			return handleArrayListInboundMessage(soapResponse, "LessonPlanUser");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

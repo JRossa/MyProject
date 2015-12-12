@@ -1,17 +1,8 @@
 package org.myproject.webservice;
 
-import java.awt.Image;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.imageio.ImageIO;
 import javax.jws.HandlerChain;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
@@ -22,7 +13,6 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.http.HTTPBinding;
 
 import org.myproject.dao.LessonPlanUser;
 

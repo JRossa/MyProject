@@ -1,18 +1,24 @@
 package org.myproject.test.webservice;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.myproject.dao.LessonPlanUser;
+import org.myproject.webservice.SOAPClient;
  
 /**
  */
 public class Test
 {
  
-    Display d;
+	private static ArrayList<LessonPlanUser> lessonPlanUser = new ArrayList<LessonPlanUser>();
+
+	Display d;
  
     Shell s;
  
@@ -32,6 +38,7 @@ public class Test
                 "Item Two00000000000000000000000000000000000000000000000",
                 "Item Three", "Item Four", "Item Five" };
         c1.setItems( items );
+        
         c1.addSelectionListener( new SelectionAdapter()
         {
             @Override
@@ -77,7 +84,17 @@ public class Test
      */
     public static void main( String[] args )
     {
-        new Test();
+    	
  
+        SOAPClient soapClient = new SOAPClient();
+        
+        lessonPlanUser = soapClient.getData("p0Gyi108tFfkxJUS6hoxDiNX");
+        
+        for (LessonPlanUser usr: lessonPlanUser) {
+        	System.out.println("Place :" + usr.getPlace());
+        }
+        
+        new Test();
+        
     }
 }

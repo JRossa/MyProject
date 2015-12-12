@@ -2,8 +2,10 @@ package org.myproject.test.webservice;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Date;
 
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -21,6 +23,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.myproject.dao.LessonPlanUser;
 import org.myproject.webservice.HTTPRequestClient;
 import org.myproject.webservice.SOAPClient;
 
@@ -29,19 +32,22 @@ import org.myproject.webservice.SOAPClient;
 public class WebServiceWindow {
 
 	protected Shell shell;
+	
 	private HTTPRequestClient webServiceClient = new HTTPRequestClient();
 	private SOAPClient soapClient = new SOAPClient();
+	private ArrayList<LessonPlanUser> lessonPlanUser = new ArrayList<LessonPlanUser>();
 	
 	private Text txtMobilePhone;
 	private Text txtPassword;
 	private Label lblSessionId;
-	private Label lblDeegreNum;
+	private Label lblDegreeNum;
 	private Text txtTitle;
 	private Text txtSummary;
 	private DateTime dateTime;
 	private DateTime calendar;
 	private Boolean calendarON = false;
 	private Boolean connected = false;
+	private Combo cmbSelect;
 	
 	/**
 	 * Launch the application.
@@ -70,12 +76,37 @@ public class WebServiceWindow {
 			}
 		}
 	}
+	
+	
+	public String getComboLabel(Integer i, LessonPlanUser lessonPlanUser) {
+		String label = null;
+		Integer endIndex = 10;
+		
+		label = lessonPlanUser.getTitle().substring(0, endIndex) + "  ";
+		label = label.concat(lessonPlanUser.getStartTime()) + " - ";
+		label = label.concat(lessonPlanUser.getEndTime()) + "   (R ";
+		label = label.concat(lessonPlanUser.getPlace()) + ")";
+		
+		return label;
+	}
+	 
 
 	public void getAuthentication() {
 		System.out.println("Login : " + txtMobilePhone.getText() + "  Pass : " + txtPassword.getText());
 		
 		if (webServiceClient.hostAvailabilityCheck()) {
-				lblSessionId.setText(soapClient.getAuthentication(txtMobilePhone.getText(), txtPassword.getText()));
+//				lblSessionId.setText(soapClient.getAuthentication(txtMobilePhone.getText(), txtPassword.getText()));
+				lblSessionId.setText("p0Gyi108tFfkxJUS6hoxDiNX");
+				lessonPlanUser = soapClient.getData(lblSessionId.getText());
+				
+				String items[] = new String[lessonPlanUser.size()];
+				Integer i = 0;
+				for (LessonPlanUser usr: lessonPlanUser) {
+					items[lessonPlanUser.indexOf(usr)] = getComboLabel(lessonPlanUser.indexOf(usr), usr);
+				}
+		        cmbSelect.setItems( items );
+		        cmbSelect.setVisible(true);
+		        
 			} else {
 				lblSessionId.setText("Fault: Server is down or Connection refused !!");
 			}
@@ -93,7 +124,7 @@ public class WebServiceWindow {
 		if (!lblSessionId.getText().equals("Server is down or Connection refused !!")) {
 			String deegreNum = soapClient.setData(lblSessionId.getText(), txtTitle.getText(), txtSummary.getText(), strDate);
 		
-			lblDeegreNum.setText(deegreNum + " - Degrees");
+			lblDegreeNum.setText(deegreNum + " - Degrees");
 		}
 	}
 
@@ -114,9 +145,9 @@ public class WebServiceWindow {
 		shell.setSize(450, 334);
 		shell.setText("Lesson Plan Application");
 
-		lblDeegreNum = new Label(shell, SWT.NONE);
-		lblDeegreNum.setBounds(343, 208, 81, 21);
-		lblDeegreNum.setText("");
+		lblDegreeNum = new Label(shell, SWT.NONE);
+		lblDegreeNum.setBounds(343, 208, 81, 21);
+		lblDegreeNum.setText("");
 
 		final Button btnSend = new Button(shell, SWT.NONE);
 		btnSend.addMouseListener(new MouseAdapter() {
@@ -261,6 +292,24 @@ public class WebServiceWindow {
 		lblDate.setBounds(290, 122, 55, 15);
 		lblDate.setText("Date");
 		
+
+        cmbSelect = new Combo(shell, SWT.READ_ONLY);
+        cmbSelect.setBounds( 200, 48, 200, 65 );
+        cmbSelect.setVisible(false);
+        
+        cmbSelect.addSelectionListener( new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected( SelectionEvent e )
+            {
+            	
+            	System.out.println("Item : " + cmbSelect.getSelectionIndex());
+            	if (cmbSelect.getSelectionIndex() >= 0 && 
+            			    cmbSelect.getSelectionIndex() <= lessonPlanUser.size()) {
+            		txtTitle.setText(lessonPlanUser.get(cmbSelect.getSelectionIndex()).getTitle()); 
+            	}
+            }
+        } );
 
 	}
 }

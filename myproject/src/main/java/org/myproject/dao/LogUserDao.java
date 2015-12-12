@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,15 +13,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-
-
-
-
 import org.myproject.model.entities.LogSession;
 import org.myproject.model.entities.LogUser;
 import org.myproject.model.utils.PasswordHash;
 import org.myproject.model.utils.Stamp;
-
 
 public class LogUserDao {
 
@@ -413,7 +409,7 @@ public class LogUserDao {
 			
 			Connection conn = Database.getConnection();
 			
-			String qry = "SELECT DISTINCT TITLE, PLACE FROM tbl_LESSON_PLAN_WEEKLY WHERE TEACHER_ID = ? AND ENABLED = TRUE";
+			String qry = "SELECT DISTINCT TITLE, PLACE, START_TIME, END_TIME FROM tbl_LESSON_PLAN_WEEKLY WHERE TEACHER_ID = ? AND ENABLED = TRUE";
 			
 			PreparedStatement ppStt = conn.prepareStatement(qry);		
 			ppStt.setLong(1, user.getTeacherId());
@@ -424,10 +420,21 @@ public class LogUserDao {
 				
 				LessonPlanUser usr = new LessonPlanUser();
 
+				String[] splitTime;
+				String startTime = rSet.getTime("START_TIME" ).toString();
+				splitTime = startTime.split(":");
+				usr.setStartTime(splitTime[0] + ":" + splitTime[1]);
+				
+				String endTime = rSet.getTime("END_TIME" ).toString();
+				splitTime = endTime.split(":");
+				usr.setEndTime(splitTime[0] + ":" + splitTime[1]);
+				
+//				usr.setTimeStartTime(rSet.getTime("START_TIME" ));
+				
 				usr.setTitle(rSet.getString("TITLE"));
 				usr.setPlace(rSet.getString("PLACE"));
-				
-				System.out.println(usr.getTitle() + "     " + usr.getPlace());
+
+				System.out.println(usr.getTitle() + "     " + usr.getPlace() + "     " + startTime + "     " + endTime);
 				
 				lstUser.add(usr);
 			}
@@ -439,6 +446,14 @@ public class LogUserDao {
 			
 		}
 
+		for (LessonPlanUser usr: lstUser) {
+			System.out.println(" Title  " + usr.getTitle());
+			System.out.println(" Place  " + usr.getPlace());
+			System.out.println(" Start  " + usr.getStartTime());
+			System.out.println(" End    " + usr.getEndTime());
+		}
+		
+		
 		return lstUser;
 	}
 
@@ -567,8 +582,8 @@ public class LogUserDao {
 				usr.setCourseId(rSet.getLong("COURSE_ID"));
 				usr.setPlace(rSet.getString("PLACE"));
 				usr.setDayOfWeek(rSet.getInt("DAY_OF_WEEK"));
-				usr.setStartTime(rSet.getTime("START_TIME"));
-				usr.setEndTime(rSet.getTime("END_TIME"));
+				usr.setTimeStartTime(rSet.getTime("START_TIME"));
+				usr.setTimeEndTime(rSet.getTime("END_TIME"));
 				usr.setTitle(this.getCourseCode(usr.getCourseId()));
 				
 //				System.out.println(usr.getTitle() + "     " + usr.getPlace());
@@ -581,8 +596,8 @@ public class LogUserDao {
 
 			for (LessonPlanUser lpu: lstDegrees) {
 				System.out.println("Day of Week  : " + lpu.getDayOfWeek());
-				System.out.println("Start Time  : " + lpu.getStartTime());
-				System.out.println("EndTime  : " + lpu.getEndTime());
+				System.out.println("Start Time  : " + lpu.getTimeStartTime());
+				System.out.println("EndTime  : " + lpu.getTimeEndTime());
 				
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTimeZone(timezone);
@@ -605,7 +620,7 @@ public class LogUserDao {
 				
 				// START_DATE
 		        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-		        		lpu.getStartTime().getHours(), lpu.getStartTime().getMinutes(), 0);
+		        		lpu.getTimeStartTime().getHours(), lpu.getTimeStartTime().getMinutes(), 0);
 
 		        lpu.setStartDate(calendar.getTime());
 
@@ -616,7 +631,7 @@ public class LogUserDao {
 
 		        // END_DATE
 		        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-		        		lpu.getEndTime().getHours(), lpu.getEndTime().getMinutes(), 0);
+		        		lpu.getTimeEndTime().getHours(), lpu.getTimeEndTime().getMinutes(), 0);
 
 		        lpu.setEndDate(calendar.getTime());
 

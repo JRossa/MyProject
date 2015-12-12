@@ -4,9 +4,15 @@ import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Embedded;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.myproject.model.utils.Stamp;
 
+@XmlRootElement(name = "LessonPlanUser")
+@XmlAccessorType (javax.xml.bind.annotation.XmlAccessType.FIELD)
 public class LessonPlanUser {
 
 	private String username;
@@ -23,10 +29,16 @@ public class LessonPlanUser {
     
     private Integer dayOfWeek;
 
-    private Time startTime;
+    private Time timeStartTime;
     
-    private Time endTime;
+    @XmlSchemaType(name = "date")
+    private String startTime;
+
+    private Time timeEndTime;
     
+    private String endTime;
+
+    @XmlSchemaType(name = "time")
     private Date startDate;
 
     private Date endDate;
@@ -52,20 +64,33 @@ public class LessonPlanUser {
 //    @Column(name = "MODIFICATION_DATE")
 //    private Date modificationDate;
 
+  
+    public LessonPlanUser() {
+        super();
+    }
+
+
     
+	public LessonPlanUser(String title, String place, String startTime, String endTime) {
+		super();
+		this.title = title;
+		this.place = place;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+
+
 	public String getUsername() {
 		return username;
 	}
 
 
+
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-
-   public LessonPlanUser() {
-        super();
-    }
 
 
 	public String getTitle() {
@@ -133,23 +158,23 @@ public class LessonPlanUser {
 	}
 
 
-	public Time getStartTime() {
-		return startTime;
+	public Time getTimeStartTime() {
+		return timeStartTime;
 	}
 
 
-	public void setStartTime(Time startTime) {
-		this.startTime = startTime;
+	public void setTimeStartTime(Time startTime) {
+		this.timeStartTime = startTime;
 	}
 
 
-	public Time getEndTime() {
-		return endTime;
+	public Time getTimeEndTime() {
+		return timeEndTime;
 	}
 
 
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
+	public void setTimeEndTime(Time endTime) {
+		this.timeEndTime = endTime;
 	}
 
 
@@ -245,6 +270,26 @@ public class LessonPlanUser {
 
 	public void setStamp(Stamp stamp) {
 		this.stamp = stamp;
+	}
+
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
     

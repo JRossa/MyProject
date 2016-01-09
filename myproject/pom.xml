@@ -50,7 +50,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</repository>
 
 		<repository>
-			<id>mvn-repository</id>
+			<id>mvn-repository-too</id>
 			<url>http://mvnrepository.com/artifact/</url>
 		</repository>
 

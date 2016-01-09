@@ -125,8 +125,8 @@
 				           styleClass="headerLoginButton" 
 				           action="/login/login.am?faces-redirect=true" 
 				           value="#{labels.login_go}" 
-				           rendered="#{!sessionMBean.sessionActive()}" >
-    			<f:param name="productId" value="10" />
+				           rendered="#{!(sessionMBean.sessionActive())}" >
+				<f:param name="productId" value="10" />
 			</h:commandLink>
 			<h:commandLink style=" 
 			                      color: white;

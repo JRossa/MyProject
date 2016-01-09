@@ -132,6 +132,8 @@ public class LessonPlanMBean extends BaseBean {
     
     private Boolean teacherSelected = false;
     
+    private Boolean teacherSelectedLock = false;
+    
     private Boolean degreeSelected = false;
 
     private Boolean courseSelected = false;
@@ -214,6 +216,13 @@ public class LessonPlanMBean extends BaseBean {
 		
         if (this.lessonPlan.getStartDate() != null) {
         	this.setInitialScheduleDate(this.lessonPlan.getStartDate());
+        }
+        
+        if (!this.user.getLogRole().getRolename().equals("ROLE_ADMIN")) {
+        	setTeacherSelected(true);
+        	setTeacherSelectedLock(true);
+        } else {
+        	setTeacherSelectedLock(false);
         }
         
         if (this.teacherSelected) {
@@ -1284,6 +1293,16 @@ public class LessonPlanMBean extends BaseBean {
 
 	public void setTeacherSelected(Boolean teacherSelected) {
 		this.teacherSelected = teacherSelected;
+	}
+
+
+	public Boolean getTeacherSelectedLock() {
+		return teacherSelectedLock;
+	}
+
+
+	public void setTeacherSelectedLock(Boolean teacherSelectedLock) {
+		this.teacherSelectedLock = teacherSelectedLock;
 	}
 
 

@@ -177,6 +177,9 @@ public class WebServiceWindow {
 				} else {
 					setFinished();
 					lblSessionId.setText("");
+					lblDegreeNum.setText("");
+					txtTitle.setText("");
+					txtSummary.setText("");
 					btnGetAuth.setText("Connect");
 					btnSend.setEnabled(false);
 				}

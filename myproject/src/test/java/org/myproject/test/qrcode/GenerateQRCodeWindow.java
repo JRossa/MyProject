@@ -77,7 +77,7 @@ public class GenerateQRCodeWindow {
 
 		  //         create the menu system
 		  Menu menu = new Menu(shell, SWT.BAR);
-	    // create a file menu and add an exit item
+	      // create a file menu and add an exit item
 		  final MenuItem file = new MenuItem(menu, SWT.CASCADE);
 		  file.setText("&File");
 		  final Menu filemenu = new Menu(shell, SWT.DROP_DOWN);

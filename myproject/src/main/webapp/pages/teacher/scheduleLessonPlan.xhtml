@@ -199,7 +199,8 @@
 
 			<c:if test="#{lessonPlanMBean.enableTeacherSelect == 'true'}" >
 			<h:panelGroup>
-				<p:selectBooleanCheckbox value="#{lessonPlanMBean.teacherSelected}"/>
+				<p:selectBooleanCheckbox value="#{lessonPlanMBean.teacherSelected}"
+				                         rendered = "#{!lessonPlanMBean.teacherSelectedLock}" />
             	<h:outputLabel for="teacher" value="   #{labels.lessonplan_teacher} :" />
             </h:panelGroup>
             <h:panelGroup>
@@ -410,37 +411,14 @@
  	</h:form>    
  
 
+	<ui:include name="language_pt"  src="../../public/language_pt.xhtml"  />
 
- 	<script type="text/javascript">
-	    PrimeFaces.locales['pt'] = {
-	        closeText: 'fechar',
-	        prevText: 'voltar',
-	        nextText: 'próximo',
-	        currentText: 'hoje',
-	        monthNames: ['janeiro','fevereiro','março','abril','maio','junho',
-	            'julho','agosto','setembro','outubro','novembro','dezembro'],
-	        monthNamesShort: ['jan','fev','mar','abr','mai','jun',
-	            'jul','ago','set','out','nov','dec'],
-	        dayNames: ['domingo','segunda','terça','suarta','quinta','sexta','sábado'],
-	        dayNamesShort: ['dom','seg','ter','qua','qui','sex','sáb'],
-	        dayNamesMin: ['dom','seg','ter','qua','qui','sex','sáb'],
-	        weekHeader: 'semana',
-	        firstDay: 0,
-	        isRTL: false,
-	        showMonthAfterYear: false,
-	        yearSuffix: '',
-	        month: 'mensal',
-	        week: 'semanal',
-	        day: 'diário',
-	        allDayText : 'dia'
-	    };
-	</script>
 	
-<style type="text/css">
-    .value {
-        width: 1000px;
-    }
-</style>
+	<style type="text/css">
+	    .value {
+	        width: 1000px;
+	    }
+	</style>
 
 </h:body>
 	</ui:composition>

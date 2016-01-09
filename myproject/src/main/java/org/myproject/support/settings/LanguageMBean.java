@@ -52,8 +52,16 @@ public class LanguageMBean implements Serializable {
         return this.localeCode;
     }
 
-    
     public String getLanguageName() {
+ 
+        this.getLocaleCode();
+ 
+        if (this.localeCode.equals("en")) {
+            this.languageName = "Português";
+        } else {
+            this.languageName = "English";
+        }    
+
         return languageName;
     }
 
@@ -67,6 +75,7 @@ public class LanguageMBean implements Serializable {
 
     public void setLanguage(String language) {
         this.locale = new Locale(language);
+        
         if (language.equals("en")) {
             this.languageName = "Português";
         } else {

@@ -15,9 +15,9 @@ public class EmailSenderTest {
         
         MailSender mail = new MailSender();
        
-        mail.sendEmail("jose.rossa@academiamilitar.pt", 
-                       "jose.rossa@academiamilitar.pt", "Test", "Teste",
-                       "jose.rossa@academiamilitar.pt", "bridge55");
+        mail.sendEmail("email@gmail.pt", 
+                       "email@gmail.pt", "Test", "Teste",
+                       "email@gmail.pt", "password");
         
        
     }

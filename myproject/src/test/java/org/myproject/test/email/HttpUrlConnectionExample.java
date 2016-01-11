@@ -35,7 +35,7 @@ public class HttpUrlConnectionExample {
 
 	// 1. Send a "GET" request, so that you can extract the form's data.
 	String page = http.GetPageContent(url);
-	String postParams = http.getFormParams(page, "funsoft2015@gmail.com", "bridge5funsoft");
+	String postParams = http.getFormParams(page, "email@gmail.pt", "password");
 
 	// 2. Construct above post's content and then send a POST request for
 	// authentication

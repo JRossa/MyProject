@@ -6,6 +6,7 @@ import java.time.temporal.TemporalAdjusters;
 
 import org.junit.Test;
 import org.myproject.model.utils.MailSender;
+import org.myproject.support.email.MailAccount;
 
 public class EmailSenderTest {
 
@@ -15,10 +16,19 @@ public class EmailSenderTest {
         
         MailSender mail = new MailSender();
        
-        mail.sendEmail("jose.rossa@academiamilitar.pt", 
-                       "jose.rossa@academiamilitar.pt", "Test", "Teste",
-                       "jose.rossa@academiamilitar.pt", "bridge55");
+        MailAccount mailAccount = new MailAccount();
+ 
+        mailAccount.setUserAccount(mailAccount.JR);
+        mailAccount.setServerAccount(mailAccount.JR);
         
+        System.out.println("User Log     : " + mailAccount.getUserAccount().getUserLogin());
+        System.out.println("Server Log   : " + mailAccount.getServerAccount().getUserLogin());
+        System.out.println("Server Pass  : " + mailAccount.getServerAccount().getUserPassword());
+
+         mail.sendOAuthEmail(mailAccount.getUserAccount().getUserLogin(), 
+                        mailAccount.getUserAccount().getUserLogin(), "Test", "Teste",
+                        mailAccount.getServerAccount().getUserLogin(), 
+                        mailAccount.getServerAccount().getUserPassword());
        
     }
     

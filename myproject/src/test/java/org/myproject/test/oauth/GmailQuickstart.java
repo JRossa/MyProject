@@ -1,4 +1,4 @@
-package org.myproject.test.email;
+package org.myproject.test.oauth;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -21,29 +21,50 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+/*********
+ *  
+ * @author ze
+ *
+ * https://console.developers.google.com/apis/library?project=woven-icon-118711
+ * 
+ * https://console.developers.google.com/apis/credentials?project=woven-icon-118711
+ * 
+ * https://security.google.com/settings/security/permissions
+ * 
+ * https://www.google.com/settings/security/lesssecureapps
+ *
+ */
+
+
+
+
 public class GmailQuickstart {
     /** Application name. */
-    private static final String APPLICATION_NAME =
-        "Gmail API Java Quickstart";
+    private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
+//    private static final String APPLICATION_NAME = "OAuth 2.0";
 
     /** Directory to store user credentials for this application. */
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
-        System.getProperty("user.home"), ".credentials/gmail-java-quickstart");
+    private static final java.io.File DATA_STORE_DIR = 
+    		new java.io.File(System.getProperty("user.home"), ".credentials/gmail-java-quickstart");
 
     /** Global instance of the {@link FileDataStoreFactory}. */
     private static FileDataStoreFactory DATA_STORE_FACTORY;
 
     /** Global instance of the JSON factory. */
-    private static final JsonFactory JSON_FACTORY =
-        JacksonFactory.getDefaultInstance();
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     /** Global instance of the HTTP transport. */
     private static HttpTransport HTTP_TRANSPORT;
 
     /** Global instance of the scopes required by this quickstart. */
-    private static final List<String> SCOPES =
-        Arrays.asList(GmailScopes.GMAIL_LABELS);
+//    private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_LABELS);
 
+	private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_LABELS,
+			                                                 GmailScopes.GMAIL_COMPOSE,
+			                                                 GmailScopes.GMAIL_SEND,
+			                                                 GmailScopes.MAIL_GOOGLE_COM);
+    
+    
     static {
         try {
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -62,7 +83,7 @@ public class GmailQuickstart {
     public static Credential authorize() throws IOException {
         // Load client secrets.
         InputStream in =
-            GmailQuickstart.class.getResourceAsStream("/client_secret.json");
+            GmailQuickstart.class.getResourceAsStream("client_secret.json");
         GoogleClientSecrets clientSecrets =
             GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
@@ -73,10 +94,12 @@ public class GmailQuickstart {
                 .setDataStoreFactory(DATA_STORE_FACTORY)
                 .setAccessType("offline")
                 .build();
+        
         Credential credential = new AuthorizationCodeInstalledApp(
-            flow, new LocalServerReceiver()).authorize("user");
+                                    flow, new LocalServerReceiver()).authorize("user");
         System.out.println(
                 "Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
+        
         return credential;
     }
 
@@ -96,11 +119,12 @@ public class GmailQuickstart {
         // Build a new authorized API client service.
         Gmail service = getGmailService();
 
+  
         // Print the labels in the user's account.
         String user = "me";
-        ListLabelsResponse listResponse = service.users().labels().list(user).execute();
+        ListLabelsResponse listResponse =
+            service.users().labels().list(user).execute();
         List<Label> labels = listResponse.getLabels();
-        
         if (labels.size() == 0) {
             System.out.println("No labels found.");
         } else {

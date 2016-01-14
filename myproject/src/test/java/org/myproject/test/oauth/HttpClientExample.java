@@ -1,4 +1,4 @@
-package org.myproject.test.email;
+package org.myproject.test.oauth;
 
 
 import java.io.BufferedReader;
@@ -21,6 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.myproject.support.email.MailAccount;
 
 public class HttpClientExample {
 
@@ -40,10 +41,13 @@ public class HttpClientExample {
 
 	String page = http.GetPageContent(url);
 	
-//	List<NameValuePair> postParams = 
-//               http.getFormParams(page, "funsoft2015@gmail.com", "bridge5funsoft");
+    MailAccount mailAccount = new MailAccount();
+    
+    mailAccount.setUserAccount(mailAccount.FS);
+    
 	List<NameValuePair> postParams = 
-            http.getFormParams(page, "rossa.jmr@gmail.com", "bridgemil");
+            http.getFormParams(page, mailAccount.getUserAccount().getUserLogin(), 
+            		                 mailAccount.getUserAccount().getUserPassword());
 	
 	http.sendPost(url, postParams);
 

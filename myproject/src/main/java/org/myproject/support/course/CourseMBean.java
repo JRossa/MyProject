@@ -9,7 +9,6 @@ import javax.inject.Named;
 
 import org.apache.log4j.Logger;
 import org.myproject.model.entities.Course;
-import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.CourseRepository;
 import org.myproject.model.utils.BaseBean;
 import org.springframework.context.annotation.Scope;

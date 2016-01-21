@@ -398,8 +398,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>mycommons-codec</groupId>
 			<artifactId>mycommons-codec</artifactId>
 			<version>1.5</version>
-			<scope>system</scope>
-            <systemPath>/home/ze/Eclipse/Data/jarjar/mycommons-codec-1.5.jar</systemPath>
 		</dependency>
 
 		<!-- FILE UPLOAD -->

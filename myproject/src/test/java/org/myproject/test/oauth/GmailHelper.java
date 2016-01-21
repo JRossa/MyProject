@@ -70,7 +70,7 @@ public final class GmailHelper {
      * Directory to store user credentials.
      */
 //	private static final File DATA_STORE_DIR = new File(System.getProperty("user.home"), "credentials");
-    private static final File DATA_STORE_DIR = new File(System.getProperty("user.home"), ".credentials/gmail-java-quickstart");
+    private static final File DATA_STORE_DIR = new File(System.getProperty("user.home"), ".credentials/myproject");
     /**
      * Global instance of the
      * {@link com.google.api.client.util.store.DataStoreFactory}. The best

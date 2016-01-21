@@ -15,8 +15,15 @@
 </h:head>
 
 <h:body>
+
 	<ui:composition>
 
+		<div id="headerGoogleButton" >
+		    <h:panelGroup rendered="false">
+				<ui:include name="googlebtn" src="/public/googlebtn.xhtml" />
+			</h:panelGroup>
+		</div>
+		
     	<p:separator id="headerSeparator"   />
 		
 	  	<div id="imageLogo"  >              
@@ -141,7 +148,10 @@
 			</h:commandLink>
         </h:form>
 
+
 	</ui:composition>
+	
+	
 </h:body>
 </html>
 

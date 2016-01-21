@@ -28,14 +28,11 @@
 		
 	</h:head>
 
-
-
-
 	<h:body onload="document.content.dialog.login.j_username.focus();" >
 	
 		<p:dialog class="box login"  
 		          header="#{labels.application_organization}" 
-		          height="450"  width="360" 
+		          height="520"  width="360" 
 		          modal="false" closable="false" 
 		          position="center"
 				  draggable="false" 
@@ -43,13 +40,18 @@
 				  visible="true" 
 				  style="margin-top:  -40px;
 				         margin-left: 18%" >
-		 
-	
+				         
+				         
 			<form class="box login" 
 			      name='login' 
 			      action="#{request.contextPath}/j_spring_security_check" 
 			      method='post' >
 	           
+				<div align="left" style="background:#f0f0f0;" >              
+					<br/> 
+					<ui:include name="googlebtn" src="/public/googlebtn.xhtml" />
+					<br/> 
+			    </div>
 	
 	      
 	<!--     <div align="center" >   -->
@@ -58,13 +60,14 @@
 	      
 				<fieldset class="boxBody">
 				
+					<br/> 
 					<div align="center" >              
-					         <p:graphicImage id="img" name="images/brasao4_am.png" class="imageLogoSize" />
-					   </div> 
-					
+						<p:graphicImage id="img" name="images/brasao4_am.png" class="imageLogoSize" />
+					</div> 
 					
 					<h:outputLabel for="j_username" 
 					               value="#{labels.login_username} * : " />
+					               
 					<p:inputText type="text" 
 					             id="j_username"
 					             tabindex="1"
@@ -87,10 +90,12 @@
 					            tabindex="2" 
 					            placeholder="#{labels.login_password}"
 					            required="true" />
+					            
 					<p:watermark for="j_password" value="#{labels.user_password}" />
 					
 					<c:if test="${param.error == 'true'}">
-					 <h:outputText tabindex="3" value="#{labels.login_invalid}" style="color: red; font-size: small;" /> 
+					 <h:outputText tabindex="3" value="#{labels.login_invalid}" 
+					                            style="color: red; font-size: small;" /> 
 					</c:if>
 					<c:if test="${param.error != 'true'}">
 					 <h:outputText tabindex="3" value="" /> 
@@ -105,8 +110,9 @@
 	
 				<footer>
 				  <label>
-				  <input id="j_remember" name="_spring_security_remember_me"  value="true" type="checkbox" tabindex="4" />
-				  #{labels.login_remember_me}
+					  <input id="j_remember" name="_spring_security_remember_me" 
+	                                         value="true" type="checkbox" tabindex="4" />
+					  #{labels.login_remember_me}
 				  </label>
 				  
 				  <input name="submit" 

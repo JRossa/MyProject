@@ -47,7 +47,7 @@ public class CustomRedirectAuthenticationSuccessHandler extends SimpleUrlAuthent
 
         String username = authentication.getName();
         String rolename = getRole(username);
-        String userId = getUserId(username);;
+        String userId = getUserId(username);
         String logNameMessage = getUserFullName(username, rolename);
         String lastLogMessage = getLastLogin(username);
 

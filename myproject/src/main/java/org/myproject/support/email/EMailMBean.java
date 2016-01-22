@@ -138,7 +138,7 @@ public class EMailMBean extends BaseBean {
     	} else {
     		this.selectAll = true;
     		this.teacher = new Teacher();
-    		
+    		MailSender mail = new MailSender();
     		this.setText("");
             this.setText(this.insertTxtBody());
             this.setText(this.insertSignature());
@@ -152,7 +152,7 @@ public class EMailMBean extends BaseBean {
   
 	
 	public void sendEMail () {
-		
+		MailSender mail = new MailSender();
 		if (this.mbLessonPlanMBean.getSelectedLessonPlan() != null) {
 			Teacher teacher = this.mbLessonPlanMBean.getSelectedLessonPlan().getTeacher();
 			Date    date    = this.mbLessonPlanMBean.getSelectedLessonPlan().getStartDate();
@@ -187,10 +187,16 @@ public class EMailMBean extends BaseBean {
  
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
+        MailAccount mailAccount = new MailAccount();
+        
+        mailAccount.setUserAccount(mailAccount.JRA);
+        mailAccount.setServerAccount(mailAccount.JRA);
+
         // TODO - mudar e verificar se é válido o endereço de email no final
-        mail.sendEmail("jose.rossa@academiamilitar.pt", 
-                       "jose.rossa@academiamilitar.pt", emailSubject, emailMsg,
-                       "jose.rossa@academiamilitar.pt", "bridge55");
+        mail.sendEmail(mailAccount.getUserAccount().getUserLogin(), 
+        		       mailAccount.getUserAccount().getUserLogin(), emailSubject, emailMsg,
+                       mailAccount.getServerAccount().getUserLogin(), 
+                       mailAccount.getServerAccount().getUserPassword());
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -234,7 +240,7 @@ public class EMailMBean extends BaseBean {
 			
 			if (this.computeDiffDays(lp.getEndDate(), date) > limitDays) {
 //				System.out.println("Teacher : " + lp.getTeacher().getFullName());
-				this.sendTeacherEMail(lp.getTeacher(), lp.getEndDate(), lp.getCourse(), lp.getDegree());
+			    			this.sendTeacherEMail(lp.getTeacher(), lp.getEndDate(), lp.getCourse(), lp.getDegree());
 			}
 		}
     }

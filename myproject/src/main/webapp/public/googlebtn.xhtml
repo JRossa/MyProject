@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	
+<h:head>
+ 	 <script>
+
+// http://stackoverflow.com/questions/17324356/javascript-redirect-when-clicking-on-a-div-with-a-certain-id
+
+		  function OpenNewTab(id){
+//	 		  window.open('SECOND.html/#'+someId);
+			  window.location.href = "http://localhost:8080/myproject/oauth2request";
+//		      setTimeout(function(){ window.location.href = "http://yourlinkhere/'+id+'"; }, 10000);
+		  }	
+		  
+	</script>
+	  
+	<style type="text/css">
+	    #customBtn {
+	      display: inline-block;
+	      background: #4285f4;
+	      color: white;
+	      width: 120px;
+	      border-radius: 5px;
+	      white-space: nowrap;
+	    }
+	    #customBtn:hover {
+	      cursor: pointer;
+	    }
+	    span.label {
+	      font-weight: bold;
+	    }
+	    span.icon {
+	      background: url('https://developers.google.com/identity/sign-in/g-normal.png') transparent 2px 50% no-repeat;
+	      display: inline-block;
+	      vertical-align: middle;
+	      width: 32px;
+	      height: 32px;
+	      border-right: #2265d4 1px solid;
+	    }
+	    span.buttonText {
+	      display: inline-block;
+	      vertical-align: middle;
+	      padding-left: 12px;
+	      padding-right: 12px;
+	      font-size: 18px;
+	      font-weight: bold;
+	      <!-- Use the Roboto font that is loaded in the <head> -->
+	      font-family: 'Roboto', sans-serif;
+	    }
+	</style>
+</h:head>
+  
+<h:body>
+	  <!-- In the callback, you would hide the gSignInWrapper element on a
+	  successful sign in -->
+	  <div id="gSignInWrapper">
+	    <span class="label" style="margin-right:10px;margin-left:10px">
+	    	#{labels.login_signin_with}
+	    </span>
+	    
+	    <div onclick="OpenNewTab(1)" id="customBtn"  class="customGPlusSignIn">
+	      <span class="icon"></span>
+	      <span class="buttonText">Google</span>
+	    </div>
+	    
+	  </div>
+	  
+</h:body>
+</html>

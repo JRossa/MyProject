@@ -13,6 +13,7 @@
 	<context:component-scan base-package="org.myproject" />
 
 	<jpa:repositories base-package="org.myproject.model.repositories" />
+	<jpa:repositories base-package="org.scribe.builder" />
 
     <bean id="sessionMBean" class="org.myproject.support.logsession.SessionMBean" />
 	<bean id="LogUserDao" class="org.myproject.dao.LogUserDao" />

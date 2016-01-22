@@ -144,3 +144,11 @@
 	background-color: #880000! important;
 	background: #408080;
  }
+ 
+ #headerGoogleButton {
+	position: absolute;
+	align: right;
+	top: 40px;
+	left: 77%;
+ }
+ 

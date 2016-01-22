@@ -32,6 +32,7 @@ import org.myproject.model.utils.EncryptHash;
 import org.myproject.model.utils.MailSender;
 import org.myproject.model.utils.PasswordHash;
 import org.myproject.model.utils.RandomPasswordGenerator;
+import org.myproject.support.email.MailAccount;
 import org.primefaces.context.RequestContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
@@ -234,10 +235,17 @@ public class UserCRUDMBean extends BaseBean {
         
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
+        MailAccount mailAccount = new MailAccount();
+        
+        mailAccount.setUserAccount(mailAccount.JRA);
+        mailAccount.setServerAccount(mailAccount.JRA);
+
+        // TODO - mudar e verificar se é válido o endereço de email no final
+        mail.sendEmail(mailAccount.getUserAccount().getUserLogin(), 
+        		       mailAccount.getUserAccount().getUserLogin(), emailSubject, emailMsg,
+        		       mailAccount.getServerAccount().getUserLogin(), 
+                       mailAccount.getServerAccount().getUserPassword());
         // TODO - mudar o endereço de email no final
-        mail.sendEmail("jose.rossa@academiamilitar.pt", 
-                       "jose.rossa@academiamilitar.pt", emailSubject, emailMsg,
-                       "jose.rossa@academiamilitar.pt", "bridge55");
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);

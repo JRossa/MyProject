@@ -1,4 +1,4 @@
-package org.myproject.test.email;
+package org.myproject.test.oauth;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,6 +15,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.myproject.support.email.MailAccount;
 
 public class HttpUrlConnectionExample {
 
@@ -33,9 +34,14 @@ public class HttpUrlConnectionExample {
 	// make sure cookies is turn on
 	CookieHandler.setDefault(new CookieManager());
 
+    MailAccount mailAccount = new MailAccount();
+    
+    mailAccount.setUserAccount(mailAccount.FS);
+
 	// 1. Send a "GET" request, so that you can extract the form's data.
 	String page = http.GetPageContent(url);
-	String postParams = http.getFormParams(page, "funsoft2015@gmail.com", "bridge5funsoft");
+	String postParams = http.getFormParams(page, mailAccount.getUserAccount().getUserLogin(), 
+			                                     mailAccount.getUserAccount().getUserPassword());
 
 	// 2. Construct above post's content and then send a POST request for
 	// authentication

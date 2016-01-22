@@ -179,10 +179,16 @@ public class EMailSurveyCourseMBean extends BaseBean {
  
         emailMsg = emailMsg.replaceAll("(\\r\\n|\\n)", "<br/>");
 
+        MailAccount mailAccount = new MailAccount();
+        
+        mailAccount.setUserAccount(mailAccount.JRA);
+        mailAccount.setServerAccount(mailAccount.JRA);
+
         // TODO - mudar e verificar se é válido o endereço de email no final
-        mail.sendEmail("jose.rossa@academiamilitar.pt", 
-                       "jose.rossa@academiamilitar.pt", emailSubject, emailMsg,
-                       "jose.rossa@academiamilitar.pt", "bridge55");
+        mail.sendEmail(mailAccount.getUserAccount().getUserLogin(), 
+        		       mailAccount.getUserAccount().getUserLogin(), emailSubject, emailMsg,
+        		       mailAccount.getServerAccount().getUserLogin(),
+        		       mailAccount.getServerAccount().getUserPassword());
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         FacesContext.getCurrentInstance().addMessage(null, message);

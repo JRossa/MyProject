@@ -2,7 +2,10 @@ package org.myproject.model.repositories;
 
 
 
+import java.util.List;
+
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -15,4 +18,5 @@ public interface UserRepository extends JpaRepository<LogUser, Long> {
 
     public LogUser findByUserName(String userName);
     
+    public List <LogUser> findByTeacher(Teacher teacher);
 }

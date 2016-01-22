@@ -57,10 +57,12 @@ public class LanguageMBean implements Serializable {
         this.getLocaleCode();
  
         if (this.localeCode.equals("en")) {
-            this.languageName = "Português";
-        } else {
-            this.languageName = "English";
-        }    
+        	if (this.localeCode.equals("en")) {
+	            this.languageName = "Português";
+	        } else {
+	            this.languageName = "English";
+	        }    
+        }
 
         return languageName;
     }

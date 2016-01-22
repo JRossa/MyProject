@@ -28,11 +28,11 @@ color: black;
 
 .box.login
 {
-	height:  450px;
+	height:525px;
     width: 332px;
 	position: absolute;
 	left: 50%;
-	top: 30%;
+	top: 25%;
 	margin:-130px 0 0 -166px;
 }
 

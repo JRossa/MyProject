@@ -41,4 +41,13 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 			+ "WHERE (tbl_TEACHER.ID)=:teacherId "
             + "ORDER BY tbl_TEACHER.FULL_NAME", nativeQuery = true)
 	public List <Teacher> findAllByTeacherId(@Param("teacherId") Long teacherId);
+	
+//  http://stackoverflow.com/questions/23326642/query-annotation-using-like-1	
+	@Query(value="SELECT tbl_TEACHER.* "
+            + "FROM tbl_TEACHER "
+			+ "WHERE (tbl_TEACHER.E_MAIL) LIKE %:teacherEMail% "
+            + "ORDER BY tbl_TEACHER.FULL_NAME "
+	        + "LIMIT 1 ", nativeQuery = true)
+	public Teacher findAllByTeacherEMail(@Param("teacherEMail") String teacherEMail);
+	
 }

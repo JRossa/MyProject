@@ -32,7 +32,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.myproject.model.entities.LogSession;
 import org.myproject.model.entities.LogUser;
+import org.myproject.model.entities.Teacher;
 import org.myproject.model.repositories.LogSessionRepository;
+import org.myproject.model.repositories.TeacherRepository;
 import org.myproject.model.repositories.UserRepository;
 import org.myproject.support.user.UserMBean;
 import org.myproject.test.oauth.MyConstants;
@@ -74,11 +76,13 @@ public class OAuth2Controller {
 
     @Inject
     private UserRepository userRepository;
+    
+    @Inject
+    private TeacherRepository teacherRepository;
 
     @Inject
     private LogSessionRepository sessionRepository;
     
-    private UserMBean userMBean;
 
 	/**
 	 * Please provide a value for the CLIENT_ID constant before proceeding, set this up at https://code.google.com/apis/console/
@@ -245,15 +249,61 @@ public class OAuth2Controller {
 		// return the json of the user's basic info
 		response.getWriter().println(json);
 
-        String adminTargetUrl = "/myproject/schedule/admin";
+		// get the access token from json and request info from Google
+		try {
+			jsonObject = (JSONObject) new JSONParser().parse(json);
+		} catch (ParseException e) {
+			throw new RuntimeException("Unable to parse json " + json);
+		}
+
+		String teacherGMail  = (String) jsonObject.get("email");
+		
+		Teacher teacher = teacherRepository.findAllByTeacherEMail(teacherGMail);
+		if (teacher == null) {
+			System.out.println("Id : not found");
+			response.sendRedirect("/myproject");
+			return;
+		}
+		
+		System.out.println("Id : " + teacher.getId());
+
+		String adminTargetUrl = "/myproject/schedule/admin";
 
 		try {
 			
-				// TODO - FindUserByEmail
-			String username = "admin";
+			List <LogUser> userRoles = userRepository.findByTeacher(teacher);
+
+			String rolename = "";
+			String username = "";
 			String password = "";
-			String rolename = "ROLE_ADMIN";
-			String userId = "18";
+			String userId = "-1";
+			Long minRoleId = 100L;
+			
+			for (LogUser user: userRoles) {
+				System.out.println("rolename 1 : " + user.getLogRole().getId() +
+						           "      " + minRoleId);
+				
+				if (user.getLogRole().getId() < minRoleId) {
+					minRoleId = user.getLogRole().getId();
+					username = user.getUserName();
+					userId = user.getId().toString();
+				} 
+				System.out.println("rolename 2 : " + rolename +
+				           "      " + user.getLogRole().getRolename());
+				
+				if (!rolename.contains(user.getLogRole().getRolename())) {
+					if (rolename.length() == 0) {
+						rolename = rolename.concat(user.getLogRole().getRolename());
+						
+					} else {
+						rolename = rolename.concat(", " + user.getLogRole().getRolename());
+					}
+				}
+				
+			}
+		
+			System.out.println("N Roles  : " + userRoles.size());
+			System.out.println("rolename  : " + rolename);
 			
 			Authentication arequest =
 					new UsernamePasswordAuthenticationToken(username, password,
@@ -376,7 +426,7 @@ public class OAuth2Controller {
         LogUser user = this.userRepository.findByUserName(username);
 
         if (user != null) {
-            if (rolename.equals("ROLE_USER_T") || rolename.equals("ROLE_ADMIN")) {
+            if (rolename.contains("ROLE_USER_T") || rolename.contains("ROLE_ADMIN")) {
                 logger.debug("Name " + user.getTeacher().getFullName());
                 userFullName = user.getTeacher().getFullName();
             }

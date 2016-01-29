@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	
+<h:head>
+
+    <style>
+        /* BASE */
+
+        html { font-size:100%; }
+        body { padding: 40px 0 20px; margin: 0; font: 13px/1.333 "lucida grande", tahoma, sans-serif; color: #333; background: #fff;}
+
+        a, a:visited { color: #980905; }
+        a:hover, a:focus, a:active { text-decoration: none; }
+
+        h1 { margin: 0 0 0.5em; font-size: 28px;  font-weight: normal; }
+        h2 { margin: 0 0 0.75em; font-size: 15px; }
+        p { margin: 0 0 1.333em; }
+        em { font-style: italic; }
+        table { border-collapse: separate; border-spacing: 0; margin:  0; vertical-align: middle; }
+        th { font-weight: bold; }
+        th, td { padding: 5px 25px 5px 5px; text-align: left; vertical-align: middle; }
+        pre, code { font-family: monospace, sans-serif; font-size: 1em; color:#080; }
+        pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+        ul { list-style: square; margin: 1em 0 1em 0px; padding: 0; }
+
+        /* TEMPLATE */
+
+        .container { position:relative; overflow:hidden; max-width: 600px; _width: 600px; padding: 40px 60px; border: 1px solid #ccc; margin: 0 auto; background: #fff; }
+
+        .container pre,
+        .container .prettyprint { padding: 0; border: 0; margin: 0 0 20px; background: #fff; }
+
+        .ribbon { position: absolute; top: -1px; right: -1px; opacity: 0.9; }
+        .ribbon:hover, .ribbon:focus, .ribbon:active { opacity: 1; }
+        .ribbon img { display: block; border: 0; }
+
+        .header { padding-right: 80px; }
+        .header p { font-size: 18px; color: #808080; }
+
+        .section { margin: 40px 0 20px; }
+
+        .example { padding: 20px; border: 1px solid #ccc; margin: 10px -20px 20px; }
+        .example p { margin: 15px 0 0; }
+        .example p:first-child { margin: 0; }
+
+        .footer { margin: 20px 0 50px; font-size: 11px; color: #666; text-align: center; }
+        .footer a { color: #666;}
+
+        /* SMALL */
+
+        @media (max-width: 500px) {
+            body { padding: 0; }
+            .container { padding: 20px 30px; }
+            .footer { margin-bottom: 20px; }
+        }
+    </style>
+
+    <link rel="stylesheet" href="#{request.contextPath}/resources/css/auth-buttons.css"/>
+
+    <!-- prettyify -->
+    <link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" />
+    <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+
+</h:head>
+
+<h:body>
+
+  	<div >
+  		<p style="background:#f0f0f0; display: inline-block; padding-left: 25px;">
+  			<a class="btn-auth btn-google large" 
+  		      href="http://localhost:8080/myproject/oauth2request" >
+  		      #{labels.login_signin_with} 
+  			<b style="font-size: 25px; font-weight: bold; font-family: 'Roboto', sans-serif; ">
+  				Google
+  			</b>
+  			</a>
+  		</p>
+<!--   		<p style="background:#f0f0f0; display: inline-block; padding-left: 10px;">
+  			<a class="btn-auth btn-facebook large" 
+  		      href="#button" >
+  		      #{labels.login_signin_with} 
+  			<b style="font-size: 25px; font-weight: bold; font-family: 'Roboto', sans-serif; ">
+  				Facebook
+  			</b>
+  			</a>
+  		</p>
+ --> 
+  	</div>
+
+</h:body>
+</html>
